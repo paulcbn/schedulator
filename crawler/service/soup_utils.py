@@ -5,7 +5,7 @@ from requests.exceptions import HTTPError
 from crawler.service.crawler_exception import CrawlerException
 
 
-def get_soup_from_url(url):
+def get_soup_from_url(url: str) -> BeautifulSoup:
     try:
         response = requests.get(url)
         response.raise_for_status()
