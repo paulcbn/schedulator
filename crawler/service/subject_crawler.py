@@ -4,6 +4,8 @@ from crawler.service.crawler_exception import CrawlerException
 from crawler.service.soup_utils import get_soup_from_url
 from django.db import transaction
 
+logger = logging.getLogger(__name__)
+
 
 def parse_subject_row(row):
     columns = row.find_all('td')
@@ -33,7 +35,7 @@ class SubjectCrawler:
                 sid, name = parse_subject_row(row)
                 subjects.append(Subject(sid=sid, name=name))
             except CrawlerException as exc:
-                logging.warning(f'Could not parse subject from {row}: {exc}')
+                logger.warning(f'Could not parse subject from {row}: {exc}')
 
         with transaction.atomic():
             for subject in subjects:
