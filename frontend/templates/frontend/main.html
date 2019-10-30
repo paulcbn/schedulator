@@ -1,0 +1,14 @@
+{% block header %}
+    {% if user.is_authenticated %}
+        <input id='logout-button' type="button" value="Logout" onclick="location.href = '{{ logout_view }}'">
+    {% else %}
+        <input id='login-button' type="button" value="Login" onclick="location.href = '{{ login_view }}'">
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+        You're authenticated!
+    {% else %}
+        You're not authenticated. :(
+    {% endif %}
+{% endblock %}
