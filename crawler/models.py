@@ -7,7 +7,7 @@ class Subject(models.Model):
     url = models.CharField(max_length=100, default='')
 
     def __str__(self):
-        return f'{self.sid}: {self.name}'
+        return f'{self.name}'
 
 
 class Section(models.Model):
@@ -27,7 +27,7 @@ class Section(models.Model):
     default_subjects = models.ManyToManyField(Subject)
 
     def __str__(self):
-        return f'{self.name} - {self.year}'
+        return f'{self.name}'
 
 
 class SubjectComponent(models.Model):
