@@ -12,18 +12,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         Formation.objects.all().delete()
-        # SubjectComponent.objects.all().delete()
-        # Subject.objects.all().delete()
-        # Section.objects.all().delete()
+        SubjectComponent.objects.all().delete()
+        Subject.objects.all().delete()
+        Section.objects.all().delete()
 
-        # subject_crawler = SubjectCrawler()
-        # subject_crawler.get_data()
+        subject_crawler = SubjectCrawler()
+        subject_crawler.get_data()
 
-        # section_crawler = SectionCrawler()
-        # section_crawler.get_data()
+        section_crawler = SectionCrawler()
+        section_crawler.get_data()
 
-        # subject_component_crawler = SubjectComponentCrawler()
-        # subject_component_crawler.get_data()
+        subject_component_crawler = SubjectComponentCrawler()
+        subject_component_crawler.get_data()
 
         formation_crawler = FormationCrawler()
         formation_crawler.get_data()
