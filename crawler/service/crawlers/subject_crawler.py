@@ -13,11 +13,12 @@ def parse_subject_row(row):
         raise CrawlerException('Could not find exactly 2 <td> elements.')
     sid: str = columns[0].string
     name = columns[1].string
+    url = columns[1].a['href']
 
     if sid.isspace() or name.isspace():
         raise CrawlerException('Empty fields.')
 
-    return sid, name
+    return Subject(sid=sid, name=name, url=url)
 
 
 class SubjectCrawler:
@@ -32,8 +33,7 @@ class SubjectCrawler:
 
         for row in table.find_all('tr'):
             try:
-                sid, name = parse_subject_row(row)
-                subjects.append(Subject(sid=sid, name=name))
+                subjects.append(parse_subject_row(row))
             except CrawlerException as exc:
                 logger.warning(f'Could not parse subject from {row}: {exc}')
 

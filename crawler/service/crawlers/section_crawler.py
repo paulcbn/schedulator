@@ -41,7 +41,7 @@ def parse_section_row(row):
             continue
         if year.a['href'].isspace():
             continue
-        sections.append((Section(name=section_name, year=year.string), year.a['href']))
+        sections.append(Section(name=section_name, year=year.string, url=year.a['href']))
 
     return sections
 
@@ -74,7 +74,7 @@ def parse_timetable_row(row):
     """
     columns = row.find_all('td')
     if len(columns) != 8:
-        raise CrawlerException('Expected exactly 8 rows. ')
+        raise CrawlerException('Expected exactly 8 td elements. ')
     subject_url: str = columns[6].a['href']
     if subject_url.isspace():
         raise CrawlerException('Expected non empty subject url. ')
@@ -84,9 +84,9 @@ def parse_timetable_row(row):
 class SectionCrawler:
     def __init__(self,
                  subjects_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar/index.html',
-                 base_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar'):
+                 section_base_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar'):
         self.subjects_url = subjects_url
-        self.base_url = base_url
+        self.base_url = section_base_url
 
     def get_sections(self):
         """
@@ -100,16 +100,16 @@ class SectionCrawler:
         master_sections = parse_section_table(table_master_degree)
 
         with transaction.atomic():
-            for section, url in bachelor_sections:
+            for section in bachelor_sections:
                 section.type = 'B'
                 section.save()
-                section.default_subjects.set(self.get_default_subjects(url))
+                section.default_subjects.set(self.get_default_subjects(section.url))
                 section.save()
 
-            for section, url in master_sections:
+            for section in master_sections:
                 section.type = 'M'
                 section.save()
-                section.default_subjects.set(self.get_default_subjects(url))
+                section.default_subjects.set(self.get_default_subjects(section.url))
                 section.save()
 
     def get_data(self):
@@ -122,7 +122,6 @@ class SectionCrawler:
         :param url: string with the section url
         :return: Queryset of Subject that correspond to the url.
         """
-        result = []
 
         subject_ids = set()
 
