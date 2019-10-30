@@ -1,0 +1,5 @@
+{% extends "frontend/form.html" %}
+{% block content %}
+    {{ block.super }}
+    <input type="button" value="Register" onclick="location.href = '{{ register_view }}'">
+{% endblock %}
