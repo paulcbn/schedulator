@@ -1,5 +1,7 @@
-from bs4 import BeautifulSoup
+from typing import Iterable, Iterator
+
 import requests
+from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError
 
 from crawler.service.crawler_exception import CrawlerException
@@ -17,3 +19,9 @@ def get_soup_from_url(url: str) -> BeautifulSoup:
         raise CrawlerException(f'Other error occurred: {err}')
 
     return soup
+
+
+def skip_first(sequence: Iterable) -> Iterator:
+    iterator = iter(sequence)
+    next(iterator)
+    return iterator

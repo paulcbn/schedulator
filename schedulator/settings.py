@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-logging.basicConfig(format='[%(asctime)s %(name)-12s %(levelname)-8s]:\n%(message)s\n', datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.basicConfig(format='[%(asctime)s %(name)-12s %(levelname)-8s]:\n%(message)s\n', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.INFO)
 
 # Application definition
 

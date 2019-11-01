@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from crawler.models import Subject, Section, SubjectComponent, Formation
+from crawler.models import Subject, Section, SubjectComponent, Formation, TimetableEntry
 
 
 @admin.register(Subject)
@@ -27,3 +27,18 @@ class FormationAdmin(admin.ModelAdmin):
     search_fields = ('section__name', 'section__year', 'name')
     list_display = ('name', 'section')
     list_select_related = ('section', 'section')
+
+
+@admin.register(TimetableEntry)
+class TimetableEntryAdmin(admin.ModelAdmin):
+    search_fields = ('subject_component__subject__name', 'subject_component__name', 'formation__name', 'room__name')
+    list_display = (
+        'week_day',
+        'start_time',
+        'end_time',
+        'frequency',
+        'room',
+        'subject_component',
+        'formation',
+        'teacher',
+    )
