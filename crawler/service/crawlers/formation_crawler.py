@@ -4,7 +4,7 @@ from django.db import transaction
 
 from crawler.models import Section, Formation
 from crawler.service.crawler_exception import CrawlerException
-from crawler.service.soup_utils import get_soup_from_url
+from crawler.service.soup_utils import get_soup_from_url, skip_first
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ def parse_formation_name_from_row(row):
 
 def parse_formations_from_table(table):
     formation_names = set()
-    for row in table.find_all('tr'):
+    for row in skip_first(table.find_all('tr')):
         try:
             formation_names.add(parse_formation_name_from_row(row))
         except CrawlerException as exc:

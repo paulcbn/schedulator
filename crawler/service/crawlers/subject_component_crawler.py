@@ -4,7 +4,7 @@ from django.db import transaction
 
 from crawler.models import Subject, SubjectComponent
 from crawler.service.crawler_exception import CrawlerException
-from crawler.service.soup_utils import get_soup_from_url
+from crawler.service.soup_utils import get_soup_from_url, skip_first
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ def parse_subject_component_row(row):
 
 def parse_subject_table(table, target_subject):
     names_set = set()
-    for row in table.find_all('tr'):
+    for row in skip_first(table.find_all('tr')):
         try:
             names_set.add(parse_subject_component_row(row))
         except CrawlerException as exc:

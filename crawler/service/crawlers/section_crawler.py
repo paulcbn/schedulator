@@ -4,7 +4,7 @@ from django.db import transaction
 
 from crawler.models import Section, Subject
 from crawler.service.crawler_exception import CrawlerException
-from crawler.service.soup_utils import get_soup_from_url
+from crawler.service.soup_utils import get_soup_from_url, skip_first
 
 logger = logging.getLogger(__name__)
 
@@ -54,10 +54,10 @@ def parse_section_table(table):
     """
     rows = table.find_all('tr')
     result = []
-    for row in rows:
+    for row in skip_first(rows):
         try:
             sections = parse_section_row(row)
-            result += sections
+            result.extend(sections)
         except CrawlerException as exc:
             logger.warning(f'CrawlerError occurred: Could not parse section from {row}: {exc}')
         except Exception as exc:
@@ -84,9 +84,9 @@ def parse_timetable_row(row):
 class SectionCrawler:
     def __init__(self,
                  subjects_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar/index.html',
-                 section_base_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar'):
+                 sections_base_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar'):
         self.subjects_url = subjects_url
-        self.base_url = section_base_url
+        self.base_url = sections_base_url
 
     def get_sections(self):
         """
@@ -129,7 +129,7 @@ class SectionCrawler:
         soup = get_soup_from_url(full_url)
         first_table = soup.find('table')  # we care only about the first table
 
-        for row in first_table.find_all('tr'):
+        for row in skip_first(first_table.find_all('tr')):
             try:
                 subject_id = parse_timetable_row(row)
                 subject_ids.add(subject_id)

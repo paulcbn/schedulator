@@ -1,7 +1,7 @@
 import logging
 from crawler.models import Subject
 from crawler.service.crawler_exception import CrawlerException
-from crawler.service.soup_utils import get_soup_from_url
+from crawler.service.soup_utils import get_soup_from_url, skip_first
 from django.db import transaction
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ class SubjectCrawler:
 
         subjects = []
 
-        for row in table.find_all('tr'):
+        for row in skip_first(table.find_all('tr')):
             try:
                 subjects.append(parse_subject_row(row))
             except CrawlerException as exc:
