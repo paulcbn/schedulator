@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -27,7 +26,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-logging.basicConfig(format='[%(asctime)s %(name)-12s %(levelname)-8s]:\n%(message)s\n', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.INFO)
+logging.basicConfig(format='[%(asctime)s %(name)-12s %(levelname)-8s]:\n%(message)s\n', datefmt='%m/%d/%Y %I:%M:%S %p',
+                    level=logging.INFO)
 
 # Application definition
 
@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crawler.apps.CrawlerConfig',
-    'frontend'
+    'rest_framework',
+    'knox',
+    'crawler',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +52,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'api.middleware.dev_cors_middleware'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
 
 ROOT_URLCONF = 'schedulator.urls'
 
