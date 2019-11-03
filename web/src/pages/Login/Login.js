@@ -1,79 +1,83 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Link, Redirect} from "react-router-dom";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Redirect, useHistory } from 'react-router-dom';
+import { Container, Paper, Typography } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 
-import {auth} from "../../lib/actions";
+import useStyles from './styles';
+import { auth } from '../../lib/actions';
 
-class Login extends Component {
+const Login = ({errors, isAuthenticated, login}) => {
+  let history = useHistory();
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
 
-  state = {
-    username: "",
-    password: "",
-  };
+  const classes = useStyles();
 
-  onSubmit = e => {
-    e.preventDefault();
-    this.props.login(this.state.username, this.state.password);
-  };
+  if (isAuthenticated)
+    return <Redirect to="/"/>;
 
-  render() {
-    if (this.props.isAuthenticated) {
-      return <Redirect to="/"/>
-    }
-    return (
-      <form onSubmit={this.onSubmit}>
-        <fieldset>
-          <legend>Login</legend>
-          {this.props.errors.length > 0 && (
-            <ul>
-              {this.props.errors.map(error => (
-                <li key={error.field}>{error.message}</li>
-              ))}
-            </ul>
-          )}
-          <p>
-            <label htmlFor="username">Username</label>
-            <input
-              type="text" id="username"
-              onChange={e => this.setState({username: e.target.value})}/>
-          </p>
-          <p>
-            <label htmlFor="password">Password</label>
-            <input
-              type="password" id="password"
-              onChange={e => this.setState({password: e.target.value})}/>
-          </p>
-          <p>
-            <button type="submit">Login</button>
-          </p>
-
-          <p>
-            Don't have an account? <Link to="/register">Register</Link>
-          </p>
-        </fieldset>
-      </form>
-    )
+  function handleSubmit(event) {
+    event.preventDefault();
+    login(email, password);
   }
-}
+
+  return <>
+    <Container maxWidth="sm" className={ classes.loginContainer }>
+      <form onSubmit={ handleSubmit }>
+        <Paper className={ classes.loginPaper }>
+          <Typography variant="h2">
+            Schedulator
+          </Typography>
+          <TextField variant="outlined" label="Email"
+                     error={ !!errors['email'] }
+                     helperText={ errors['email'] }
+                     onChange={ event => setEmail(event.target.value) }
+                     value={ email }
+                     className={ classes.loginInput }
+          />
+          <TextField variant="outlined" label="Password"
+                     error={ !!errors['password'] }
+                     helperText={ errors['password'] }
+                     type="password"
+                     onChange={ event => setPassword(event.target.value) }
+                     value={ password }
+                     className={ classes.loginInput }
+
+          />
+
+          <Box className={ classes.buttonBox }>
+            <Button variant="contained" size="large" color="primary" type="submit">Login</Button>
+            <Button variant="contained" size="large" color="default" type="button"
+                    onClick={ () => history.push('/register') }>Register</Button>
+          </Box>
+        </Paper>
+
+
+      </form>
+    </Container>
+  </>;
+
+};
 
 const mapStateToProps = state => {
-  let errors = [];
-  if (state.auth.errors) {
-    errors = Object.keys(state.auth.errors).map(field => {
-      return {field, message: state.auth.errors[field]};
-    });
+  let errors = {...state.auth.errors};
+  if (errors['non_field_errors']) {
+    errors['password'] = errors['non_field_errors'];
   }
   return {
     errors,
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: (username, password) => {
-      return dispatch(auth.login(username, password));
-    }
+    login: (email, password) => {
+      return dispatch(auth.login(email, password));
+    },
   };
 };
 

@@ -14,9 +14,15 @@ class RegistrationAPI(generics.GenericAPIView):
     serializer_class = CreateUserSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        # Validating our serializer from the UserRegistrationSerializer
+        serializer = CreateUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+
+        # Everything's valid, so send it to the UserSerializer
+        model_serializer = UserSerializer(data=serializer.data)
+        model_serializer.is_valid(raise_exception=True)
+        user = model_serializer.save()
+
         _, token = AuthToken.objects.create(user)
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,

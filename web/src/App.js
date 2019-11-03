@@ -1,24 +1,26 @@
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
-import CssBaseline from "@material-ui/core/CssBaseline";
-import {Provider} from 'react-redux'
-import {applyMiddleware, createStore} from 'redux'
-import {RootContainer} from "./components";
+import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
 
-import rootReducer from "./lib/reducers";
-import thunk from "redux-thunk";
+import { RootContainer } from './components';
+import rootReducer from './lib/reducers';
+import theme from './lib/theme';
 
 let store = createStore(rootReducer, applyMiddleware(thunk));
 
 
 function App() {
-  return (
-    <>
-      <CssBaseline/>
-      <Provider store={store}>
+  return <>
+    <CssBaseline/>
+    <ThemeProvider theme={ theme }>
+      <Provider store={ store }>
         <RootContainer/>
       </Provider>
-    </>
-  );
+    </ThemeProvider>
+  </>;
 }
 
 export default App;

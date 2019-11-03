@@ -1,3 +1,5 @@
+import {API} from "../index";
+
 const initialState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
@@ -8,7 +10,6 @@ const initialState = {
 
 
 export default function auth(state = initialState, action) {
-  console.log({action});
   switch (action.type) {
     case 'USER_LOADING':
       return {...state, isLoading: true};
@@ -19,12 +20,14 @@ export default function auth(state = initialState, action) {
     case 'LOGIN_SUCCESSFUL':
     case 'REGISTRATION_SUCCESSFUL':
       localStorage.setItem("token", action.data.token);
+      API.defaults.headers.common['Authorization'] = `Token ${action.data.token}`;
       return {...state, ...action.data, isAuthenticated: true, isLoading: false, errors: null};
     case 'LOGOUT_SUCCESSFUL':
-    case 'AUTHENTICATION_ERROR':
     case 'LOGIN_FAILED':
+    case 'LOAD_ERROR':
     case 'REGISTRATION_FAILED':
       localStorage.removeItem("token");
+      delete API.defaults.headers.common['Authorization'];
       return {
         ...state, errors: action.data, token: null, user: null,
         isAuthenticated: false, isLoading: false
