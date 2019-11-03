@@ -1,134 +1,56 @@
+import { API } from '../index';
+
 export const loadUser = () => {
   return (dispatch, getState) => {
-    dispatch({type: "USER_LOADING"});
-
-    const token = getState().auth.token;
-
-    let headers = {
-      "Content-Type": "application/json",
-    };
-
-    if (token) {
-      headers["Authorization"] = `Token ${token}`;
-    }
-    return fetch("/api/auth/user/", {headers,})
-      .then(res => {
-        if (res.status < 500) {
-          return res.json().then(data => {
-            return {status: res.status, data};
-          })
-        } else {
-          console.log("Server Error!");
-          throw res;
+    dispatch({type: 'USER_LOADING'});
+    API.get('/api/auth/user/')
+      .then(({status, data}) => {
+        if (status === 200)
+          dispatch({type: 'USER_LOADED', user: data});
+        else if (status >= 400) {
+          dispatch({type: 'LOAD_ERROR', data});
         }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          dispatch({type: 'USER_LOADED', user: res.data});
-          return res.data;
-        } else if (res.status >= 400 && res.status < 500) {
-          dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-          throw res.data;
-        }
-      }).catch(error => {
-          dispatch({type: "AUTHENTICATION_ERROR", data: error.data});
-        }
-      )
-  }
+      });
+  };
 };
 
-export const login = (username, password) => {
+export const login = (email, password) => {
   return (dispatch, getState) => {
-    let headers = {"Content-Type": "application/json"};
-    let body = JSON.stringify({username, password});
-
-    return fetch("/api/auth/login/", {headers, body, method: "POST"})
-      .then(res => {
-        if (res.status < 500) {
-          return res.json().then(data => {
-            return {status: res.status, data};
-          })
+    return API.post('/api/auth/login/', {email, password})
+      .then(({data, status}) => {
+        if (status === 200) {
+          dispatch({type: 'LOGIN_SUCCESSFUL', data});
         } else {
-          console.log("Server Error!");
-          throw res;
+          dispatch({type: 'LOGIN_FAILED', data});
         }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          dispatch({type: 'LOGIN_SUCCESSFUL', data: res.data});
-          return res.data;
-        } else if (res.status === 403 || res.status === 401) {
-          dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-          throw res.data;
-        } else {
-          dispatch({type: "LOGIN_FAILED", data: res.data});
-          throw res.data;
-        }
-      })
-  }
+      });
+  };
 };
 
-export const register = (username, password) => {
+export const register = (email, password, confirm_password, first_name, last_name) => {
   return (dispatch, getState) => {
-    let headers = {"Content-Type": "application/json"};
-    let body = JSON.stringify({username, password});
-
-    return fetch("/api/auth/register/", {headers, body, method: "POST"})
-      .then(res => {
-        if (res.status < 500) {
-          return res.json().then(data => {
-            return {status: res.status, data};
-          })
+    API.post('/api/auth/register/', {email, password, confirm_password, first_name, last_name})
+      .then(({status, data}) => {
+        if (status === 200) {
+          dispatch({type: 'REGISTRATION_SUCCESSFUL', data});
+        } else if (status === 401 || status === 403) {
+          dispatch({type: 'AUTHENTICATION_ERROR', data});
         } else {
-          console.log("Server Error!");
-          throw res;
+          dispatch({type: 'REGISTRATION_FAILED', data});
         }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          dispatch({type: 'REGISTRATION_SUCCESSFUL', data: res.data});
-          return res.data;
-        } else if (res.status === 403 || res.status === 401) {
-          dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-          throw res.data;
-        } else {
-          dispatch({type: "REGISTRATION_FAILED", data: res.data});
-          throw res.data;
-        }
-      })
-  }
+      });
+  };
 };
 
 export const logout = () => {
   return (dispatch, getState) => {
-    let headers = {"Content-Type": "application/json"};
-    const token = getState().auth.token;
-    if (token) {
-      headers["Authorization"] = `Token ${token}`;
-    }
-
-    return fetch("/api/auth/logout/", {headers, body: "", method: "POST"})
-      .then(res => {
-        console.log(res);
-        if (res.status === 204) {
-          return {status: res.status, data: {}};
-        } else if (res.status < 500) {
-          return res.json().then(data => {
-            return {status: res.status, data};
-          })
-        } else {
-          console.log("Server Error!");
-          throw res;
-        }
-      })
-      .then(res => {
-        if (res.status === 204) {
+    API.post('/api/auth/logout/')
+      .then(({status, data}) => {
+        if (status === 204) {
           dispatch({type: 'LOGOUT_SUCCESSFUL'});
-          return res.data;
-        } else if (res.status === 403 || res.status === 401) {
-          dispatch({type: "AUTHENTICATION_ERROR", data: res.data});
-          throw res.data;
+        } else if (status === 403 || status === 401) {
+          dispatch({type: 'AUTHENTICATION_ERROR', data: data});
         }
-      })
-  }
+      });
+  };
 };

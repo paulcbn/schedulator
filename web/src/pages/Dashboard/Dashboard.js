@@ -12,7 +12,11 @@ const Dashboard = ({user, logout}) => {
           Main dashboard
         </Typography>
         <Typography variant={"h5"}>
-          {user.username}
+          {user.first_name}
+          <br/>
+          {user.last_name}
+          <br/>
+          {user.email}
         </Typography>
         <Button onClick={logout} color="secondary" variant="contained">Logout</Button>
       </Paper>
