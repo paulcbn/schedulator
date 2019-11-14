@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from crawler.models import Subject
+from crawler.models import Subject, Section
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -62,3 +62,11 @@ class LoginUserSerializer(serializers.Serializer):
         if user and user.is_active:
             return user
         raise serializers.ValidationError("Unable to log in with provided credentials.")
+
+
+class DefaultSubjectsSerializer(serializers.ModelSerializer):
+    default_subjects = SubjectSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Section
+        fields = ['default_subjects', ]

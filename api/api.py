@@ -1,13 +1,15 @@
+from django.shortcuts import get_object_or_404
 from knox.auth import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets, generics
-from rest_framework.response import Response
-
 from knox.models import AuthToken
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from crawler.models import Subject
-from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, SubjectSerializer
+from crawler.models import Subject, Section
+from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, SubjectSerializer, \
+    DefaultSubjectsSerializer
 
 
 class RegistrationAPI(generics.GenericAPIView):
@@ -47,7 +49,7 @@ class LoginAPI(generics.GenericAPIView):
 class UserAPI(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = UserSerializer
-    authentication_classes = [TokenAuthentication,]
+    authentication_classes = [TokenAuthentication, ]
 
     def get_object(self):
         return self.request.user
@@ -58,3 +60,11 @@ class SubjectAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = SubjectSerializer
     queryset = Subject.objects.all()
+
+
+class DefaultSubjectsAPI(APIView):
+    renderer_classes = [JSONRenderer]
+    def get(self, request, pk):
+        section = get_object_or_404(Section, pk=pk)
+        serializer = DefaultSubjectsSerializer(section)
+        return Response(serializer.data)
