@@ -64,6 +64,8 @@ class SubjectAPI(generics.ListAPIView):
 
 class DefaultSubjectsAPI(APIView):
     renderer_classes = [JSONRenderer]
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
     def get(self, request, pk):
         section = get_object_or_404(Section, pk=pk)
         serializer = DefaultSubjectsSerializer(section)
