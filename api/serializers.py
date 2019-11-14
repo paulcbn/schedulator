@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from crawler.models import Subject, Section
+from crawler.models import Subject, Section, Formation
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -70,3 +70,15 @@ class DefaultSubjectsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Section
         fields = ['default_subjects', ]
+
+
+class BasicSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Section
+        fields = ['id', 'name', 'year', 'type']
+
+
+class FormationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Formation
+        fields = ['name', 'section_id', 'formation_type']
