@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from api.api import RegistrationAPI, UserAPI, LoginAPI, SubjectAPI, DefaultSubjectsAPI
+from api.api import RegistrationAPI, UserAPI, LoginAPI, SubjectAPI, DefaultSubjectsAPI, SectionAPI, FormationAPI
 
 urlpatterns = [
     path("auth/register/", RegistrationAPI.as_view()),
@@ -10,4 +10,6 @@ urlpatterns = [
 
     path("subjects/", SubjectAPI.as_view()),
     path("section/<int:pk>/subjects/", DefaultSubjectsAPI.as_view()),
+    path("sections/", SectionAPI.as_view()),
+    path("formations/", FormationAPI.as_view()),
 ]

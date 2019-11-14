@@ -45,6 +45,20 @@ class Formation(models.Model):
     name = models.CharField(max_length=20, primary_key=True)
     section = models.ForeignKey(to=Section, on_delete=models.CASCADE)
 
+    GROUP = 'grup'
+    SEMIGROUP = 'semi'
+    SECTION = 'sect'
+    UNKNOWN = 'unkn'
+
+    FREQUENCY_TYPE = (
+        (GROUP, 'Grupa'),
+        (SEMIGROUP, 'Semigrupa'),
+        (SECTION, 'Sectie'),
+        (UNKNOWN, 'Fara categorie'),
+    )
+
+    formation_type = models.CharField(max_length=4, choices=FREQUENCY_TYPE, default=UNKNOWN)
+
     def __str__(self):
         return f'{self.name}'
 

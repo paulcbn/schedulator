@@ -1,4 +1,7 @@
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponseBadRequest
+from django.shortcuts import get_object_or_404, get_list_or_404
+from django.utils.datastructures import MultiValueDictKeyError
+from django.views import generic
 from knox.auth import TokenAuthentication
 from knox.models import AuthToken
 from rest_framework import generics
@@ -7,9 +10,9 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from crawler.models import Subject, Section
+from crawler.models import Subject, Section, Formation
 from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, SubjectSerializer, \
-    DefaultSubjectsSerializer
+    DefaultSubjectsSerializer, BasicSectionSerializer, FormationSerializer
 
 
 class RegistrationAPI(generics.GenericAPIView):
@@ -63,10 +66,36 @@ class SubjectAPI(generics.ListAPIView):
 
 
 class DefaultSubjectsAPI(APIView):
-    renderer_classes = [JSONRenderer]
+    renderer_classes = [JSONRenderer, ]
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
+
     def get(self, request, pk):
         section = get_object_or_404(Section, pk=pk)
         serializer = DefaultSubjectsSerializer(section)
         return Response(serializer.data)
+
+
+class SectionAPI(generics.ListAPIView):
+    renderer_classes = [JSONRenderer, ]
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = BasicSectionSerializer
+    queryset = Section.objects.all()
+
+
+class FormationAPI(APIView):
+    renderer_classes = [JSONRenderer, ]
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request):
+        try:
+            if "section_id" in request.GET:
+                formations = Formation.objects.filter(section_id=request.GET["section_id"])
+            else:
+                formations = Formation.objects.all()
+            serializer = FormationSerializer(formations, many=True)
+            return Response(serializer.data)
+        except (ValueError, OverflowError):
+            return HttpResponseBadRequest("Bad request")
