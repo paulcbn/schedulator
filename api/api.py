@@ -1,4 +1,4 @@
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.utils.datastructures import MultiValueDictKeyError
 from django.views import generic
@@ -10,9 +10,11 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from api.models import UserProfile
+from api.services.initial_setup_service import InitialSetupService
 from crawler.models import Subject, Section, Formation
 from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, SubjectSerializer, \
-    DefaultSubjectsSerializer, BasicSectionSerializer, FormationSerializer
+    DefaultSubjectsSerializer, BasicSectionSerializer, FormationSerializer, InitiateUserSerializer
 
 
 class RegistrationAPI(generics.GenericAPIView):
@@ -67,13 +69,14 @@ class SubjectAPI(generics.ListAPIView):
 
 class DefaultSubjectsAPI(APIView):
     renderer_classes = [JSONRenderer, ]
+
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
     def get(self, request, pk):
         section = get_object_or_404(Section, pk=pk)
         serializer = DefaultSubjectsSerializer(section)
-        return Response(serializer.data)
+        return Response(serializer.data['default_subjects'])
 
 
 class SectionAPI(generics.ListAPIView):
@@ -99,3 +102,18 @@ class FormationAPI(APIView):
             return Response(serializer.data)
         except (ValueError, OverflowError):
             return HttpResponseBadRequest("Bad request")
+
+
+class InitiateUserAPI(generics.GenericAPIView):
+    renderer_classes = [JSONRenderer, ]
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        serializer = InitiateUserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        subject_ids = serializer.validated_data['subject_ids']
+        formation_names = serializer.validated_data['formation_names']
+        user_initiate_service = InitialSetupService(request.user)
+        user_initiate_service.initiate(subject_ids, formation_names)
+        return HttpResponse(status=200)
