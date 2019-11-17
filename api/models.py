@@ -11,6 +11,9 @@ class UserProfile(models.Model):
     attendance_choices = models.ManyToManyField(to=TimetableEntry)
     enrolled_subjects = models.ManyToManyField(to=Subject)
 
+    def __str__(self):
+        return self.user.__str__()
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

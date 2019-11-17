@@ -76,6 +76,7 @@ class TimetableEntry(models.Model):
         unique_together = (
             ('formation', 'subject_component', 'room', 'start_time', 'end_time', 'frequency', 'week_day'),
         )
+        verbose_name_plural = 'Timetable entries'
 
     MONDAY = 'Mo'
     TUESDAY = 'Tu'
@@ -113,3 +114,6 @@ class TimetableEntry(models.Model):
     subject_component = models.ForeignKey(to=SubjectComponent, on_delete=models.CASCADE)
     formation = models.ForeignKey(to=Formation, on_delete=models.CASCADE)
     teacher = models.CharField(max_length=200)  # TODO this should be a model of its own in the future
+
+    def __str__(self):
+        return f"{self.subject_component} - {self.formation}"
