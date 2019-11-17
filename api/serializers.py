@@ -82,3 +82,14 @@ class FormationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Formation
         fields = ['name', 'section_id', 'formation_type']
+
+
+class InitiateUserSerializer(serializers.Serializer):
+    formation_names = serializers.ListField(child=serializers.CharField(max_length=20), allow_empty=True)
+    subject_ids = serializers.ListField(child=serializers.CharField(max_length=30), allow_empty=True)
+
+    def update(self, instance, validated_data):
+        return None
+
+    def create(self, validated_data):
+        pass
