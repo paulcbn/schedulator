@@ -1,4 +1,4 @@
-import { API } from '../index';
+import {API} from '../index';
 
 export const loadUser = () => {
   return (dispatch, getState) => {
@@ -54,3 +54,5 @@ export const logout = () => {
       });
   };
 };
+
+export const clearErrors = () => ({type: 'CLEAR_ERRORS'});

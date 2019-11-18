@@ -11,6 +11,9 @@ const initialState = {
 
 export default function auth(state = initialState, action) {
   switch (action.type) {
+    case 'CLEAR_ERRORS':
+      return {...state, errors: {}};
+
     case 'USER_LOADING':
       return {...state, isLoading: true};
 
