@@ -3,7 +3,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {auth} from '../../lib/actions'
 import {connect} from "react-redux";
 import PrivateRoute from "../PrivateRoute";
-import {Dashboard, Register, NotFound, Login} from "../../pages";
+import {Dashboard, Register, NotFound, Login, InitialSetup} from "../../pages";
 
 class RootContainerComponent extends Component {
 
@@ -16,6 +16,7 @@ class RootContainerComponent extends Component {
       <BrowserRouter>
         <Switch>
           <PrivateRoute exact path="/" component={Dashboard} authState={this.props.auth}/>
+          <PrivateRoute exact path="/initial-setup" component={InitialSetup} authState={this.props.auth}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Register}/>
           <Route component={NotFound}/>

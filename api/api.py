@@ -94,10 +94,11 @@ class FormationAPI(APIView):
 
     def get(self, request):
         try:
+            filters = {}
             if "section_id" in request.GET:
-                formations = Formation.objects.filter(section_id=request.GET["section_id"])
-            else:
-                formations = Formation.objects.all()
+                filters["section_id"] = request.GET["section_id"]
+
+            formations = Formation.objects.filter(**filters)
             serializer = FormationSerializer(formations, many=True)
             return Response(serializer.data)
         except (ValueError, OverflowError):
