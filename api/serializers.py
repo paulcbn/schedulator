@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from crawler.models import Subject, Section, Formation
+from crawler.models import Subject, Section, Formation, TimetableEntry, Room, SubjectComponent
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -50,7 +50,7 @@ class CreateUserSerializer(serializers.Serializer):
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
-        fields = ('sid', 'name')
+        fields = ('sid', 'name', 'alias')
 
 
 class LoginUserSerializer(serializers.Serializer):
@@ -93,3 +93,47 @@ class InitiateUserSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         pass
+
+
+class SubjectComponentSerializer(serializers.ModelSerializer):
+    subject = SubjectSerializer()
+
+    class Meta:
+        model = SubjectComponent
+        fields = ['subject', 'name', 'id']
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ['name', 'description']
+
+
+class TimetableEntrySerializer(serializers.ModelSerializer):
+    subject_component = SubjectComponentSerializer()
+    room = RoomSerializer()
+    formation = FormationSerializer()
+    start_time = serializers.SerializerMethodField()
+    end_time = serializers.SerializerMethodField()
+
+    class Meta:
+        model = TimetableEntry
+        fields = [
+            'start_time',
+            'end_time',
+            'week_day',
+            'frequency',
+            'subject_component',
+            'room',
+            'formation',
+            'teacher',
+        ]
+
+    def get_start_time(self, obj):
+        return self.get_time(obj.start_time)
+
+    def get_end_time(self, obj):
+        return self.get_time(obj.end_time)
+
+    def get_time(self, time):
+        return time.hour * 3600 + time.minute * 60 + time.second

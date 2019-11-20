@@ -5,6 +5,7 @@ class Subject(models.Model):
     sid = models.CharField(max_length=30, primary_key=True)
     name = models.CharField(max_length=200)
     url = models.CharField(max_length=100, default='')
+    alias = models.CharField(max_length=10, default='')
 
     def __str__(self):
         return f'{self.name}'
@@ -116,4 +117,4 @@ class TimetableEntry(models.Model):
     teacher = models.CharField(max_length=200)  # TODO this should be a model of its own in the future
 
     def __str__(self):
-        return f"{self.subject_component} - {self.formation}"
+        return f"{self.subject_component} - {self.formation} - {self.start_time} - {self.week_day} - {self.room}"
