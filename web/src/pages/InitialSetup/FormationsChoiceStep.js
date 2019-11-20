@@ -17,13 +17,13 @@ const FormationsChoiceStep = ({ state: { formations, formationsErrors, formation
     [ selectedSection, selectedGroup, selectedSemigroup ]);
   const [ sectionChoices, groupChoices ] = useMemo(() =>
       [
-        formations.filter(f => f.formation_type === 'sect').sort((a, b) => a.name.localeCompare(b.name)),
-        formations.filter(f => f.formation_type === 'grup').sort((a, b) => a.name.localeCompare(b.name)) ]
+        formations.filter(f => f.formationType === 'sect').sort((a, b) => a.name.localeCompare(b.name)),
+        formations.filter(f => f.formationType === 'grup').sort((a, b) => a.name.localeCompare(b.name)) ]
     , [ formations ]);
   const semigroupChoices = useMemo(() => {
     setSelectedSemigroup('');
     return formations
-      .filter(f => f.formation_type === 'semi' && (selectedGroup === '' || f.name.includes(selectedGroup.name)))
+      .filter(f => f.formationType === 'semi' && (selectedGroup === '' || f.name.includes(selectedGroup.name)))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [ formations, selectedGroup ]);
 

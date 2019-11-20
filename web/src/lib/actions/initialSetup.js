@@ -1,4 +1,6 @@
+import { keysToCamel, keysToUnderscore } from '../api';
 import { API } from '../index';
+import { loadOwnTimetable } from './currentStatus';
 
 export const loadSections = () => {
   return (dispatch, getState) => {
@@ -6,9 +8,9 @@ export const loadSections = () => {
     API.get('/api/sections/')
       .then(({ status, data }) => {
         if (status === 200)
-          dispatch({ type: 'SECTIONS_LOADED', data });
+          dispatch({ type: 'SECTIONS_LOADED', data: keysToCamel(data) });
         else {
-          dispatch({ type: 'SECTIONS_ERROR', data });
+          dispatch({ type: 'SECTIONS_ERROR', data: keysToCamel(data) });
         }
       });
   };
@@ -20,9 +22,9 @@ export const loadSubjects = (sectionId) => {
     API.get(`/api/sections/${ sectionId }/default-subjects/`)
       .then(({ data, status }) => {
         if (status === 200) {
-          dispatch({ type: 'SUBJECTS_LOADED', data });
+          dispatch({ type: 'SUBJECTS_LOADED', data: keysToCamel(data) });
         } else {
-          dispatch({ type: 'SUBJECTS_ERROR', data });
+          dispatch({ type: 'SUBJECTS_ERROR', data: keysToCamel(data) });
         }
       });
   };
@@ -31,12 +33,12 @@ export const loadSubjects = (sectionId) => {
 export const loadFormations = (sectionId) => {
   return (dispatch, getState) => {
     dispatch({ type: 'FORMATIONS_LOADING' });
-    API.get(`/api/formations/`, { params: { 'section_id': sectionId } })
+    API.get(`/api/formations/`, { params: keysToUnderscore({ sectionId }) })
       .then(({ data, status }) => {
         if (status === 200) {
-          dispatch({ type: 'FORMATIONS_LOADED', data });
+          dispatch({ type: 'FORMATIONS_LOADED', data: keysToCamel(data) });
         } else {
-          dispatch({ type: 'FORMATIONS_ERROR', data });
+          dispatch({ type: 'FORMATIONS_ERROR', data: keysToCamel(data) });
         }
       });
   };
@@ -64,11 +66,11 @@ export const confirmSelection = () => {
   return (dispatch, getState) => {
     const { initialSetup: { selectedFormations, selectedSubjects } } = getState();
 
-    const subject_ids = selectedSubjects.map(s => s.sid);
-    const formation_names = selectedFormations.map(f => f.name);
+    const subjectIds = selectedSubjects.map(s => s.sid);
+    const formationNames = selectedFormations.map(f => f.name);
 
-    API.post('/api/initiate-user/', { subject_ids, formation_names }).then(({ data, status }) => {
-      console.log('TODO: REFETCH TIMETABLE');
+    API.post('/api/initiate-user/', keysToUnderscore({ subjectIds, formationNames })).then(({ data, status }) => {
+      dispatch(loadOwnTimetable());
       console.log({ data, status });
     });
   };
