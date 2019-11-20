@@ -12,9 +12,10 @@ from rest_framework.views import APIView
 
 from api.models import UserProfile
 from api.services.initial_setup_service import InitialSetupService
-from crawler.models import Subject, Section, Formation
+from crawler.models import Subject, Section, Formation, TimetableEntry
 from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, SubjectSerializer, \
-    DefaultSubjectsSerializer, BasicSectionSerializer, FormationSerializer, InitiateUserSerializer
+    DefaultSubjectsSerializer, BasicSectionSerializer, FormationSerializer, InitiateUserSerializer, \
+    TimetableEntrySerializer
 
 
 class RegistrationAPI(generics.GenericAPIView):
@@ -118,3 +119,15 @@ class InitiateUserAPI(generics.GenericAPIView):
         user_initiate_service = InitialSetupService(request.user)
         user_initiate_service.initiate(subject_ids, formation_names)
         return HttpResponse(status=200)
+
+
+class OwnAttendanceAPI(generics.RetrieveAPIView):
+    renderer_classes = [JSONRenderer, ]
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        result = TimetableEntry.objects.filter(userprofile__user=user)
+        serializer = TimetableEntrySerializer(result, many=True, read_only=True)
+        return Response(serializer.data)
