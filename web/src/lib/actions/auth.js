@@ -13,7 +13,7 @@ export const loadUser = () => {
         } else if (status >= 400) {
           dispatch({ type: 'LOAD_ERROR', data: keysToCamel(data) });
         }
-      });
+      }).catch(reason => dispatch({ type: 'LOAD_ERROR', data: { exception: reason } }));
   };
 };
 
@@ -26,7 +26,7 @@ export const login = (email, password) => {
         } else {
           dispatch({ type: 'LOGIN_FAILED', data: keysToCamel(data) });
         }
-      });
+      }).catch(reason => dispatch({ type: 'LOGIN_FAILED', data: { exception: reason } }));
   };
 };
 
@@ -41,7 +41,7 @@ export const register = (email, password, confirmPassword, firstName, lastName) 
         } else {
           dispatch({ type: 'REGISTRATION_FAILED', data: keysToCamel(data) });
         }
-      });
+      }).catch(reason => dispatch({ type: 'REGISTRATION_FAILED', data: { exception: reason } }));
   };
 };
 
@@ -54,7 +54,7 @@ export const logout = () => {
         } else if (status === 403 || status === 401) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: keysToCamel(data) });
         }
-      });
+      }).catch(reason => dispatch({ type: 'AUTHENTICATION_ERROR', data: { exception: reason } }));
   };
 };
 
