@@ -38,15 +38,15 @@ const Login = ({errors, isAuthenticated, login, clearErrors}) => {
             Schedulator
           </Typography>
           <TextField variant="outlined" label="Email"
-                     error={!!errors['email']}
-                     helperText={errors['email']}
+                     error={!!errors.email}
+                     helperText={errors.email}
                      onChange={event => setEmail(event.target.value)}
                      value={email}
                      className={classes.loginInput}
           />
           <TextField variant="outlined" label="Password"
-                     error={!!errors['password']}
-                     helperText={errors['password']}
+                     error={!!errors.password}
+                     helperText={errors.password}
                      type="password"
                      onChange={event => setPassword(event.target.value)}
                      value={password}
@@ -70,9 +70,8 @@ const Login = ({errors, isAuthenticated, login, clearErrors}) => {
 
 const mapStateToProps = state => {
   let errors = {...state.auth.errors};
-  if (errors['non_field_errors']) {
-    errors['password'] = errors['non_field_errors'];
-  }
+  if (errors.nonFieldErrors)
+    errors.password = errors.nonFieldErrors;
   return {
     errors,
     isAuthenticated: state.auth.isAuthenticated,

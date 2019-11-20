@@ -119,6 +119,7 @@ class TimetableEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = TimetableEntry
         fields = [
+            'id',
             'start_time',
             'end_time',
             'week_day',
