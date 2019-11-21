@@ -39,6 +39,9 @@ export const useTimetableStyle = makeStyles(theme => ({
     flexDirection: 'column',
     borderLeft: '1px solid #cccccc',
   },
+  weekDay: {
+    fontFamily: 'Montserrat',
+  },
 }));
 
 export const useTimetableColumnStyles = makeStyles(theme => ({
@@ -65,12 +68,65 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
   },
   entryPaper: {
     flexGrow: 1,
-    background: '#ffad55CC',
+    background: 'rgba(180,236,127,0.65)',
     overflow: 'hidden',
   },
   buttonBase: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     width: '100%',
     height: '100%',
+  },
+  subject: {
+    width: '100%',
+    background: 'rgba(139,195,74,0.77)',
+    color: '#4b4b4b',
+    overflow: 'hidden',
+    padding: theme.spacing(0.2, 0.4),
+    fontSize: ({ overlapSize }) => {
+      if (overlapSize < 1) overlapSize = 1;
+      if (overlapSize > 4) overlapSize = 4;
+      return `${ 1 - overlapSize * 0.1 }rem`;
+    },
+    fontFamily: 'Montserrat',
+    borderBottom: '1px solid',
+    borderBottomColor: '#4b4b4b',
+    height: '3.3rem',
+  },
+  subjectComponent: {
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: theme.spacing(0, 0.3),
+    color: '#4b4b4b',
+    overflow: 'hidden',
+    fontSize: '0.8rem',
+    fontFamily: 'Nunito',
+    fontWeight: 'bold',
+    borderImage: 'linear-gradient(to bottom, red, rgba(0, 0, 0, 0)) 1 100%',
+    flexShrink: 0,
+  },
+  formation: {
+    width: '100%',
+    // background: 'rgba(139,195,74,0.77)',
+    color: '#4b4b4b',
+    overflow: 'hidden',
+    fontSize: '0.8rem',
+    fontFamily: 'Montserrat',
+  },
+  subjectComponentColor: {
+    color: ({ color }) => {
+      switch (color) {
+        case 'Curs':
+          return '#00400b';
+        case 'Seminar':
+          return '#cd7200';
+        default:
+          return 'rgba(255,5,0,0.8)';
+      }
+    },
   },
 }));
 
@@ -89,5 +145,6 @@ export const useReferenceEntryStyle = makeStyles(theme => ({
     color: theme.palette.primary.dark,
     fontWeight: 'bold',
     letterSpacing: '0.1rem',
+    fontFamily: 'Nunito',
   },
 }));
