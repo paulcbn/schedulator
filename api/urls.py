@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from api.api import RegistrationAPI, UserAPI, LoginAPI, SubjectAPI, DefaultSubjectsAPI, SectionAPI, FormationAPI, \
-    InitiateUserAPI, OwnAttendanceAPI
+    InitiateUserAPI, OwnAttendanceAPI, CurrentWeekAPI
 
 urlpatterns = [
     path("auth/register/", RegistrationAPI.as_view()),
@@ -15,4 +15,5 @@ urlpatterns = [
     path("formations/", FormationAPI.as_view()),
     path("initiate-user/", InitiateUserAPI.as_view()),
     path("attendances/", OwnAttendanceAPI.as_view()),
+    path("current-week/", CurrentWeekAPI.as_view()),
 ]

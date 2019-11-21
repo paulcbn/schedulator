@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import UserProfile
+from api.models import UserProfile, Semester
 from crawler.admin import AttendanceChoiceInline, EnrolledSubjectInline
 
 
@@ -9,3 +9,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     exclude = ('enrolled_subjects', 'attendance_choices')
     list_select_related = ('user', 'user')
 
+
+@admin.register(Semester)
+class SemesterAdmin(admin.ModelAdmin):
+    pass
