@@ -1,7 +1,6 @@
 from django.http import HttpResponseBadRequest, HttpResponse
-from django.shortcuts import get_object_or_404, get_list_or_404
-from django.utils.datastructures import MultiValueDictKeyError
-from django.views import generic
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from knox.auth import TokenAuthentication
 from knox.models import AuthToken
 from rest_framework import generics
@@ -10,7 +9,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.models import UserProfile
+from api.models import Semester
 from api.services.initial_setup_service import InitialSetupService
 from crawler.models import Subject, Section, Formation, TimetableEntry
 from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, SubjectSerializer, \
@@ -131,3 +130,17 @@ class OwnAttendanceAPI(generics.RetrieveAPIView):
         result = TimetableEntry.objects.filter(userprofile__user=user)
         serializer = TimetableEntrySerializer(result, many=True, read_only=True)
         return Response(serializer.data)
+
+
+class CurrentWeekAPI(generics.RetrieveAPIView):
+    renderer_classes = [JSONRenderer, ]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            last_semester = Semester.objects.order_by('-start_date').first()
+            week = last_semester.weeks_past(timezone.now())
+            if week < 0:
+                raise ValueError("You want to get a past date.")
+            return Response(week)
+        except (ValueError, AttributeError):
+            return Response(status=400)
