@@ -9,7 +9,7 @@ export const loadUser = () => {
       .then(({ status, data }) => {
         if (status === 200) {
           dispatch({ type: 'USER_LOADED', data: keysToCamel(data) });
-          dispatch(`loadOwnTimetable()`);
+          dispatch(loadOwnTimetable());
         } else if (status >= 400) {
           dispatch({ type: 'LOAD_ERROR', data: keysToCamel(data) });
         }
@@ -23,6 +23,7 @@ export const login = (email, password) => {
       .then(({ data, status }) => {
         if (status === 200) {
           dispatch({ type: 'LOGIN_SUCCESSFUL', data: keysToCamel(data) });
+          dispatch(loadOwnTimetable());
         } else {
           dispatch({ type: 'LOGIN_FAILED', data: keysToCamel(data) });
         }
