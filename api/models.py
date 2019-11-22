@@ -34,6 +34,7 @@ def save_user_profile(sender, instance, **kwargs):
 class Semester(models.Model):
     start_date = models.DateTimeField(null=False)
     name = models.CharField(max_length=100, null=False)
+    weeks = models.SmallIntegerField(default=14)
 
     def __str__(self):
         return f"Semester {self.name}"
@@ -42,3 +43,13 @@ class Semester(models.Model):
         calculated_start_date = self.start_date - datetime.timedelta(self.start_date.weekday())
         delta = date - calculated_start_date
         return delta.days // 7 + 1
+
+
+class Vacation(models.Model):
+    start_week = models.SmallIntegerField()
+    end_week = models.SmallIntegerField()
+    name = models.CharField(max_length=100, null=True)
+    semester = models.ForeignKey(to=Semester, on_delete=models.CASCADE)
+
+    def __len__(self):
+        return self.end_week - self.start_week

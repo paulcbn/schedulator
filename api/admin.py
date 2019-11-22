@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import UserProfile, Semester
+from api.models import UserProfile, Semester, Vacation
 from crawler.admin import AttendanceChoiceInline, EnrolledSubjectInline
 
 
@@ -13,3 +13,8 @@ class UserProfileAdmin(admin.ModelAdmin):
 @admin.register(Semester)
 class SemesterAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Vacation)
+class VacationAdmin(admin.ModelAdmin):
+    list_display = ['start_week', 'end_week', 'name', 'semester']

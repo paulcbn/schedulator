@@ -9,8 +9,10 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from api.exceptions import NoSemester
 from api.models import Semester
 from api.services.initial_setup_service import InitialSetupService
+from api.utils import get_school_week
 from crawler.models import Subject, Section, Formation, TimetableEntry
 from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, SubjectSerializer, \
     DefaultSubjectsSerializer, BasicSectionSerializer, FormationSerializer, InitiateUserSerializer, \
@@ -139,8 +141,7 @@ class CurrentWeekAPI(generics.RetrieveAPIView):
         try:
             last_semester = Semester.objects.order_by('-start_date').first()
             week = last_semester.weeks_past(timezone.now())
-            if week < 0:
-                raise ValueError("You want to get a past date.")
+            week = get_school_week(week)
             return Response(week)
-        except (ValueError, AttributeError):
+        except (ValueError, AttributeError, NoSemester):
             return Response(status=400)
