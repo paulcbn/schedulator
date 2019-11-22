@@ -1,9 +1,11 @@
 import datetime
 
+import pytz
 from django.test import TestCase
 
 # Create your tests here.
-from api.models import Semester
+from api.models import Semester, Vacation
+from api.utils import is_vacation_week, get_school_week
 
 
 class SemesterDateTests(TestCase):
@@ -42,3 +44,47 @@ class SemesterDateTests(TestCase):
         self.assertEqual(semester.weeks_past(datetime.datetime(year=2019, month=11, day=2)), 4)
         self.assertEqual(semester.weeks_past(datetime.datetime(year=2019, month=11, day=11)), 6)
         self.assertEqual(semester.weeks_past(datetime.datetime(year=2019, month=11, day=17)), 6)
+
+
+class VacationTests(TestCase):
+    def setUp(self) -> None:
+        Vacation.objects.create(start_week=4, end_week=7)
+        Vacation.objects.create(start_week=12, end_week=13)
+        Vacation.objects.create(start_week=15, end_week=16)
+        Semester.objects.create(start_date=datetime.datetime(year=2019, month=10, day=2, tzinfo=pytz.UTC), weeks=14)
+
+    def test_valid_vacation_weeks(self):
+        self.assertTrue(is_vacation_week(4))
+        self.assertTrue(is_vacation_week(5))
+        self.assertTrue(is_vacation_week(6))
+        self.assertTrue(is_vacation_week(12))
+
+    def test_invalid_vacation_weeks(self):
+        self.assertFalse(is_vacation_week(-15))
+        self.assertFalse(is_vacation_week(2))
+        self.assertFalse(is_vacation_week(3))
+        self.assertFalse(is_vacation_week(7))
+        self.assertFalse(is_vacation_week(15))
+        self.assertFalse(is_vacation_week(16))
+        self.assertFalse(is_vacation_week(13))
+
+    def test_get_school_week_in_school_period(self):
+        self.assertEqual(get_school_week(1), 1)
+        self.assertEqual(get_school_week(2), 2)
+        self.assertEqual(get_school_week(3), 3)
+        self.assertEqual(get_school_week(7), 4)
+        self.assertEqual(get_school_week(8), 5)
+        self.assertEqual(get_school_week(13), 9)
+        self.assertEqual(get_school_week(14), 10)
+
+    def test_get_school_week_in_vacation_period(self):
+        self.assertEqual(get_school_week(4), 3)
+        self.assertEqual(get_school_week(5), 3)
+        self.assertEqual(get_school_week(12), 8)
+        self.assertEqual(get_school_week(6), 3)
+
+    def test_get_school_week_out_of_bounds(self):
+        self.assertEqual(get_school_week(-2), 1)
+        self.assertEqual(get_school_week(14), 10)
+        self.assertEqual(get_school_week(15), 10)
+
