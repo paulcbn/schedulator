@@ -7,37 +7,63 @@ import { groupBy } from '../../lib/time';
 import { useReferenceEntryStyle, useTimetableStyle } from './styles';
 import TimetableColumn from './TimetableColumn';
 
+const isOutOfBounds = (entry, start, end) => {
+  if (entry === undefined || entry.startTime === undefined || entry.endTime === undefined)
+    return false;
 
-const days = [
-  {
-    code: 'Mo',
-    name: 'Luni',
-  },
-  {
-    code: 'Tu',
-    name: 'Marti',
-  },
-  {
-    code: 'We',
-    name: 'Miercuri',
-  },
-  {
-    code: 'Th',
-    name: 'Joi',
-  },
-  {
-    code: 'Fr',
-    name: 'Vineri',
-  },
-];
-const referenceTimes = [ '08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00',
-  '17:00:00', '18:00:00', '19:00:00', '20:00:00' ].map(moment.duration);
+  const startTime = moment.duration(entry.startTime);
+  const endTime = moment.duration(entry.endTime);
 
-const Timetable = ({ referenceStart, referenceEnd, rawEntries, currentWeekdayIndex, currentParity, mondayDate, daysCount }) => {
+  return startTime.asSeconds() > end.asSeconds() || endTime.asSeconds() < start.asSeconds();
+};
+
+const truncateEntry = (entry, start, end) => {
+  const startTime = moment.duration(entry.startTime, 'seconds');
+  const endTime = moment.duration(entry.endTime, 'seconds');
+
+  const startSeconds = Math.max(startTime.asSeconds(), start.asSeconds());
+  const endSeconds = Math.min(endTime.asSeconds(), end.asSeconds());
+
+  return {
+    ...entry,
+    startTime: moment.duration(startSeconds, 'seconds'),
+    endTime: moment.duration(endSeconds, 'seconds'),
+  };
+};
+
+const Timetable = (
+  {
+    referenceStart,
+    referenceEnd,
+    rawEntries,
+    currentWeekdayIndex,
+    currentParity,
+    mondayDate,
+    daysCount,
+    referenceColumnStart,
+    referenceColumnInterval,
+  }) => {
   const classes = useTimetableStyle();
 
-  const groupedEntries = useMemo(() => groupBy(rawEntries, entry => entry.weekDay),
-    [ rawEntries ]);
+  const truncatedEntries = useMemo(() => rawEntries
+      .filter(entry => isOutOfBounds(entry, referenceStart, referenceEnd))
+      .map(entry => truncateEntry(entry, referenceStart, referenceEnd)),
+    [ rawEntries, referenceStart, referenceEnd ]);
+
+  const groupedEntries = useMemo(() => groupBy(truncatedEntries, entry => entry.weekDay), [ truncatedEntries ]);
+
+  const referenceTimes = useMemo(() => {
+    let result = [];
+    const startTime = referenceColumnStart.asSeconds() >= referenceStart.asSeconds() ? referenceColumnStart : referenceStart;
+    let currentGeneratedTime = moment.duration(startTime);
+    while (currentGeneratedTime.asSeconds() < referenceEnd.asSeconds()) {
+      result.push(moment.duration(currentGeneratedTime));
+      currentGeneratedTime.add(referenceColumnInterval);
+    }
+
+    return result;
+  }, [ referenceColumnStart, referenceColumnInterval, referenceStart, referenceEnd ]);
+
 
   const renderReferenceTimes = () => referenceTimes.map(entry =>
     <TimeReferenceEntry
@@ -49,7 +75,7 @@ const Timetable = ({ referenceStart, referenceEnd, rawEntries, currentWeekdayInd
 
   const renderGrid = () => days.map(({ code }, index) => {
       if (index >= daysCount)
-        return <></>;
+        return null;
       return <Hidden key={ code } smDown={ code !== days[currentWeekdayIndex].code }>
         <TimetableColumn
           referenceStart={ referenceStart }
@@ -61,7 +87,7 @@ const Timetable = ({ referenceStart, referenceEnd, rawEntries, currentWeekdayInd
   );
   const renderHeader = () => days.map(({ code, name }, index) => {
       if (index >= daysCount)
-        return <></>;
+        return null;
       return <Hidden smDown={ code !== days[currentWeekdayIndex].code } key={ code }>
         <Box className={ classes.header }>
           <Typography variant='h5' className={ classes.weekDay }>
@@ -115,3 +141,35 @@ const TimeReferenceEntry = ({ referenceStart, referenceEnd, currentTime }) => {
 };
 
 export default Timetable;
+
+
+const days = [
+  {
+    code: 'Mo',
+    name: 'Luni',
+  },
+  {
+    code: 'Tu',
+    name: 'Marti',
+  },
+  {
+    code: 'We',
+    name: 'Miercuri',
+  },
+  {
+    code: 'Th',
+    name: 'Joi',
+  },
+  {
+    code: 'Fr',
+    name: 'Vineri',
+  },
+  {
+    code: 'Sa',
+    name: 'Sambata',
+  },
+  {
+    code: 'Su',
+    name: 'Duminica',
+  },
+];

@@ -1,6 +1,5 @@
 import { Button, Container, Paper, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import moment from 'moment';
 import React, { useMemo, useState } from 'react';
@@ -20,8 +19,6 @@ const Dashboard = ({ user, logout, entries }) => {
   const semesterStart = useMemo(() => moment('2019-09-30'), []);
   const currentWeek = useMemo(() => displayDate.startOf('isoWeek').diff(semesterStart.startOf('isoWeek'), 'week') + 1, [ semesterStart, displayDate ]);
   const currentParity = useMemo(() => +currentWeek % 2 === 0 ? 'evn' : 'odd', [ currentWeek ]);
-
-
 
   return <>
     <Container>
@@ -47,13 +44,15 @@ const Dashboard = ({ user, logout, entries }) => {
           </Typography>
         </Box>
         <Timetable
-          referenceStart={ moment.duration('7:30:00') }
-          referenceEnd={ moment.duration('20:30:00') }
-          rawEntries={ entries }
-          currentWeekdayIndex={ 3 }
+          referenceStart={ moment.duration('7:45:00') }
+          referenceEnd={ moment.duration('20:15:00') }
+          rawEntries={ entries.map(e => ({ ...e })) }
+          currentWeekdayIndex={ 0 }
           daysCount={ 5 }
           currentParity={ currentParity }
           mondayDate={ displayDate.startOf('isoWeek') }
+          referenceColumnStart={ moment.duration('8:00:00') }
+          referenceColumnInterval={ moment.duration(120, 'minute') }
         />
 
         <Button onClick={ logout } color="secondary" variant="contained">Logout</Button>
