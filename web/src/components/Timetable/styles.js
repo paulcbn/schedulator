@@ -110,7 +110,6 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
   },
   formation: {
     width: '100%',
-    // background: 'rgba(139,195,74,0.77)',
     color: '#4b4b4b',
     overflow: 'hidden',
     fontSize: '0.8rem',
@@ -138,13 +137,17 @@ export const useReferenceEntryStyle = makeStyles(theme => ({
     right: 0,
     bottom: ({ bottom }) => bottom,
     borderBottom: '1px solid #dddddd',
+    marginLeft: 45,
   },
   time: {
+    position: 'absolute',
     fontSize: '0.7rem',
     paddingLeft: theme.spacing(1),
     color: theme.palette.primary.dark,
     fontWeight: 'bold',
     letterSpacing: '0.1rem',
     fontFamily: 'Nunito',
+    left: -47,
+    bottom: -9,
   },
 }));
