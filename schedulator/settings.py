@@ -27,7 +27,7 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
 
-ALLOWED_HOSTS = ['schedulator.xyz', 'www.schedulator.xyz']
+ALLOWED_HOSTS = ['localhost','schedulator.xyz', 'www.schedulator.xyz']
 
 logging.basicConfig(format='[%(asctime)s %(name)-12s %(levelname)-8s]:\n%(message)s\n', datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.INFO)

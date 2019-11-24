@@ -10,7 +10,7 @@ from crawler.models import Subject, Section, Formation, TimetableEntry, Room, Su
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name',)
+        fields = ('id', 'email', 'first_name', 'last_name', 'password')
         write_only_fields = ('username',)
 
     def validate(self, data):
@@ -19,6 +19,12 @@ class UserSerializer(serializers.ModelSerializer):
             data['username'] = email
 
         return data
+
+    def create(self, validated_data):
+        user = super(UserSerializer, self).create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class CreateUserSerializer(serializers.Serializer):
