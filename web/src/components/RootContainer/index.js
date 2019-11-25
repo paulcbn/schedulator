@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {auth} from '../../lib/actions'
-import {connect} from "react-redux";
-import PrivateRoute from "../PrivateRoute";
-import {Dashboard, Register, NotFound, Login, InitialSetup} from "../../pages";
+import React, { Component } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { auth } from '../../lib/actions';
+import { connect } from 'react-redux';
+import PrivateRoute from '../PrivateRoute';
+import { Dashboard, Register, NotFound, Login, InitialSetup, Preferences, StaticTables } from '../../pages';
 
 class RootContainerComponent extends Component {
 
@@ -15,11 +15,13 @@ class RootContainerComponent extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <PrivateRoute exact path="/" component={Dashboard} authState={this.props.auth}/>
-          <PrivateRoute exact path="/initial-setup" component={InitialSetup} authState={this.props.auth}/>
-          <Route exact path="/login" component={Login}/>
-          <Route exact path="/register" component={Register}/>
-          <Route component={NotFound}/>
+          <PrivateRoute exact path="/" component={ Dashboard } authState={ this.props.auth }/>
+          <PrivateRoute exact path="/initial-setup" component={ InitialSetup } authState={ this.props.auth }/>
+          <PrivateRoute exact path="/preferences" component={ Preferences } authState={ this.props.auth }/>
+          <PrivateRoute exact path="/static-tables" component={ StaticTables } authState={ this.props.auth }/>
+          <Route exact path="/login" component={ Login }/>
+          <Route exact path="/register" component={ Register }/>
+          <Route component={ NotFound }/>
         </Switch>
       </BrowserRouter>
     );
@@ -29,15 +31,15 @@ class RootContainerComponent extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.auth,
-  }
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     loadUser: () => {
       return dispatch(auth.loadUser());
-    }
-  }
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RootContainerComponent);

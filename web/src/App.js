@@ -10,8 +10,7 @@ import thunk from 'redux-thunk';
 import { RootContainer } from './components';
 import rootReducer from './lib/reducers';
 import theme from './lib/theme';
-
-
+import './polyfills'
 moment.locale('ro');
 
 let store = createStore(rootReducer, applyMiddleware(thunk));

@@ -1,14 +1,8 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    minHeight: '100vh',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  mainPaper: {
-    minHeight: '80vh',
+  paper: {
+    flexGrow: 1,
   },
   stepBox: {
     margin: theme.spacing(3),

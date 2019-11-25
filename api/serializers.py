@@ -7,27 +7,42 @@ from rest_framework import serializers
 from crawler.models import Subject, Section, Formation, TimetableEntry, Room, SubjectComponent
 
 
-class UserSerializer(serializers.ModelSerializer):
+class CreateUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
         fields = ('id', 'email', 'first_name', 'last_name', 'password')
         write_only_fields = ('username',)
 
+    def validate_password(self, password):
+        if len(password) < 6:
+            raise serializers.ValidationError("Password must be at least 6 characters long.")
+        return password
+
     def validate(self, data):
         email = data.get('email', None)
         if email:
             data['username'] = email
+        else:
+            raise serializers.ValidationError("No email given.")
 
         return data
 
     def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
+        user = super(CreateUserSerializer, self).create(validated_data)
         user.set_password(validated_data['password'])
         user.save()
         return user
 
 
-class CreateUserSerializer(serializers.Serializer):
+class GetUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name', 'last_name',)
+
+
+class RegisterFormSerializer(serializers.Serializer):
     email = serializers.EmailField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()

@@ -14,27 +14,27 @@ from api.models import Semester
 from api.services.initial_setup_service import InitialSetupService
 from api.utils import get_school_week
 from crawler.models import Subject, Section, Formation, TimetableEntry
-from .serializers import CreateUserSerializer, UserSerializer, LoginUserSerializer, SubjectSerializer, \
+from .serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer, SubjectSerializer, \
     DefaultSubjectsSerializer, BasicSectionSerializer, FormationSerializer, InitiateUserSerializer, \
-    TimetableEntrySerializer
+    TimetableEntrySerializer, GetUserSerializer
 
 
 class RegistrationAPI(generics.GenericAPIView):
-    serializer_class = CreateUserSerializer
+    serializer_class = RegisterFormSerializer
 
     def post(self, request, *args, **kwargs):
         # Validating our serializer from the UserRegistrationSerializer
-        serializer = CreateUserSerializer(data=request.data)
+        serializer = RegisterFormSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         # Everything's valid, so send it to the UserSerializer
-        model_serializer = UserSerializer(data=serializer.data)
+        model_serializer = CreateUserSerializer(data=serializer.validated_data, write_only=True)
         model_serializer.is_valid(raise_exception=True)
         user = model_serializer.save()
 
         _, token = AuthToken.objects.create(user)
         return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "user": CreateUserSerializer(user, context=self.get_serializer_context()).data,
             "token": token
         })
 
@@ -48,14 +48,14 @@ class LoginAPI(generics.GenericAPIView):
         user = serializer.validated_data
         _, token = AuthToken.objects.create(user)
         return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "user": CreateUserSerializer(user, context=self.get_serializer_context()).data,
             "token": token
         })
 
 
 class UserAPI(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated, ]
-    serializer_class = UserSerializer
+    serializer_class = GetUserSerializer
     authentication_classes = [TokenAuthentication, ]
 
     def get_object(self):
