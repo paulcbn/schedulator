@@ -3,15 +3,29 @@ import { makeStyles } from '@material-ui/core';
 
 export const useTimetableStyle = makeStyles(theme => ({
   mainBox: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
     padding: theme.spacing(1),
+    height: 0,
+  },
+  gridScrollBox: {
+    height: 800,
+    width: '100%',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   gridBox: {
-    height: 800,
+    flex: '1 1 auto',
     background: '#f9f9f9',
     position: 'relative',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    overflowY: 'auto',
+    maxHeight: 800,
   },
   headerBox: {
     height: 60,
@@ -41,6 +55,19 @@ export const useTimetableStyle = makeStyles(theme => ({
   },
   weekDay: {
     fontFamily: 'Montserrat',
+  },
+  navigationBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    background: '#f9f9f9',
+    padding: theme.spacing(0.3),
+  },
+  navButton: {
+    flex: '2 1 0',
+  },
+  flexExpander: {
+    flexGrow: 1,
   },
 }));
 

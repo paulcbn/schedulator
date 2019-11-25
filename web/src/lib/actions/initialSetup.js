@@ -1,6 +1,6 @@
 import { keysToCamel, keysToUnderscore } from '../api';
 import { API } from '../index';
-import { loadOwnTimetable } from './currentStatus';
+import { loadOwnData } from './currentStatus';
 
 export const loadSections = () => {
   return (dispatch, getState) => {
@@ -70,7 +70,7 @@ export const confirmSelection = () => {
     const formationNames = selectedFormations.map(f => f.name);
 
     API.post('/api/initiate-user/', keysToUnderscore({ subjectIds, formationNames })).then(({ data, status }) => {
-      dispatch(loadOwnTimetable());
+      dispatch(loadOwnData());
       console.log({ data, status });
     });
   };

@@ -1,6 +1,6 @@
 import { keysToCamel, keysToUnderscore } from '../api';
 import { API } from '../index';
-import { loadOwnTimetable } from './currentStatus';
+import { loadOwnData } from './currentStatus';
 
 export const loadUser = () => {
   return (dispatch, getState) => {
@@ -9,7 +9,7 @@ export const loadUser = () => {
       .then(({ status, data }) => {
         if (status === 200) {
           dispatch({ type: 'USER_LOADED', data: keysToCamel(data) });
-          dispatch(loadOwnTimetable());
+          dispatch(loadOwnData());
         } else if (status >= 400) {
           dispatch({ type: 'LOAD_ERROR', data: keysToCamel(data) });
         }
@@ -23,7 +23,7 @@ export const login = (email, password) => {
       .then(({ data, status }) => {
         if (status === 200) {
           dispatch({ type: 'LOGIN_SUCCESSFUL', data: keysToCamel(data) });
-          dispatch(loadOwnTimetable());
+          dispatch(loadOwnData());
         } else {
           dispatch({ type: 'LOGIN_FAILED', data: keysToCamel(data) });
         }
@@ -37,6 +37,7 @@ export const register = (email, password, confirmPassword, firstName, lastName) 
       .then(({ status, data }) => {
         if (status === 200) {
           dispatch({ type: 'REGISTRATION_SUCCESSFUL', data: keysToCamel(data) });
+          dispatch(loadOwnData());
         } else if (status === 401 || status === 403) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: keysToCamel(data) });
         } else {
@@ -52,6 +53,7 @@ export const logout = () => {
       .then(({ status, data }) => {
         if (status === 204) {
           dispatch({ type: 'LOGOUT_SUCCESSFUL' });
+          dispatch({ type: 'CLEAR_CURRENT_STATUS' });
         } else if (status === 403 || status === 401) {
           dispatch({ type: 'AUTHENTICATION_ERROR', data: keysToCamel(data) });
         }

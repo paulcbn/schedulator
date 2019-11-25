@@ -1,12 +1,13 @@
-import { Container, Step, StepLabel, Stepper, Typography, Paper } from '@material-ui/core';
+import { Paper, Step, StepLabel, Stepper, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import Layout from '../../components/Layout/Layout';
 import { initialSetup } from '../../lib/actions';
 import ConfirmationStep from './ConfirmationStep';
 import FormationsChoiceStep from './FormationsChoiceStep';
 import SectionChoiceStep from './SectionChoiceStep';
-import { useHistory } from 'react-router-dom';
 import useStyles from './styles';
 import SubjectsChoiceStep from './SubjectsChoiceStep';
 
@@ -56,8 +57,8 @@ const InitialSetup = ({ selectSection, selectFormations, selectSubjects, confirm
     }
   }
 
-  return <Container className={ classes.container }>
-    <Paper className={ classes.mainPaper }>
+  return <Layout>
+    <Paper className={ classes.paper }>
       <Stepper activeStep={ activeStep }>
         { steps.map(label => {
           return (
@@ -71,7 +72,7 @@ const InitialSetup = ({ selectSection, selectFormations, selectSubjects, confirm
         { renderCurrentStepPage() }
       </Box>
     </Paper>
-  </Container>;
+  </Layout>;
 };
 
 const mapStateToProps = state => {
