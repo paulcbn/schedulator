@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import logging
 import os
+from datetime import timedelta
+
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,8 +28,12 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
+REST_KNOX = {
+    'TOKEN_TTL': timedelta(days=30),
+    'AUTO_REFRESH': True,
+}
 
-ALLOWED_HOSTS = ['localhost','schedulator.xyz', 'www.schedulator.xyz']
+ALLOWED_HOSTS = ['localhost', 'schedulator.xyz', 'www.schedulator.xyz']
 
 logging.basicConfig(format='[%(asctime)s %(name)-12s %(levelname)-8s]:\n%(message)s\n', datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.INFO)
@@ -127,5 +133,3 @@ USE_TZ = True
 
 STATIC_URL = '/static-admin/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static-admin/')
-
-
