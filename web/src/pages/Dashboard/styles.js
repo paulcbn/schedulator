@@ -4,6 +4,8 @@ const useStyles = makeStyles(theme => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
+
     flexGrow: 1,
   },
   topBox: {

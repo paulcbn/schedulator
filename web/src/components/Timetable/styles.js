@@ -6,11 +6,10 @@ export const useTimetableStyle = makeStyles(theme => ({
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing(1),
     height: 0,
   },
   gridScrollBox: {
-    height: 800,
+    minHeight: 700,
     width: '100%',
     position: 'relative',
     display: 'flex',
@@ -25,10 +24,11 @@ export const useTimetableStyle = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     overflowY: 'auto',
-    maxHeight: 800,
+
   },
   headerBox: {
     height: 60,
+    flexShrink: 0,
     position: 'relative',
     display: 'flex',
     flexDirection: 'row',
@@ -58,6 +58,7 @@ export const useTimetableStyle = makeStyles(theme => ({
   },
   navigationBox: {
     display: 'flex',
+    flexShrink: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
     background: '#f9f9f9',
@@ -74,7 +75,6 @@ export const useTimetableStyle = makeStyles(theme => ({
 export const useTimetableColumnStyles = makeStyles(theme => ({
   mainBox: {
     position: 'relative',
-    // background: '#a5a3ff55',
     flexGrow: 1,
     padding: theme.spacing(0, 0.3),
     borderLeft: '1px solid #cccccc',
