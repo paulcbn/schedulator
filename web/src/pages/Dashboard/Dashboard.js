@@ -16,8 +16,8 @@ const Dashboard = ({ entries, currentWeek }) => {
 
   const handleNextWeekChange = event => setNextWeek(!!event.target.checked);
 
-  const currentDate = useMemo(moment, []);
-  const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(1, 'week') : currentDate, [ currentDate, nextWeek ]);
+  const currentDate = useMemo(() => moment().startOf('day'), []);
+  const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(1, 'week') : moment(currentDate), [ currentDate, nextWeek ]);
   const currentParity = useMemo(() => (+currentWeek + (nextWeek ? 1 : 0)) % 2 === 0 ? 'evn' : 'odd', [ currentWeek, nextWeek ]);
 
 

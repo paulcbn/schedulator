@@ -36,7 +36,7 @@ const truncateEntry = (entry, start, end) => {
 };
 
 const getWeekdayIndex = (date, daysCount) => {
-  const dif = +moment.duration(date.diff(date.startOf('isoWeek'))).asDays();
+  const dif = Math.round(+moment.duration(date.diff(moment(date).startOf('isoWeek'))).asDays());
   if (dif < 0)
     return 0;
   if (dif >= daysCount)
@@ -56,10 +56,10 @@ const Timetable = (
     referenceColumnInterval,
   }) => {
   const classes = useTimetableStyle();
-  const mondayDate = useMemo(() => currentDate.startOf('isoWeek'), [ currentDate ]);
+  const mondayDate = useMemo(() => moment(currentDate).startOf('isoWeek'), [ currentDate ]);
   const currentWeekdayIndex = useMemo(() => getWeekdayIndex(currentDate, daysCount), [ currentDate, daysCount ]);
   const [ weekdayOffset, setWeekdayOffset ] = useState(0);
-
+  console.log({mondayDate, currentDate, currentWeekdayIndex})
   const truncatedEntries = useMemo(() => rawEntries
       .filter(entry => isOutOfBounds(entry, referenceStart, referenceEnd))
       .map(entry => truncateEntry(entry, referenceStart, referenceEnd)),
@@ -138,8 +138,8 @@ const Timetable = (
           variant="outlined"
           startIcon={ <PrevIcon/> }
           color="secondary"
-          onClick={ () => setWeekdayOffset(old => +old > 0 ? old - 1 : old) }
-          disabled={ +weekdayOffset === 0 }>
+          onClick={ () => setWeekdayOffset(old => currentWeekdayIndex + old > 0 ? old - 1 : old) }
+          disabled={ currentWeekdayIndex + weekdayOffset === 0 }>
           Ziua prec.
         </Button>
         <Box className={ classes.flexExpander }/>
@@ -148,8 +148,8 @@ const Timetable = (
           variant="outlined"
           startIcon={ <NextIcon/> }
           color="secondary"
-          onClick={ () => setWeekdayOffset(old => +old < daysCount - 1 ? old + 1 : old) }
-          disabled={ +weekdayOffset === daysCount - 1 }>
+          onClick={ () => setWeekdayOffset(old => currentWeekdayIndex + old < daysCount - 1 ? old + 1 : old) }
+          disabled={ currentWeekdayIndex + weekdayOffset === daysCount - 1 }>
           Ziua urm.
         </Button>
       </Box>
