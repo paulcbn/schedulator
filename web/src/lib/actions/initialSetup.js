@@ -71,7 +71,6 @@ export const confirmSelection = () => {
 
     API.post('/api/initiate-user/', keysToUnderscore({ subjectIds, formationNames })).then(({ data, status }) => {
       dispatch(loadOwnData());
-      console.log({ data, status });
     });
   };
 };

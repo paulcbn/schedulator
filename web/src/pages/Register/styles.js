@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   buttonBox: {
+    marginTop: theme.spacing(1),
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -32,6 +33,22 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  captchaAndLoadingBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: theme.spacing(13),
+    overflow: 'hidden',
+  },
+  captchaBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: theme.spacing(0.5),
+    border: ({ captchaError }) => captchaError ? '1px solid red' : '0px',
   },
 }));
 

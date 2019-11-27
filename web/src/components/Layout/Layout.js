@@ -80,7 +80,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user,
+    user: state.auth.currentUser,
   };
 };
 

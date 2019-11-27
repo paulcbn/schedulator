@@ -1,67 +1,86 @@
-import React, {useState} from 'react';
-import {connect} from 'react-redux';
-import {Redirect, useHistory} from 'react-router-dom';
-import {Container, Paper, Typography} from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { Container, Paper, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import TextField from '@material-ui/core/TextField';
+import React, { useEffect, useRef, useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { connect } from 'react-redux';
+import { Redirect, useHistory } from 'react-router-dom';
+import { auth } from '../../lib/actions';
 
 import useStyles from './styles';
-import {auth} from '../../lib/actions';
-import {clearErrors} from "../../lib/actions/auth";
 
-const Login = ({errors, isAuthenticated, login, clearErrors}) => {
+
+const Login = ({ errors, loading, isAuthenticated, login }) => {
   let history = useHistory();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ captcha, setCaptcha ] = useState('');
+  const classes = useStyles({ captchaError: errors.captcha });
+  const captchaRef = useRef();
+  useEffect(() => {
+    if (captchaRef.current !== null && captchaRef.current !== undefined)
+      captchaRef.current.reset();
+  }, [ captchaRef, errors ]);
 
-  const classes = useStyles();
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    login(email, password, captcha);
+  }
+
+  function navigateToRegister() {
+    history.push('/register');
+  }
 
   if (isAuthenticated)
     return <Redirect to="/"/>;
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    login(email, password);
-  }
-
-  function navigateToRegister() {
-    clearErrors(); //we do this so that when we change the page errors from redux don't affect that page also
-    history.push('/register');
-  }
-
   return <>
-    <Container maxWidth="sm" className={classes.loginContainer}>
-      <form onSubmit={handleSubmit}>
-        <Paper className={classes.loginPaper}>
+    <Container maxWidth="sm" className={ classes.loginContainer }>
+      <form onSubmit={ handleSubmit }>
+        <Paper className={ classes.loginPaper }>
           <Typography variant="h2">
             Schedulator
           </Typography>
           <TextField variant="outlined" label="Email"
-                     error={!!errors.email}
-                     helperText={errors.email}
-                     onChange={event => setEmail(event.target.value)}
-                     value={email}
-                     className={classes.loginInput}
+                     error={ !!errors.email }
+                     helperText={ errors.email }
+                     onChange={ event => setEmail(event.target.value) }
+                     value={ email }
+                     className={ classes.loginInput }
           />
           <TextField variant="outlined" label="Password"
-                     error={!!errors.password}
-                     helperText={errors.password}
+                     error={ !!errors.password }
+                     helperText={ errors.password }
                      type="password"
-                     onChange={event => setPassword(event.target.value)}
-                     value={password}
-                     className={classes.loginInput}
+                     onChange={ event => setPassword(event.target.value) }
+                     value={ password }
+                     className={ classes.loginInput }
 
           />
+          <Box className={ classes.captchaAndLoadingBox }>
+            { process.env.REACT_APP_RECAPTCHA_SITE_KEY &&
+            <Box className={ classes.captchaBox }>
+              <ReCAPTCHA
+                ref={ captchaRef }
+                size='normal'
+                style={ { display: 'inline-block' } }
+                sitekey={ process.env.REACT_APP_RECAPTCHA_SITE_KEY }
+                onChange={ setCaptcha }
+              />
+              { errors.captcha && <Typography color={ 'error' }>{ errors.captcha }</Typography> }
 
-          <Box className={classes.buttonBox}>
+            </Box> }
+            { loading && <CircularProgress style={ { justifySelf: 'space-between' } }/> }
+          </Box>
+          <Box className={ classes.buttonBox }>
             <Button variant="contained" size="large" color="primary" type="submit">Login</Button>
             <Button variant="contained" size="large" color="default" type="button"
-                    onClick={navigateToRegister}>Register</Button>
+                    onClick={ navigateToRegister }>Register</Button>
           </Box>
         </Paper>
-
-
       </form>
     </Container>
   </>;
@@ -69,23 +88,21 @@ const Login = ({errors, isAuthenticated, login, clearErrors}) => {
 };
 
 const mapStateToProps = state => {
-  let errors = {...state.auth.errors};
+  let errors = { ...state.auth.loginErrors };
   if (errors.nonFieldErrors)
     errors.password = errors.nonFieldErrors;
   return {
     errors,
     isAuthenticated: state.auth.isAuthenticated,
+    loading: state.auth.loginLoading,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: (email, password) => {
-      return dispatch(auth.login(email, password));
+    login: (email, password, captcha) => {
+      return dispatch(auth.login(email, password, captcha));
     },
-    clearErrors: () => {
-      return dispatch(clearErrors())
-    }
   };
 };
 

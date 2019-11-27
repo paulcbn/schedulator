@@ -59,7 +59,6 @@ const Timetable = (
   const mondayDate = useMemo(() => moment(currentDate).startOf('isoWeek'), [ currentDate ]);
   const currentWeekdayIndex = useMemo(() => getWeekdayIndex(currentDate, daysCount), [ currentDate, daysCount ]);
   const [ weekdayOffset, setWeekdayOffset ] = useState(0);
-  console.log({mondayDate, currentDate, currentWeekdayIndex})
   const truncatedEntries = useMemo(() => rawEntries
       .filter(entry => isOutOfBounds(entry, referenceStart, referenceEnd))
       .map(entry => truncateEntry(entry, referenceStart, referenceEnd)),
