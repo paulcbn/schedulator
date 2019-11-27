@@ -22,7 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 env = environ.Env(
-    DEBUG=(bool, False)
+    DEBUG=(bool, False),
+    GOOGLE_RECAPTCHA_SECRET_KEY=(str, '')
 )
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
@@ -32,6 +33,7 @@ REST_KNOX = {
     'TOKEN_TTL': timedelta(days=30),
     'AUTO_REFRESH': True,
 }
+GOOGLE_RECAPTCHA_SECRET_KEY = env('GOOGLE_RECAPTCHA_SECRET_KEY')
 
 ALLOWED_HOSTS = ['localhost', 'schedulator.xyz', 'www.schedulator.xyz']
 

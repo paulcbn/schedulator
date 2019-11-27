@@ -1,3 +1,4 @@
+import requests
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -8,10 +9,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.status import HTTP_400_BAD_REQUEST
 
 from api.exceptions import NoSemester
 from api.models import Semester
 from api.services.initial_setup_service import InitialSetupService
+from api.services.recaptcha_service import validate_recaptcha
 from api.utils import get_school_week
 from crawler.models import Subject, Section, Formation, TimetableEntry
 from .serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer, SubjectSerializer, \
@@ -23,6 +26,9 @@ class RegistrationAPI(generics.GenericAPIView):
     serializer_class = RegisterFormSerializer
 
     def post(self, request, *args, **kwargs):
+        if not validate_recaptcha(request.data.get('captcha', '')):
+            return Response(data={'captcha': 'Invalid captcha'}, status=HTTP_400_BAD_REQUEST)
+
         # Validating our serializer from the UserRegistrationSerializer
         serializer = RegisterFormSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -43,6 +49,9 @@ class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginUserSerializer
 
     def post(self, request, *args, **kwargs):
+        if not validate_recaptcha(request.data.get('captcha', '')):
+            return Response(data={'captcha': 'Invalid captcha'}, status=HTTP_400_BAD_REQUEST)
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data

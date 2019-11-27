@@ -4,61 +4,63 @@ import { loadOwnData } from './currentStatus';
 
 export const loadUser = () => {
   return (dispatch, getState) => {
-    dispatch({ type: 'USER_LOADING' });
+    dispatch({ type: 'CURRENT_USER_LOADING' });
     API.get('/api/auth/user/')
       .then(({ status, data }) => {
         if (status === 200) {
-          dispatch({ type: 'USER_LOADED', data: keysToCamel(data) });
+          dispatch({ type: 'CURRENT_USER_LOADED', data: keysToCamel(data) });
+          dispatch({ type: 'CLEAR_AUTH_ERRORS' });
           dispatch(loadOwnData());
-        } else if (status >= 400) {
-          dispatch({ type: 'LOAD_ERROR', data: keysToCamel(data) });
+        } else if (status >= 400 && status < 500) {
+          dispatch({ type: 'CURRENT_USER_ERROR', data: keysToCamel(data) });
         }
-      }).catch(reason => dispatch({ type: 'LOAD_ERROR', data: { exception: reason } }));
+      });
   };
 };
 
-export const login = (email, password) => {
+export const login = (email, password, captcha) => {
   return (dispatch, getState) => {
-    return API.post('/api/auth/login/', { email, password })
+    dispatch({ type: 'LOGIN_LOADING' });
+    return API.post('/api/auth/login/', { email, password, captcha })
       .then(({ data, status }) => {
         if (status === 200) {
-          dispatch({ type: 'LOGIN_SUCCESSFUL', data: keysToCamel(data) });
+          dispatch({ type: 'LOGIN_LOADED', data: keysToCamel(data) });
+          dispatch({ type: 'CLEAR_AUTH_ERRORS' });
           dispatch(loadOwnData());
         } else {
-          dispatch({ type: 'LOGIN_FAILED', data: keysToCamel(data) });
+          dispatch({ type: 'LOGIN_ERROR', data: keysToCamel(data) });
         }
-      }).catch(reason => dispatch({ type: 'LOGIN_FAILED', data: { exception: reason } }));
+      }).catch(reason => dispatch({ type: 'LOGIN_ERROR', data: { exception: reason } }));
   };
 };
 
-export const register = (email, password, confirmPassword, firstName, lastName) => {
+export const register = (email, password, confirmPassword, firstName, lastName, captcha) => {
   return (dispatch, getState) => {
-    API.post('/api/auth/register/', keysToUnderscore({ email, password, confirmPassword, firstName, lastName }))
+    dispatch({ type: 'REGISTER_LOADING' });
+    API.post('/api/auth/register/', keysToUnderscore({
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      captcha,
+    }))
       .then(({ status, data }) => {
         if (status === 200) {
-          dispatch({ type: 'REGISTRATION_SUCCESSFUL', data: keysToCamel(data) });
+          dispatch({ type: 'REGISTER_LOADED', data: keysToCamel(data) });
+          dispatch({ type: 'CLEAR_AUTH_ERRORS' });
           dispatch(loadOwnData());
-        } else if (status === 401 || status === 403) {
-          dispatch({ type: 'AUTHENTICATION_ERROR', data: keysToCamel(data) });
         } else {
-          dispatch({ type: 'REGISTRATION_FAILED', data: keysToCamel(data) });
+          dispatch({ type: 'REGISTER_ERROR', data: keysToCamel(data) });
         }
-      }).catch(reason => dispatch({ type: 'REGISTRATION_FAILED', data: { exception: reason } }));
+      }).catch(reason => dispatch({ type: 'REGISTER_ERROR', data: { exception: reason } }));
   };
 };
 
 export const logout = () => {
   return (dispatch, getState) => {
-    API.post('/api/auth/logout/')
-      .then(({ status, data }) => {
-        if (status === 204) {
-          dispatch({ type: 'LOGOUT_SUCCESSFUL' });
-          dispatch({ type: 'CLEAR_CURRENT_STATUS' });
-        } else if (status === 403 || status === 401) {
-          dispatch({ type: 'AUTHENTICATION_ERROR', data: keysToCamel(data) });
-        }
-      }).catch(reason => dispatch({ type: 'AUTHENTICATION_ERROR', data: { exception: reason } }));
+    dispatch({ type: 'LOGOUT_LOADED' });
+    dispatch({ type: 'CLEAR_AUTH_ERRORS' });
+    API.post('/api/auth/logout/');
   };
 };
-
-export const clearErrors = () => ({ type: 'CLEAR_ERRORS' });
