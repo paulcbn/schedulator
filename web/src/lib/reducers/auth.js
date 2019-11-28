@@ -3,7 +3,7 @@ import { removeToken, setToken } from '../api';
 const initialState = {
   token: localStorage.getItem('token'),
   currentUser: null,
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem('token') !== null,
 
   loginLoading: false,
   loginErrors: {},
@@ -24,7 +24,6 @@ export default function auth(state = initialState, action) {
         currentUser: null,
         currentUserLoading: true,
         currentUserErrors: {},
-        isAuthenticated: false,
       };
     case 'CURRENT_USER_ERROR':
       removeToken();
@@ -117,26 +116,6 @@ export default function auth(state = initialState, action) {
 
     case 'CLEAR_AUTH_ERRORS':
       return { ...state, loginErrors: {}, registerErrors: {}, currentUserErrors: {} };
-    //
-    // case 'USER_LOADING':
-    //   return { ...state, isLoading: true, errors: {} };
-    //
-    // case 'USER_LOADED':
-    //   return { ...state, isAuthenticated: true, isLoading: false, user: action.data };
-    //
-    // case 'LOGIN_SUCCESSFUL':
-    // case 'REGISTRATION_SUCCESSFUL':
-    //   setToken(action.data.token);
-    //   return { ...state, ...action.data, isAuthenticated: true, isLoading: false, errors: null };
-    // case 'LOGOUT_SUCCESSFUL':
-    // case 'LOGIN_FAILED':
-    // case 'LOAD_ERROR':
-    // case 'REGISTRATION_FAILED':
-    //   removeToken();
-    //   return {
-    //     ...state, errors: action.data, token: null, user: null,
-    //     isAuthenticated: false, isLoading: false,
-    //   };
 
     default:
       return state;
