@@ -13,13 +13,14 @@ from rest_framework.status import HTTP_400_BAD_REQUEST
 
 from api.exceptions import NoSemester
 from api.models import Semester
+from api.serializsers.timetable_serializers import SubjectSerializer, DefaultSubjectsSerializer, BasicSectionSerializer, \
+    FormationSerializer, InitiateUserSerializer, TimetableEntrySerializer
+from api.serializsers.user_serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer, \
+    GetUserSerializer
 from api.services.initial_setup_service import InitialSetupService
 from api.services.recaptcha_service import validate_recaptcha
 from api.utils import get_school_week
 from crawler.models import Subject, Section, Formation, TimetableEntry
-from .serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer, SubjectSerializer, \
-    DefaultSubjectsSerializer, BasicSectionSerializer, FormationSerializer, InitiateUserSerializer, \
-    TimetableEntrySerializer, GetUserSerializer
 
 
 class RegistrationAPI(generics.GenericAPIView):
