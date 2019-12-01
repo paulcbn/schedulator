@@ -17,8 +17,8 @@ class EnrolledSubjectInline(admin.TabularInline):
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'sid')
-    search_fields = ('name', 'sid')
+    list_display = ('name', 'alias', 'sid')
+    search_fields = ('name', 'sid', 'alias')
     inlines = [EnrolledSubjectInline, ]
 
 
