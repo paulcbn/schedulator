@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from api.models import StaticTable
+from api.serializsers.timetable_serializers import SubjectSerializer
 from crawler.models import Subject, Section, Formation, TimetableEntry, Room, SubjectComponent
 
 
