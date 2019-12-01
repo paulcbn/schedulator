@@ -63,6 +63,9 @@ class Formation(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    def __repr__(self):
+        return f'{self.name}'
+
 
 class Room(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
