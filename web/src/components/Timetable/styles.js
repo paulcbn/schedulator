@@ -111,15 +111,12 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
     color: '#4b4b4b',
     overflow: 'hidden',
     padding: theme.spacing(0.2, 0.4),
-    fontSize: ({ overlapSize }) => {
-      if (overlapSize < 1) overlapSize = 1;
-      if (overlapSize > 4) overlapSize = 4;
-      return `${ 1 - overlapSize * 0.1 }rem`;
-    },
+    fontWeight: 'bold',
+    fontSize: ({ subjectFontSize }) => subjectFontSize,
     fontFamily: 'Montserrat',
-    borderBottom: '1px solid',
+    borderBottom: ({ subjectBorderBottom }) => subjectBorderBottom,
     borderBottomColor: '#4b4b4b',
-    height: '3.3rem',
+    height: ({ subjectHeight }) => subjectHeight,
   },
   subjectComponent: {
     width: '100%',
@@ -129,7 +126,7 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
     padding: theme.spacing(0, 0.3),
     color: '#4b4b4b',
     overflow: 'hidden',
-    fontSize: '0.8rem',
+    fontSize: ({ subjectComponentFontSize }) => subjectComponentFontSize,
     fontFamily: 'Nunito',
     fontWeight: 'bold',
     borderImage: 'linear-gradient(to bottom, red, rgba(0, 0, 0, 0)) 1 100%',
@@ -143,16 +140,7 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
     fontFamily: 'Montserrat',
   },
   subjectComponentColor: {
-    color: ({ color }) => {
-      switch (color) {
-        case 'Curs':
-          return '#00400b';
-        case 'Seminar':
-          return '#cd7200';
-        default:
-          return 'rgba(255,5,0,0.8)';
-      }
-    },
+    color: ({subjectComponentColor}) => subjectComponentColor
   },
 }));
 

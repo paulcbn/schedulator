@@ -5,10 +5,12 @@ import Switch from '@material-ui/core/Switch';
 import moment from 'moment';
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
+import EntryInfoModal from '../../components/EntryInfoModal/EntryInfoModal';
 import Layout from '../../components/Layout/Layout';
 import Timetable from '../../components/Timetable/Timetable';
 import { auth } from '../../lib/actions';
 import DateIcon from '@material-ui/icons/DateRange';
+import { useModal } from '../../lib/hooks';
 import useStyles from './styles';
 
 const Dashboard = ({ entries, currentWeek }) => {
@@ -19,7 +21,7 @@ const Dashboard = ({ entries, currentWeek }) => {
   const currentDate = useMemo(() => moment().startOf('day'), []);
   const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(1, 'week') : moment(currentDate), [ currentDate, nextWeek ]);
   const currentParity = useMemo(() => (+currentWeek + (nextWeek ? 1 : 0)) % 2 === 0 ? 'evn' : 'odd', [ currentWeek, nextWeek ]);
-
+  const { isOpen: isInfoModalOpen, open: openInfoModal, close: closeInfoModal, data: infoModalData } = useModal();
 
   const classes = useStyles();
   return <Layout>
@@ -53,8 +55,11 @@ const Dashboard = ({ entries, currentWeek }) => {
         currentParity={ currentParity }
         referenceColumnStart={ moment.duration('8:00:00') }
         referenceColumnInterval={ moment.duration(60, 'minute') }
+        onClickEntry={openInfoModal}
       />
     </Paper>
+
+    <EntryInfoModal isOpen={ isInfoModalOpen } onClose={ closeInfoModal } entry={ infoModalData }/>
   </Layout>;
 };
 

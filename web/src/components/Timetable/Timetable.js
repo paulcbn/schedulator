@@ -54,6 +54,7 @@ const Timetable = (
     daysCount,
     referenceColumnStart,
     referenceColumnInterval,
+    onClickEntry,
   }) => {
   const classes = useTimetableStyle();
   const mondayDate = useMemo(() => moment(currentDate).startOf('isoWeek'), [ currentDate ]);
@@ -97,7 +98,8 @@ const Timetable = (
           referenceStart={ referenceStart }
           referenceEnd={ referenceEnd }
           currentParity={ currentParity }
-          rawEntries={ (groupedEntries[code] || []) }/>
+          rawEntries={ (groupedEntries[code] || []) }
+          onClickEntry={ onClickEntry }/>
       </Hidden>;
     },
   );
