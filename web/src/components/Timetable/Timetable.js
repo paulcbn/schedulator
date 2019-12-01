@@ -1,13 +1,11 @@
-import { Typography } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Hidden from '@material-ui/core/Hidden';
+import React, { useMemo, useRef, useState } from 'react';
+import { Box, Button, Hidden, Typography } from '@material-ui/core';
 import PrevIcon from '@material-ui/icons/NavigateBefore';
 import NextIcon from '@material-ui/icons/NavigateNext';
+import ReactResizeDetector from 'react-resize-detector';
 import moment from 'moment';
-import React, { useMemo, useState } from 'react';
-import { deepGet } from '../../lib';
-import { groupBy } from '../../lib/time';
+
+import { deepGet, groupBy } from '../../lib';
 import { useReferenceEntryStyle, useTimetableStyle } from './styles';
 import TimetableColumn from './TimetableColumn';
 
@@ -56,18 +54,17 @@ const Timetable = (
     referenceColumnInterval,
     onClickEntry,
   }) => {
-  const classes = useTimetableStyle();
+  const [ weekdayOffset, setWeekdayOffset ] = useState(0);
+  const [ scrollbarWidth, setScrollbarWidth ] = useState(0);
+
   const mondayDate = useMemo(() => moment(currentDate).startOf('isoWeek'), [ currentDate ]);
   const currentWeekdayIndex = useMemo(() => getWeekdayIndex(currentDate, daysCount), [ currentDate, daysCount ]);
-  const [ weekdayOffset, setWeekdayOffset ] = useState(0);
   const truncatedEntries = useMemo(() => rawEntries
       .filter(entry => isOutOfBounds(entry, referenceStart, referenceEnd))
       .map(entry => truncateEntry(entry, referenceStart, referenceEnd)),
     [ rawEntries, referenceStart, referenceEnd ]);
-
   const groupedEntries = useMemo(() => groupBy(truncatedEntries, entry => entry.weekDay),
     [ truncatedEntries ]);
-
   const referenceTimes = useMemo(() => {
     let result = [];
     const startTime = referenceColumnStart.asSeconds() >= referenceStart.asSeconds() ? referenceColumnStart : referenceStart;
@@ -76,11 +73,20 @@ const Timetable = (
       result.push(moment.duration(currentGeneratedTime));
       currentGeneratedTime.add(referenceColumnInterval);
     }
-
     return result;
   }, [ referenceColumnStart, referenceColumnInterval, referenceStart, referenceEnd ]);
 
+  const gridScrollBoxRef = useRef(null);
 
+  const handleHeightResize = () => {
+    const element = deepGet(gridScrollBoxRef, 'current', null);
+    if (element === null) setScrollbarWidth('0');
+    else {
+      const width = element.offsetWidth - element.scrollWidth;
+      setScrollbarWidth(`${ width }px`);
+    }
+  };
+  const classes = useTimetableStyle({ scrollbarWidth });
   const renderReferenceTimes = () => referenceTimes.map(entry =>
     <TimeReferenceEntry
       key={ entry }
@@ -106,17 +112,17 @@ const Timetable = (
   const renderHeader = () => days.map(({ code, name }, index) => {
       if (index >= daysCount)
         return null;
-      return <Hidden smDown={ code !== deepGet(days[currentWeekdayIndex + weekdayOffset], 'code', undefined) }
-                     key={ code }>
-        <Box className={ classes.header }>
-          <Typography variant='h5' className={ classes.weekDay }>
-            { name }
-          </Typography>
-          <Typography variant='body1' className={ classes.weekDay }>
-            { moment(mondayDate).add(index, 'days').format('Do MMMM') }
-          </Typography>
-        </Box>
-      </Hidden>;
+      return (
+        <Hidden smDown={ code !== deepGet(days[currentWeekdayIndex + weekdayOffset], 'code', undefined) } key={ code }>
+          <Box className={ classes.header }>
+            <Typography variant='h5' className={ classes.weekDay }>
+              { name }
+            </Typography>
+            <Typography variant='body1' className={ classes.weekDay }>
+              { moment(mondayDate).add(index, 'days').format('Do MMMM') }
+            </Typography>
+          </Box>
+        </Hidden>);
     },
   );
 
@@ -124,8 +130,10 @@ const Timetable = (
     <Box className={ classes.headerBox }>
       <Box className={ classes.referenceColumnSpacer }/>
       { renderHeader() }
+      <Box className={ classes.scrollOffsetSpacer }/>
     </Box>
-    <Box className={ classes.gridBox }>
+    <Box className={ classes.gridBox } ref={ gridScrollBoxRef }>
+      <ReactResizeDetector refreshMode='debounce' refreshRate={ 100 } handleHeight onResize={ handleHeightResize }/>
       <Box className={ classes.gridScrollBox }>
         <Box className={ classes.referenceColumnSpacer }/>
         { renderReferenceTimes() }

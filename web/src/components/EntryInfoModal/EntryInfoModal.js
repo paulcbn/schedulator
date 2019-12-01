@@ -1,13 +1,9 @@
-import { Typography } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Divider from '@material-ui/core/Divider';
-import React, { useMemo } from 'react';
-import FormationIcon from '@material-ui/icons/People';
-import LocationIcon from '@material-ui/icons/LocationCity';
+import { Box, Dialog, DialogContent, DialogTitle, Divider, Typography } from '@material-ui/core';
 import TeacherIcon from '@material-ui/icons/Face';
+import LocationIcon from '@material-ui/icons/LocationCity';
+import FormationIcon from '@material-ui/icons/People';
+import React, { useMemo } from 'react';
+
 import { deepGet } from '../../lib';
 import useStyles from './styles';
 
@@ -45,22 +41,22 @@ const EntryInfoModal = ({ isOpen, onClose, entry }) => {
       <Typography variant='h6' className={ classes.subjectComponentColor }>{ subjectComponentType }</Typography>
     </DialogTitle>
     <DialogContent>
-      <Box className={ classes.line }>
-        <FormationIcon/>
-        <Typography className={ classes.typography }>Formatia:&nbsp;</Typography>
-        <Typography className={ classes.value } color='textSecondary'>{ formationName }</Typography>
-      </Box>
 
       <Box className={ classes.line }>
-        <LocationIcon/>
-        <Typography className={ classes.typography }>Sala:&nbsp;</Typography>
-        <Typography className={ classes.value } color='textSecondary'>{ roomName }</Typography>
+        <LocationIcon fontSize='large' className={ classes.icon }/>
+        <Typography className={ classes.value }>{ roomName }</Typography>
       </Box>
+      <Divider/>
 
       <Box className={ classes.line }>
-        <TeacherIcon/>
-        <Typography className={ classes.typography }>Cadrul didactic:&nbsp;</Typography>
-        <Typography className={ classes.value } color='textSecondary'>{ teacher }</Typography>
+        <FormationIcon fontSize='large' className={ classes.icon }/>
+        <Typography className={ classes.value }>{ formationName }</Typography>
+      </Box>
+      <Divider/>
+
+      <Box className={ classes.line }>
+        <TeacherIcon fontSize='large' className={ classes.icon }/>
+        <Typography className={ classes.value }>{ teacher }</Typography>
       </Box>
     </DialogContent>
   </Dialog>;

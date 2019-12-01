@@ -8,12 +8,13 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    margin: theme.spacing(1, 0),
   },
-  typography: {
-    margin: theme.spacing(1),
+  icon: {
+    marginRight: theme.spacing(1),
   },
+  typography: {},
   value: {
-    margin: theme.spacing(1),
     fontSize: '1.2rem',
   },
 

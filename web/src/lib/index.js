@@ -1,6 +1,7 @@
 export * from './actions';
 export * from './reducers';
 export * from './hooks';
+export * from './time';
 
 export { default as API }  from './api';
 

@@ -1,21 +1,19 @@
-import { AppBar, Box, Container } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import Typography from '@material-ui/core/Typography';
+import { AppBar, Avatar, Box, Container, IconButton, Tab, Tabs, Typography } from '@material-ui/core';
+import LogoutIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+
 import { deepGet } from '../../lib';
 import { auth } from '../../lib/actions';
-import LogoutIcon from '@material-ui/icons/ExitToApp';
 import useStyles from './styles';
 
 
-const locations = [ '/', '/preferences', '/static-tables' ];
+const locations = [ '/', '/static-tables' ];
 const others = {
   '/initial-setup': 'Setare orar',
+  '/preferences': 'Preferinte',
 };
 
 const Layout = ({ children, user, logout }) => {
@@ -31,6 +29,9 @@ const Layout = ({ children, user, logout }) => {
     if (newValue < locations.length) {
       history.push(locations[newValue]);
     }
+  };
+  const navigatePreferences = () => {
+    history.push('/preferences');
   };
 
   const currentTabIndex = useMemo(() => {
@@ -50,6 +51,9 @@ const Layout = ({ children, user, logout }) => {
         <span className={ classes.sLetter }>S</span>chedulator
       </Typography>
       { initials.length > 0 && <Avatar className={ classes.avatar }>{ initials }</Avatar> }
+      <IconButton color="default" className={ classes.logoutButton } onClick={ navigatePreferences }>
+        <SettingsIcon/>
+      </IconButton>
       <IconButton color="default" className={ classes.logoutButton } onClick={ logout }>
         <LogoutIcon/>
       </IconButton>
@@ -61,8 +65,7 @@ const Layout = ({ children, user, logout }) => {
             textColor="primary"
       >
         <Tab label="Orele mele"/>
-        <Tab label="Preferinte"/>
-        <Tab label="Orele altor grupe"/>
+        <Tab label="Alte grupe"/>
         { currentTabIndex === locations.length && <Tab label={ others[pathname] }/> }
       </Tabs>
     </AppBar>

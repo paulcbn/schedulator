@@ -43,7 +43,6 @@ export const useTimetableStyle = makeStyles(theme => ({
     width: 50,
     flexGrow: 0,
     margin: theme.spacing(0, 0.3),
-
   },
   header: {
     display: 'flex',
@@ -69,6 +68,9 @@ export const useTimetableStyle = makeStyles(theme => ({
   },
   flexExpander: {
     flexGrow: 1,
+  },
+  scrollOffsetSpacer: {
+    width: ({ scrollbarWidth }) => scrollbarWidth,
   },
 }));
 
@@ -140,7 +142,7 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
     fontFamily: 'Montserrat',
   },
   subjectComponentColor: {
-    color: ({subjectComponentColor}) => subjectComponentColor
+    color: ({ subjectComponentColor }) => subjectComponentColor,
   },
 }));
 
