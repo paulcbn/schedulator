@@ -1,4 +1,3 @@
-import requests
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -8,15 +7,16 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
 
 from api.exceptions import NoSemester
 from api.models import Semester
-from api.serializsers.timetable_serializers import SubjectSerializer, DefaultSubjectsSerializer, BasicSectionSerializer, \
-    FormationSerializer, InitiateUserSerializer, TimetableEntrySerializer
+from api.models import StaticTable
+from api.serializsers.timetable_serializers import DefaultSubjectsSerializer, FormationSerializer, \
+    InitiateUserSerializer, TimetableEntrySerializer, BasicSectionSerializer, SubjectSerializer
 from api.serializsers.user_serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer, \
-    GetUserSerializer
+    StaticTableSerializer, GetUserSerializer
 from api.services.initial_setup_service import InitialSetupService
 from api.services.recaptcha_service import validate_recaptcha
 from api.utils import get_school_week
@@ -155,3 +155,15 @@ class CurrentWeekAPI(generics.RetrieveAPIView):
             return Response(week)
         except (ValueError, AttributeError, NoSemester):
             return Response(status=400)
+
+
+class StaticTableAPI(generics.RetrieveAPIView):
+    renderer_classes = [JSONRenderer, ]
+
+    def get(self, request, *args, **kwargs):
+        if 'search_id' in request.GET:
+            result = StaticTable.objects.filter(search_id=request.GET['search_id'])
+            if len(result) == 1:
+                serializer = StaticTableSerializer(result[0])
+                return Response(serializer.data)
+        return Response([])

@@ -8,7 +8,7 @@ from django.dispatch import receiver
 from django.utils.timezone import localdate
 from requests import Response
 
-from crawler.models import TimetableEntry, Subject
+from crawler.models import TimetableEntry, Subject, Section, Formation
 
 
 class UserProfile(models.Model):
@@ -53,3 +53,13 @@ class Vacation(models.Model):
 
     def __len__(self):
         return self.end_week - self.start_week
+
+
+class StaticTable(models.Model):
+    section = models.ForeignKey(to=Section, on_delete=models.CASCADE)
+    formations = models.ManyToManyField(to=Formation)
+    attendances = models.ManyToManyField(to=TimetableEntry)
+    search_id = models.CharField(max_length=30, unique=True, null=False)
+
+    def __str__(self):
+        return self.search_id

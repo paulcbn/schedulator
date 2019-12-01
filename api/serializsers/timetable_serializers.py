@@ -1,17 +1,12 @@
 from rest_framework import serializers
 
 from crawler.models import Subject, Section, Formation, TimetableEntry, Room, SubjectComponent
-from rest_framework import serializers
-
-from crawler.models import Subject, Section, Formation, TimetableEntry, Room, SubjectComponent
 
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
         fields = ('sid', 'name', 'alias')
-
-
 
 
 class DefaultSubjectsSerializer(serializers.ModelSerializer):

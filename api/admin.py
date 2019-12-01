@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import UserProfile, Semester, Vacation
+from api.models import UserProfile, Semester, Vacation, StaticTable
 from crawler.admin import AttendanceChoiceInline, EnrolledSubjectInline
 
 
@@ -18,3 +18,30 @@ class SemesterAdmin(admin.ModelAdmin):
 @admin.register(Vacation)
 class VacationAdmin(admin.ModelAdmin):
     list_display = ['start_week', 'end_week', 'name', 'semester']
+
+
+class StaticTableAttendancesInline(admin.TabularInline):
+    template = "crawler/custom_tabular_inline.html"
+    model = StaticTable.attendances.through
+    extra = 0
+    verbose_name = "Attendance"
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+class StaticTableFormationsInline(admin.TabularInline):
+    template = "crawler/custom_tabular_inline.html"
+    model = StaticTable.formations.through
+    extra = 0
+    verbose_name = "Formation"
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(StaticTable)
+class StaticTableAdmin(admin.ModelAdmin):
+    list_select_related = ('section', 'section')
+    inlines = [StaticTableAttendancesInline, StaticTableFormationsInline]
+    exclude = ('attendances','formations')
