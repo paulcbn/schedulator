@@ -22,6 +22,7 @@ deploy:
 	python manage.py migrate ; \
 	python manage.py collectstatic --no-input
 	rm -rf web/build
+	npm install --prefix web
 	npm run-script build --prefix web
 	systemctl restart gunicorn.socket
 	systemctl restart gunicorn.service
