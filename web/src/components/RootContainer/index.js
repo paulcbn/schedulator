@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { auth } from '../../lib/actions';
-import { connect } from 'react-redux';
+import {
+  Dashboard,
+  InitialSetup,
+  Login,
+  NotFound,
+  OtherSection,
+  OtherSections,
+  Preferences,
+  Register,
+  StaticTable,
+} from '../../pages';
 import PrivateRoute from '../PrivateRoute';
-import { Dashboard, Register, NotFound, Login, InitialSetup, Preferences, StaticTables } from '../../pages';
 
 class RootContainerComponent extends Component {
 
@@ -18,7 +28,11 @@ class RootContainerComponent extends Component {
           <PrivateRoute exact path="/" component={ Dashboard } authState={ this.props.auth }/>
           <PrivateRoute exact path="/initial-setup" component={ InitialSetup } authState={ this.props.auth }/>
           <PrivateRoute exact path="/preferences" component={ Preferences } authState={ this.props.auth }/>
-          <PrivateRoute exact path="/static-tables" component={ StaticTables } authState={ this.props.auth }/>
+          <PrivateRoute exact path="/other-sections" component={ OtherSections } authState={ this.props.auth }/>
+          <PrivateRoute exact path="/other-sections/:sectionId" component={ OtherSection }
+                        authState={ this.props.auth }/>
+          <PrivateRoute exact path="/static-tables/:searchId" component={ StaticTable }
+                        authState={ this.props.auth }/>
           <Route exact path="/login" component={ Login }/>
           <Route exact path="/register" component={ Register }/>
           <Route component={ NotFound }/>

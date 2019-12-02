@@ -1,4 +1,5 @@
-import * as auth from './auth'
-import * as initialSetup from './initialSetup'
+import * as auth from './auth';
+import * as initialSetup from './initialSetup';
+import * as staticTables from './staticTables';
 
-export {auth, initialSetup}
+export { auth, initialSetup, staticTables };

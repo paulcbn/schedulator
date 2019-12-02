@@ -10,13 +10,9 @@ import { auth } from '../../lib/actions';
 import useStyles from './styles';
 
 
-const locations = [ '/', '/static-tables' ];
-const others = {
-  '/initial-setup': 'Setare orar',
-  '/preferences': 'Preferinte',
-};
+const locations = [ '/', '/other-sections' ];
 
-const Layout = ({ children, user, logout }) => {
+const Layout = ({ children, user, logout, otherLabel }) => {
   const classes = useStyles();
   const { pathname } = useLocation();
   const history = useHistory();
@@ -34,16 +30,17 @@ const Layout = ({ children, user, logout }) => {
     history.push('/preferences');
   };
 
+
   const currentTabIndex = useMemo(() => {
     const locationIndex = locations.indexOf(pathname);
     if (locationIndex !== -1)
       return locationIndex;
 
-    if (others[pathname] !== undefined)
+    if (otherLabel !== undefined)
       return locations.length;
 
     return 0;
-  }, [ pathname ]);
+  }, [ pathname, otherLabel ]);
 
   return <Box className={ classes.root }>
     <AppBar position="static" className={ classes.appBar }>
@@ -66,7 +63,7 @@ const Layout = ({ children, user, logout }) => {
       >
         <Tab label="Orele mele"/>
         <Tab label="Alte grupe"/>
-        { currentTabIndex === locations.length && <Tab label={ others[pathname] }/> }
+        { otherLabel && <Tab label={ otherLabel }/> }
       </Tabs>
     </AppBar>
     <Container maxWidth={ 'lg' } className={ classes.container }>

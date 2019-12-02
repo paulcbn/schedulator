@@ -13,12 +13,14 @@ from rest_framework.views import APIView
 from api.exceptions import NoSemester
 from api.models import Semester
 from api.models import StaticTable
-from api.serializsers.timetable_serializers import DefaultSubjectsSerializer, FormationSerializer, \
+from api.serializers.current_state_serializers import DefaultSubjectsSerializer, FormationSerializer, \
     InitiateUserSerializer, TimetableEntrySerializer, BasicSectionSerializer, SubjectSerializer
-from api.serializsers.user_serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer, \
-    StaticTableSerializer, GetUserSerializer
+from api.serializers.auth_serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer, \
+    GetUserSerializer
+from api.serializers.static_tables_serializers import StaticTableSerializer, StaticTableHierarchySerializer
 from api.services.initial_setup_service import InitialSetupService
 from api.services.recaptcha_service import validate_recaptcha
+from api.services.static_table_service import get_static_tables_hierarchy
 from api.utils import get_school_week
 from crawler.models import Subject, Section, Formation, TimetableEntry
 
@@ -167,3 +169,14 @@ class StaticTableAPI(generics.RetrieveAPIView):
                 serializer = StaticTableSerializer(result[0])
                 return Response(serializer.data)
         return Response([])
+
+
+class StaticTableHierarchyAPI(generics.RetrieveAPIView):
+    renderer_classes = [JSONRenderer, ]
+
+    def get(self, request, *args, **kwargs):
+        if 'section_id' in request.GET:
+            hierarchy = get_static_tables_hierarchy(request.GET['section_id'])
+            serializer = StaticTableHierarchySerializer(hierarchy)
+            return Response(serializer.data)
+        return Response(status=400)
