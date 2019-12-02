@@ -2,28 +2,39 @@ import { CircularProgress, Paper, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import Switch from '@material-ui/core/Switch';
+import DateIcon from '@material-ui/icons/DateRange';
 import moment from 'moment';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import EntryInfoModal from '../../components/EntryInfoModal/EntryInfoModal';
 import Layout from '../../components/Layout/Layout';
 import Timetable from '../../components/Timetable/Timetable';
-import { auth } from '../../lib/actions';
-import DateIcon from '@material-ui/icons/DateRange';
-import { useModal } from '../../lib/hooks';
+import { deepGet, useModal } from '../../lib';
+import { staticTables } from '../../lib/actions';
 import useStyles from './styles';
 
-const Dashboard = ({ entries, currentWeek, loading }) => {
+const StaticTable = ({ loadStaticTable, staticTable, loading, currentWeek }) => {
+  const { searchId } = useParams();
+  const classes = useStyles();
   const [ nextWeek, setNextWeek ] = useState(false);
-
-  const handleNextWeekChange = event => setNextWeek(!!event.target.checked);
-
+  const { isOpen: isInfoModalOpen, open: openInfoModal, close: closeInfoModal, data: infoModalData } = useModal();
   const currentDate = useMemo(() => moment().startOf('day'), []);
+  const handleNextWeekChange = event => setNextWeek(!!event.target.checked);
   const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(1, 'week') : moment(currentDate), [ currentDate, nextWeek ]);
   const currentParity = useMemo(() => (+currentWeek + (nextWeek ? 1 : 0)) % 2 === 0 ? 'evn' : 'odd', [ currentWeek, nextWeek ]);
-  const { isOpen: isInfoModalOpen, open: openInfoModal, close: closeInfoModal, data: infoModalData } = useModal();
+  useEffect(() => {
+    if (searchId !== undefined)
+      loadStaticTable(searchId);
+  }, [ loadStaticTable, searchId ]);
 
-  const classes = useStyles();
+
+  const { rawEntries, sectionName, sectionYear, formation } = useMemo(() => ({
+    rawEntries: deepGet(staticTable, 'attendances', []),
+    sectionName: deepGet(staticTable, 'section.name', ''),
+    sectionYear: deepGet(staticTable, 'section.year', ''),
+    formation: deepGet(staticTable, 'mostRelevantFormation.name', ''),
+  }), [ staticTable ]);
 
   if (loading === true)
     return <Layout>
@@ -31,9 +42,23 @@ const Dashboard = ({ entries, currentWeek, loading }) => {
     </Layout>;
 
 
-  return <Layout>
+  return <Layout otherLabel={ formation }>
     <Paper className={ classes.paper }>
-
+      <Typography variant={ 'h5' } className={ classes.typography }>
+        { sectionName }
+        <Typography
+          component={ 'span' }
+          variant={ 'h5' }
+          color={ 'textSecondary' }>
+          &nbsp;({ sectionYear })
+        </Typography>
+        <Typography
+          component={ 'span' }
+          variant={ 'h5' }
+          color={ 'textSecondary' }>
+          &nbsp;-&nbsp;{ formation }
+        </Typography>
+      </Typography>
       <Box className={ classes.topBox }>
         <Box className={ classes.switchBox }>
           <Switch
@@ -56,7 +81,7 @@ const Dashboard = ({ entries, currentWeek, loading }) => {
       <Timetable
         referenceStart={ moment.duration('7:45:00') }
         referenceEnd={ moment.duration('20:15:00') }
-        rawEntries={ entries }
+        rawEntries={ rawEntries }
         currentDate={ displayDate }
         daysCount={ 5 }
         currentParity={ currentParity }
@@ -70,18 +95,20 @@ const Dashboard = ({ entries, currentWeek, loading }) => {
   </Layout>;
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    logout: () => dispatch(auth.logout()),
-  };
-};
-
 const mapStateToProps = state => {
   return {
-    entries: state.currentStatus.ownTimetableEntries,
+    staticTable: state.staticTables.staticTable,
+    loading: state.staticTables.staticTableLoading,
     currentWeek: state.currentStatus.currentWeek,
-    loading: state.currentStatus.ownTimetableLoading,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+const mapDispatchToProps = dispatch => {
+  return {
+    loadStaticTable: (searchId) => {
+      return dispatch(staticTables.loadStaticTable(searchId));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StaticTable);

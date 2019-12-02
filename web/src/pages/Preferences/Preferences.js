@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 const Preferences = () => {
   const history = useHistory();
 
-  return <Layout>
+  return <Layout otherLabel='Preferinte'>
     <Button onClick={ () => {
       history.push('/initial-setup');
     } } color="secondary" variant="contained">Init setup</Button>

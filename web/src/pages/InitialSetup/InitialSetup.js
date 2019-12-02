@@ -57,7 +57,7 @@ const InitialSetup = ({ selectSection, selectFormations, selectSubjects, confirm
     }
   }
 
-  return <Layout>
+  return <Layout otherLabel='Setare orar'>
     <Paper className={ classes.paper }>
       <Stepper activeStep={ activeStep }>
         { steps.map(label => {

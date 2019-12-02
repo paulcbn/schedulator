@@ -76,10 +76,10 @@ class TimetableEntrySerializer(serializers.ModelSerializer):
         ]
 
     def get_start_time(self, obj):
-        return self.get_time(obj.start_time)
+        return self._get_time(obj.start_time)
 
     def get_end_time(self, obj):
-        return self.get_time(obj.end_time)
+        return self._get_time(obj.end_time)
 
-    def get_time(self, time):
+    def _get_time(self, time):
         return time.hour * 3600 + time.minute * 60 + time.second

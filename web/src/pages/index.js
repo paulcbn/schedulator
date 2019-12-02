@@ -4,4 +4,6 @@ export * from './Register';
 export * from './Login';
 export * from './InitialSetup';
 export * from './Preferences';
-export * from './StaticTables';
+export * from './OtherSection';
+export * from './OtherSections';
+export * from './StaticTable';
