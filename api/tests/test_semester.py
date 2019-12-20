@@ -3,9 +3,9 @@ import datetime
 import pytz
 from django.test import TestCase
 
-# Create your tests here.
+
 from api.models import Semester, Vacation
-from api.utils import is_vacation_week, get_school_week
+from api.services.semester_calculation_service import is_vacation_week, get_school_week
 
 
 class SemesterDateTests(TestCase):
@@ -48,10 +48,12 @@ class SemesterDateTests(TestCase):
 
 class VacationTests(TestCase):
     def setUp(self) -> None:
-        Vacation.objects.create(start_week=4, end_week=7)
-        Vacation.objects.create(start_week=12, end_week=13)
-        Vacation.objects.create(start_week=15, end_week=16)
-        Semester.objects.create(start_date=datetime.datetime(year=2019, month=10, day=2, tzinfo=pytz.UTC), weeks=14)
+        semester = Semester.objects.create(
+            start_date=datetime.datetime(year=2019, month=10, day=2, tzinfo=pytz.UTC), weeks=14
+        )
+        Vacation.objects.create(start_week=4, end_week=7, semester=semester)
+        Vacation.objects.create(start_week=12, end_week=13, semester=semester)
+        Vacation.objects.create(start_week=15, end_week=16, semester=semester)
 
     def test_valid_vacation_weeks(self):
         self.assertTrue(is_vacation_week(4))
@@ -87,4 +89,3 @@ class VacationTests(TestCase):
         self.assertEqual(get_school_week(-2), 1)
         self.assertEqual(get_school_week(14), 10)
         self.assertEqual(get_school_week(15), 10)
-

@@ -8,10 +8,13 @@ const Preferences = () => {
   const history = useHistory();
 
   return <Layout otherLabel='Preferinte'>
+    This page is WIP:
     <Button onClick={ () => {
-      history.push('/initial-setup');
-    } } color="secondary" variant="contained">Init setup</Button>
-
+      history.push('/preferences/initial-setup');
+    } } color="secondary" variant="contained">Reseteaza orarul</Button>
+    <Button onClick={ () => {
+      history.push('/preferences/attendances');
+    } } color="secondary" variant="contained">Materiile mele</Button>
   </Layout>;
 };
 

@@ -1,12 +1,9 @@
 import datetime
 
-import pytz
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils.timezone import localdate
-from requests import Response
 
 from crawler.models import TimetableEntry, Subject, Section, Formation
 
@@ -17,7 +14,7 @@ class UserProfile(models.Model):
     enrolled_subjects = models.ManyToManyField(to=Subject)
 
     def __str__(self):
-        return self.user.__str__()
+        return str(self.user)
 
 
 @receiver(post_save, sender=User)

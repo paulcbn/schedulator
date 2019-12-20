@@ -29,8 +29,8 @@ const TimetableEntry = ({ referenceStart, referenceEnd, positionedEntry, onClick
   const [ left, right ] = useMemo(() => {
       const width = 100 / overlapSize;
       return [ `${ overlapIndex * width }%`, `${ (overlapSize - overlapIndex - 1) * width }%` ];
-    },
-    [ overlapSize, overlapIndex ]);
+    }, [ overlapSize, overlapIndex ]);
+
   const [ top, bottom ] = useMemo(() => {
     const fullSize = refEndSeconds - refStartSeconds;
     return [ `${ (startSeconds - refStartSeconds) * 100 / fullSize }%`, `${ (refEndSeconds - endSeconds) * 100 / fullSize }%` ];
@@ -43,11 +43,15 @@ const TimetableEntry = ({ referenceStart, referenceEnd, positionedEntry, onClick
     if (hasAlias) return '0.8rem';
     return `${ 1 - overlapFactor * 0.1 }rem`;
   }, [ subjectAlias, overlapSize ]);
+
+
   const subjectComponentFontSize = useMemo(() => {
     const overlapFactor = Math.max(Math.min(overlapSize, 6), 1);
     if (overlapSize === 1) return '0.9rem';
     return `${ 1 - overlapFactor * 0.1 }rem`;
   }, [ overlapSize ]);
+
+
   const subjectBorderBottom = useMemo(() => durationHours < 2 ? '' : '1px solid', [ durationHours ]);
   const subjectHeight = useMemo(() => durationHours < 2 ? '100%' : '4rem', [ durationHours ]);
   const subjectComponentColor = useMemo(() => {

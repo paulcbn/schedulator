@@ -28,3 +28,13 @@ export function deepSet(obj, property, value) {
     obj[property] = value;
   }
 }
+
+export const weekDayCodes = {
+  'Mo': 'Luni',
+  'Tu': 'Marti',
+  'We': 'Miercuri',
+  'Th': 'Joi',
+  'Fr': 'Vineri',
+  'Sa': 'Sambata',
+  'Su': 'Duminica',
+};

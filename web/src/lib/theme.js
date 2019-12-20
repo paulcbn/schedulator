@@ -14,7 +14,17 @@ export default createMuiTheme({
       dark: '#c66900',
       contrastText: '#000',
     },
+    enrollmentState: {
+      deleteButton: {
+        color: '#e91616',
+        hoverColor: 'rgba(217,109,109,0.41)',
+      },
+      icons: {
+        error: '#e91616',
+        valid: '#1A1',
+        warn: '#FA1'
+      },
+    },
   },
-  typography: {
-  },
+  typography: {},
 });

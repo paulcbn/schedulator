@@ -43,8 +43,8 @@ class FormationAdmin(admin.ModelAdmin):
 
 
 class AttendanceChoiceInline(admin.TabularInline):
-    verbose_name_plural = 'Timetable  Entries'
-    verbose_name = 'Timetable Entry'
+    verbose_name_plural = 'CenteredCircularProgress  Entries'
+    verbose_name = 'CenteredCircularProgress Entry'
     model = UserProfile.attendance_choices.through
     extra = 0
     template = "crawler/custom_tabular_inline.html"

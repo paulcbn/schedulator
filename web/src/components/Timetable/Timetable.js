@@ -78,6 +78,8 @@ const Timetable = (
 
   const gridScrollBoxRef = useRef(null);
 
+
+
   const handleHeightResize = () => {
     const element = deepGet(gridScrollBoxRef, 'current', null);
     if (element === null) setScrollbarWidth('0');
