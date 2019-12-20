@@ -14,7 +14,7 @@ const EntryInfoModal = ({ isOpen, onClose, entry }) => {
     roomName: deepGet(entry, 'room.name', ''),
     formationName: deepGet(entry, 'formation.name', ''),
     teacher: deepGet(entry, 'teacher', ''),
-  }), [ entry ]);
+  }), [entry]);
 
   const subjectComponentColor = useMemo(() => {
     switch (subjectComponentType) {
@@ -25,7 +25,7 @@ const EntryInfoModal = ({ isOpen, onClose, entry }) => {
       default:
         return 'rgba(255,5,0,0.8)';
     }
-  }, [ subjectComponentType ]);
+  }, [subjectComponentType]);
 
   const classes = useStyles({ subjectComponentColor });
 
@@ -36,9 +36,9 @@ const EntryInfoModal = ({ isOpen, onClose, entry }) => {
     onClose={ onClose }
   >
     <DialogTitle>
-      <Typography variant='h5'>{ subjectName }</Typography>
+      <Typography variant='h5' component='span'>{ subjectName }</Typography>
       <Divider/>
-      <Typography variant='h6' className={ classes.subjectComponentColor }>{ subjectComponentType }</Typography>
+      <Typography variant='h6' component='span' className={ classes.subjectComponentColor }>{ subjectComponentType }</Typography>
     </DialogTitle>
     <DialogContent>
 

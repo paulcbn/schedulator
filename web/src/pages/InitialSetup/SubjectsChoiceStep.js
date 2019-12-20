@@ -1,19 +1,10 @@
-import {
-  Button,
-  Checkbox,
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Box,
-  Typography,
-  ListItemIcon,
-} from '@material-ui/core';
+import { Box, Button, Checkbox, List, ListItem, ListItemIcon, ListItemText, Paper } from '@material-ui/core';
+import PrevIcon from '@material-ui/icons/NavigateBefore';
+import NextIcon from '@material-ui/icons/NavigateNext';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import CenteredCircularProgress from '../../components/CenteredCircularProgress/CenteredCircularProgress';
 import { useSubjectsChoiceStyles } from './styles';
-import NextIcon from '@material-ui/icons/NavigateNext';
-import PrevIcon from '@material-ui/icons/NavigateBefore';
 
 
 const SubjectsChoiceStep = ({ state: { subjects, subjectsErrors, subjectsLoading }, onSubjectsChosen, onBack }) => {
@@ -38,10 +29,11 @@ const SubjectsChoiceStep = ({ state: { subjects, subjectsErrors, subjectsLoading
 
 
   if (subjectsLoading)
-    return <Typography>Subjects loading.</Typography>;
+    return <CenteredCircularProgress/>;
 
   return <>
     <Box className={ classes.box }>
+      {/*TODO WTF STYLE*/}
       <Paper className={ classes.paper } style={ { overflow: 'auto' } }>
         <List dense component="div" role="list">
           { subjects.map(subject => {
@@ -54,7 +46,6 @@ const SubjectsChoiceStep = ({ state: { subjects, subjectsErrors, subjectsLoading
               </ListItem>
             );
           }) }
-          <ListItem/>
         </List>
       </Paper>
 

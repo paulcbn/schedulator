@@ -7,3 +7,4 @@ export * from './Preferences';
 export * from './OtherSection';
 export * from './OtherSections';
 export * from './StaticTable';
+export * from './Attendances';

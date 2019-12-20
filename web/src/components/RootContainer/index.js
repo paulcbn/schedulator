@@ -12,6 +12,7 @@ import {
   Preferences,
   Register,
   StaticTable,
+  Attendances,
 } from '../../pages';
 import PrivateRoute from '../PrivateRoute';
 
@@ -26,7 +27,9 @@ class RootContainerComponent extends Component {
       <BrowserRouter>
         <Switch>
           <PrivateRoute exact path="/" component={ Dashboard } authState={ this.props.auth }/>
-          <PrivateRoute exact path="/initial-setup" component={ InitialSetup } authState={ this.props.auth }/>
+          <PrivateRoute exact path="/preferences/initial-setup" component={ InitialSetup }
+                        authState={ this.props.auth }/>
+          <PrivateRoute exact path="/preferences/attendances" component={ Attendances } authState={ this.props.auth }/>
           <PrivateRoute exact path="/preferences" component={ Preferences } authState={ this.props.auth }/>
           <PrivateRoute exact path="/other-sections" component={ OtherSections } authState={ this.props.auth }/>
           <PrivateRoute exact path="/other-sections/:sectionId" component={ OtherSection }

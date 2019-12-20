@@ -1,5 +1,3 @@
-from django.db.models import Sum
-
 from api.exceptions import NoSemester
 from api.models import Vacation, Semester
 
