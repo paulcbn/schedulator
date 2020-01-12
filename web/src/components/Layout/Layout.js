@@ -10,7 +10,7 @@ import { auth } from '../../lib/actions';
 import useStyles from './styles';
 
 
-const locations = [ '/', '/other-sections' ];
+const locations = [ '/', '/other-timetables' ];
 
 const Layout = ({ children, user, logout, otherLabel }) => {
   const classes = useStyles();

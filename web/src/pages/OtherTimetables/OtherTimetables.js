@@ -1,13 +1,19 @@
+import { Typography } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { deepGet } from '../../lib';
 import { staticTables } from '../../lib/actions';
-import { useHistory } from 'react-router-dom';
 import SectionTable from './SectionTable';
+import useStyles from './styles';
+import SubjectSearchView from './SubjectSearchView';
+import TeacherSearchView from './TeacherSearchView';
 
-const OtherSections = ({ loadSections, sections, sectionsLoading }) => {
+const OtherTimetables = ({ loadSections, sections, sectionsLoading }) => {
   const history = useHistory();
+  const classes = useStyles();
   useEffect(() => {
     loadSections();
   }, [ loadSections ]);
@@ -24,23 +30,31 @@ const OtherSections = ({ loadSections, sections, sectionsLoading }) => {
     return [ bachelor, master ];
   }, [ sections ]);
 
-  const handleClick = (section) => {
+  const handleSelectSection = (section) => {
     const id = deepGet(section, 'id');
     if (id === undefined) return;
-    history.push(`/other-sections/${ id }`);
+    history.push(`/sections/${ id }`);
   };
 
   return <Layout>
+    <Typography variant={ 'h4' } className={ classes.header }>Orarul altor formatii</Typography>
+    <Divider/>
     <SectionTable
       title={ 'Licenta' }
       sections={ bachelorSections }
       loading={ sectionsLoading }
-      onClick={ handleClick }/>
+      onClick={ handleSelectSection }/>
     <SectionTable
       title={ 'Master' }
       sections={ masterSections }
       loading={ sectionsLoading }
-      onClick={ handleClick }/>
+      onClick={ handleSelectSection }/>
+    <Typography variant={ 'h4' } className={ classes.header }>Orarul unei materii</Typography>
+    <Divider/>
+    <SubjectSearchView/>
+    <Typography variant={ 'h4' } className={ classes.header }>Orarul unui profesor</Typography>
+    <Divider/>
+    <TeacherSearchView/>
   </Layout>;
 };
 
@@ -60,4 +74,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OtherSections);
+export default connect(mapStateToProps, mapDispatchToProps)(OtherTimetables);

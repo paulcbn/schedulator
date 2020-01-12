@@ -91,57 +91,6 @@ export const useAddEntryModalRowStyles = makeStyles(theme => ({
 }));
 
 
-export const useSubjectComponentModalRowStyles = makeStyles(theme => ({
-  rowBox: {
-    margin: theme.spacing(1, 0),
-    padding: theme.spacing(0.5, 1),
-    display: 'flex',
-    alignItems: 'stretch',
-    border: '1px solid',
-    borderColor: 'rgba(0, 0, 0, 0.12)',
-    borderRadius: theme.spacing(1),
-    flexGrow: 1,
-  },
-  deleteButton: {
-    flexShrink: 0,
-    color: theme.palette.enrollmentState.deleteButton.color,
-    '&:hover': {
-      backgroundColor: theme.palette.enrollmentState.deleteButton.hoverColor,
-    },
-  },
-  timeBox: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  buttonBox: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  formationTypography: {
-    margin: theme.spacing(0, 1),
-  },
-  weekDayTypography: {
-    margin: theme.spacing(0, 1),
-  },
-  timeTypography: {
-    margin: theme.spacing(0, 1),
-  },
-  teacherTypography: {
-    margin: theme.spacing(0, 1),
-  },
-  roomTypography: {
-    margin: theme.spacing(0, 1),
-  },
-  gridContainer: {
-    alignItems: 'center',
-  },
-  gridItem: {
-    display: 'flex',
-    alignItems: 'center',
-    flexWrap: 'nowrap',
-  },
-
-}));
 
 
 export const useSubjectCardStyles = makeStyles(theme => ({
@@ -200,6 +149,57 @@ export const useAddEntryModalStyles = makeStyles(theme => ({
   },
   titleTypography: {
     margin: theme.spacing(1),
+  },
+}));
+
+export const useEntryRowStyles = makeStyles(theme => ({
+   rowBox: {
+    margin: theme.spacing(1, 0),
+    padding: theme.spacing(0.5, 1),
+    display: 'flex',
+    alignItems: 'stretch',
+    border: '1px solid',
+    borderColor: 'rgba(0, 0, 0, 0.12)',
+    borderRadius: theme.spacing(1),
+    flexGrow: 1,
+  },
+  deleteButton: {
+    flexShrink: 0,
+    color: theme.palette.enrollmentState.deleteButton.color,
+    '&:hover': {
+      backgroundColor: theme.palette.enrollmentState.deleteButton.hoverColor,
+    },
+  },
+  timeBox: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  buttonBox: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  formationTypography: {
+    margin: theme.spacing(0, 1),
+  },
+  weekDayTypography: {
+    margin: theme.spacing(0, 1),
+  },
+  timeTypography: {
+    margin: theme.spacing(0, 1),
+  },
+  teacherTypography: {
+    margin: theme.spacing(0, 1),
+  },
+  roomTypography: {
+    margin: theme.spacing(0, 1),
+  },
+  gridContainer: {
+    alignItems: 'center',
+  },
+  gridItem: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
   },
 }));
 

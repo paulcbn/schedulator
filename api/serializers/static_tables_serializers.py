@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from api.models import StaticTable
-from api.services.static_table_service import get_most_relevant_formation
+from api.services.static_table_service import get_most_relevant_formation, get_most_relevant_teacher, \
+    get_most_relevant_subject, get_search_id_for_subject, get_search_id_for_teacher
 from crawler.models import Section, Formation, TimetableEntry, Room, SubjectComponent, Subject
 
 
@@ -72,16 +73,22 @@ class StaticTableSerializer(serializers.ModelSerializer):
     attendances = TimetableEntrySerializer(many=True, read_only=True)
     most_relevant_formation = serializers.SerializerMethodField(read_only=True)
     section = SectionSerializer()
+    subject = SubjectSerializer()
 
     class Meta:
         model = StaticTable
         fields = [
             'attendances',
             'section',
+            'teacher',
+            'subject',
             'most_relevant_formation',
         ]
 
     def get_most_relevant_formation(self, static_table):
+        if static_table.section is None:
+            return None
+
         formation = get_most_relevant_formation(static_table)
         serializer = FormationSerializer(formation)
         return serializer.data
@@ -109,3 +116,38 @@ class StaticTableHierarchySerializer(serializers.Serializer):
     formation = FormationSerializer()
     search_id = serializers.CharField(allow_null=True)
     children = RecursiveField(many=True)
+
+
+class SearchSubjectSerializer(serializers.ModelSerializer):
+    section_set = SectionSerializer(many=True)
+    search_id = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Subject
+        fields = ['name', 'section_set', 'search_id']
+
+    def get_search_id(self, subject):
+        return get_search_id_for_subject(subject)
+
+
+class SubjectPageSerializer(serializers.Serializer):
+    current_page = serializers.IntegerField(min_value=1)
+    page_count = serializers.IntegerField(min_value=1)
+    subjects = SearchSubjectSerializer(many=True)
+
+
+class TeacherSerializer(serializers.Serializer):
+    name = serializers.SerializerMethodField()
+    search_id = serializers.SerializerMethodField()
+
+    def get_search_id(self, teacher):
+        return get_search_id_for_teacher(teacher)
+
+    def get_name(self, teacher):
+        return teacher
+
+
+class TeacherPageSerializer(serializers.Serializer):
+    current_page = serializers.IntegerField(min_value=1)
+    page_count = serializers.IntegerField(min_value=1)
+    teachers = TeacherSerializer(many=True)

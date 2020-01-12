@@ -1,10 +1,12 @@
 from django.urls import path, include
 
 from api.api.auth_api import RegistrationAPI, LoginAPI, UserAPI
-from api.api.current_status_api import OwnAttendancesListAPI, CurrentWeekAPI, OwnEnrollmentsListAPI
-from api.api.enrollment_state_api import EnrollmentStateAPI, SubjectComponentStateAPI
+from api.api.current_status_api import OwnAttendancesListAPI, CurrentWeekAPI
+from api.api.enrollment_state_api import OwnEnrollmentStateAPI, SubjectComponentStateAPI, OwnEnrollmentAPI, \
+    NotOwnedSubjectAPI
 from api.api.initial_setup_api import SubjectAPI, DefaultSubjectsAPI, SectionAPI, FormationAPI, InitiateUserAPI
-from api.api.static_tables_api import StaticTableAPI, StaticTableHierarchyAPI
+from api.api.static_tables_api import StaticTableAPI, FormationsStaticTableHierarchyAPI, SubjectStaticTableAPI, \
+    TeacherStaticTableAPI
 
 urlpatterns = [
     # auth:
@@ -15,6 +17,7 @@ urlpatterns = [
 
     # initial setup:
     path("subjects/", SubjectAPI.as_view()),
+
     path("sections/<int:pk>/default-subjects/", DefaultSubjectsAPI.as_view()),
     path("sections/", SectionAPI.as_view()),
     path("formations/", FormationAPI.as_view()),
@@ -22,15 +25,18 @@ urlpatterns = [
 
     # current status
     path("attendances/", OwnAttendancesListAPI.as_view()),
-    path("enrollments/", OwnEnrollmentsListAPI.as_view()),
     path("current-week/", CurrentWeekAPI.as_view()),
 
     # static tables
     path("static-tables/", StaticTableAPI.as_view()),
-    path("static-tables-hierarchy/", StaticTableHierarchyAPI.as_view()),
+    path("formation-static-tables-hierarchy/", FormationsStaticTableHierarchyAPI.as_view()),
+    path("subject-static-tables/", SubjectStaticTableAPI.as_view()),
+    path("teacher-static-tables/", TeacherStaticTableAPI.as_view()),
 
     # enrollment state
-    path("enrollments-state/", EnrollmentStateAPI.as_view()),
+    path("enrollments/", OwnEnrollmentAPI.as_view()),
+    path("enrollments-state/", OwnEnrollmentStateAPI.as_view()),
+    path("not-owned-subjects/", NotOwnedSubjectAPI.as_view()),
     path("subject-components/<int:subject_component_id>/attendances/", SubjectComponentStateAPI.as_view()),
 
 ]

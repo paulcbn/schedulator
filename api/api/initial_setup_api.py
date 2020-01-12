@@ -7,10 +7,8 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.serializers.enrollment_state_serializers import CompleteSubjectSerializer, SubjectPageSerializer
 from api.serializers.initial_setup_serializers import DefaultSubjectsSerializer, FormationSerializer, \
     InitiateUserSerializer, BasicSectionSerializer, SubjectSerializer
-from api.services.enrollment_state_service import search_subjects
 from api.services.initial_setup_service import InitialSetupService
 from crawler.models import Subject, Section, Formation
 
@@ -20,15 +18,8 @@ class SubjectAPI(APIView):
     permission_classes = [IsAuthenticated, ]
 
     def get(self, request):
-        if 'search_string' in request.GET:
-            page_index = request.GET.get('page', 1)
-            search_result = search_subjects(request.user, request.GET['search_string'], page_index)
-            serializer = SubjectPageSerializer(search_result)
-
-        else:
-            query_set = Subject.objects.all()
-            serializer = SubjectSerializer(query_set, many=True)
-
+        query_set = Subject.objects.all()
+        serializer = SubjectSerializer(query_set, many=True)
         return Response(serializer.data)
 
 

@@ -64,7 +64,7 @@ def remove_enrollment_from_user(user, subject_id):
     user.user_profile.enrolled_subjects.remove(subject)
 
 
-def search_subjects(user, search_string, page_index):
+def search_not_owned_subjects_paged(user, search_string, page_index):
     fields = search_string.split()
 
     owned = user.user_profile.enrolled_subjects.all()
