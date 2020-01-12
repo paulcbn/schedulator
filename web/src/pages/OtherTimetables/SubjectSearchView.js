@@ -87,7 +87,7 @@ const SubjectSearchView = ({ loadSubjectSearchResult, subjectSearchResult, subje
 
 const SubjectRow = ({ subject, onClick }) => {
   const classes = useSearchSubjectRowStyles();
-  const { name, sections, searchId } = useMemo(() => {
+  const { name, sections } = useMemo(() => {
     return {
       name: deepGet(subject, 'name', ''),
       sections: deepGet(subject, 'sectionSet', []),

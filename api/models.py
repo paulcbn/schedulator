@@ -54,7 +54,7 @@ class Vacation(models.Model):
 
 class StaticTable(models.Model):
     attendances = models.ManyToManyField(to=TimetableEntry)
-    search_id = models.CharField(max_length=30, unique=True, null=False)
+    search_id = models.CharField(max_length=200, unique=True, null=False)
 
     # Fields for formation type static table
     section = models.ForeignKey(to=Section, on_delete=models.CASCADE, null=True)

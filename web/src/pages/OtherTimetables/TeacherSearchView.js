@@ -87,7 +87,7 @@ const TeacherSearchView = ({ loadTeacherSearchResult, teacherSearchResult, teach
 
 const TeacherRow = ({ teacher, onClick }) => {
   const classes = useSearchTeacherRowStyles();
-  const { name, sections } = useMemo(() => {
+  const { name } = useMemo(() => {
     return {
       name: deepGet(teacher, 'name', ''),
     };
