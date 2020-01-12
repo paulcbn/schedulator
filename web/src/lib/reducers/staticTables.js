@@ -2,12 +2,25 @@ const initialState = {
   sections: [],
   sectionsLoading: true,
   sectionsErrors: {},
+
   staticTableHierarchy: null,
   staticTableHierarchyLoading: true,
   staticTableHierarchyErrors: {},
+
   staticTable: null,
   staticTableLoading: true,
   staticTableErrors: {},
+
+  subjectSearchResult: [],
+  subjectSearchString: '',
+  subjectSearchResultError: null,
+  subjectSearchResultLoading: false,
+
+  teacherSearchResult: [],
+  teacherSearchString: '',
+  teacherSearchResultError: null,
+  teacherSearchResultLoading: false,
+
 };
 
 export default function staticTables(state = initialState, action) {
@@ -47,6 +60,65 @@ export default function staticTables(state = initialState, action) {
       return { ...state, staticTableLoading: false, staticTableErrors: {}, staticTable: action.data };
     case 'STATIC_TABLE_ERROR':
       return { ...state, staticTableLoading: false, staticTableErrors: action.data, staticTable: null };
+
+
+    case 'STATIC_TABLE_SUBJECT_SEARCH_RESULT_LOADING':
+      return {
+        ...state,
+        subjectSearchResultLoading: true,
+        subjectSearchResultError: null,
+        subjectSearchString: action.data,
+      };
+    case 'STATIC_TABLE_SUBJECT_SEARCH_RESULT_LOADED':
+      return {
+        ...state,
+        subjectSearchResultLoading: false,
+        subjectSearchResultError: null,
+        subjectSearchResult: action.data,
+      };
+    case 'STATIC_TABLE_SUBJECT_SEARCH_RESULT_ERROR':
+      return {
+        ...state,
+        subjectSearchResultLoading: false,
+        subjectSearchResultError: action.data,
+      };
+    case 'STATIC_TABLE_SUBJECT_SEARCH_RESULT_CLEAR':
+      return {
+        ...state,
+        subjectSearchResultLoading: false,
+        subjectSearchResultError: null,
+        subjectSearchResult: [],
+        subjectSearchString: '',
+      };
+
+    case 'STATIC_TABLE_TEACHER_SEARCH_RESULT_LOADING':
+      return {
+        ...state,
+        teacherSearchResultLoading: true,
+        teacherSearchResultError: null,
+        teacherSearchString: action.data,
+      };
+    case 'STATIC_TABLE_TEACHER_SEARCH_RESULT_LOADED':
+      return {
+        ...state,
+        teacherSearchResultLoading: false,
+        teacherSearchResultError: null,
+        teacherSearchResult: action.data,
+      };
+    case 'STATIC_TABLE_TEACHER_SEARCH_RESULT_ERROR':
+      return {
+        ...state,
+        teacherSearchResultLoading: false,
+        teacherSearchResultError: action.data,
+      };
+    case 'STATIC_TABLE_TEACHER_SEARCH_RESULT_CLEAR':
+      return {
+        ...state,
+        teacherSearchResultLoading: false,
+        teacherSearchResultError: null,
+        teacherSearchResult: [],
+        teacherSearchString: '',
+      };
 
     default:
       return state;

@@ -7,7 +7,7 @@ from django.db import reset_queries, connection
 
 from api.serializers.enrollment_state_serializers import EnrolledSubjectSerializer
 from api.services.enrollment_state_service import get_enrolled_for_user, get_entries_for_subject_component, \
-    search_subjects
+    search_not_owned_subjects_paged
 
 
 def debugger_queries(func):
@@ -38,5 +38,5 @@ class Command(BaseCommand):
 
     @debugger_queries
     def handle(self, *args, **options):
-        result = search_subjects('a  ', 2)
+        result = search_not_owned_subjects_paged('a  ', 2)
         print(result)

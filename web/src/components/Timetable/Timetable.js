@@ -1,11 +1,11 @@
-import React, { useMemo, useRef, useState } from 'react';
 import { Box, Button, Hidden, Typography } from '@material-ui/core';
 import PrevIcon from '@material-ui/icons/NavigateBefore';
 import NextIcon from '@material-ui/icons/NavigateNext';
-import ReactResizeDetector from 'react-resize-detector';
 import moment from 'moment';
+import React, { useMemo, useRef, useState } from 'react';
+import ReactResizeDetector from 'react-resize-detector';
 
-import { deepGet, groupBy } from '../../lib';
+import { deepGet, groupBy, weekDayCodes } from '../../lib';
 import { useReferenceEntryStyle, useTimetableStyle } from './styles';
 import TimetableColumn from './TimetableColumn';
 
@@ -53,6 +53,8 @@ const Timetable = (
     referenceColumnStart,
     referenceColumnInterval,
     onClickEntry,
+    displayFormation,
+    displayTeacher,
   }) => {
   const [ weekdayOffset, setWeekdayOffset ] = useState(0);
   const [ scrollbarWidth, setScrollbarWidth ] = useState(0);
@@ -77,7 +79,6 @@ const Timetable = (
   }, [ referenceColumnStart, referenceColumnInterval, referenceStart, referenceEnd ]);
 
   const gridScrollBoxRef = useRef(null);
-
 
 
   const handleHeightResize = () => {
@@ -107,7 +108,9 @@ const Timetable = (
           referenceEnd={ referenceEnd }
           currentParity={ currentParity }
           rawEntries={ (groupedEntries[code] || []) }
-          onClickEntry={ onClickEntry }/>
+          onClickEntry={ onClickEntry }
+          displayFormation={ displayFormation }
+          displayTeacher={ displayTeacher }/>
       </Hidden>;
     },
   );
@@ -197,34 +200,17 @@ const TimeReferenceEntry = ({ referenceStart, referenceEnd, currentTime }) => {
 
 export default Timetable;
 
+const days = Object.entries(weekDayCodes)
+  .sort(([ code1, { index1 } ], [ code2, { index2 } ]) => index1 - index2)
+  .map(([ code, { name } ]) => ({ code, name }));
 
-const days = [
-  {
-    code: 'Mo',
-    name: 'Luni',
-  },
-  {
-    code: 'Tu',
-    name: 'Marti',
-  },
-  {
-    code: 'We',
-    name: 'Miercuri',
-  },
-  {
-    code: 'Th',
-    name: 'Joi',
-  },
-  {
-    code: 'Fr',
-    name: 'Vineri',
-  },
-  {
-    code: 'Sa',
-    name: 'Sambata',
-  },
-  {
-    code: 'Su',
-    name: 'Duminica',
-  },
-];
+
+// The result is something like this:
+
+// const days = [
+//   {
+//     code: 'Mo',
+//     name: 'Luni',
+//   },
+//   ...
+// ];

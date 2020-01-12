@@ -136,9 +136,9 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
   },
   formation: {
     width: '100%',
-    color: '#4b4b4b',
+    color: '#f0f0f0',
     overflow: 'hidden',
-    fontSize: '0.8rem',
+    fontSize: ({ subjectFontSize }) => subjectFontSize,
     fontFamily: 'Montserrat',
   },
   subjectComponentColor: {

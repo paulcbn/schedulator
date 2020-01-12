@@ -29,21 +29,29 @@ const StaticTable = ({ loadStaticTable, staticTable, loading, currentWeek }) => 
   }, [ loadStaticTable, searchId ]);
 
 
-  const { rawEntries, sectionName, sectionYear, formation } = useMemo(() => ({
+  const { rawEntries, sectionName, sectionYear, formation, subjectName, subjectId, teacher } = useMemo(() => ({
     rawEntries: deepGet(staticTable, 'attendances', []),
-    sectionName: deepGet(staticTable, 'section.name', ''),
+    sectionName: deepGet(staticTable, 'section.name', null),
     sectionYear: deepGet(staticTable, 'section.year', ''),
-    formation: deepGet(staticTable, 'mostRelevantFormation.name', ''),
+    formation: deepGet(staticTable, 'mostRelevantFormation.name', null),
+    subjectId: deepGet(staticTable, 'subject.sid', null),
+    subjectName: deepGet(staticTable, 'subject.name', null),
+    teacher: deepGet(staticTable, 'teacher', null),
   }), [ staticTable ]);
 
+  const tabName = useMemo(() => formation || subjectId || teacher || 'Unknown', [ formation, subjectId, teacher ]);
+  const displayFormation = useMemo(() => !!(teacher || subjectId), [ teacher, subjectId ]);
+  const displayTeacher = useMemo(() => !!subjectId, [ subjectId ]);
+  
   if (loading === true)
     return <Layout>
       <CircularProgress/>
     </Layout>;
 
 
-  return <Layout otherLabel={ formation }>
+  return <Layout otherLabel={ tabName }>
     <Paper className={ classes.paper }>
+      { sectionName !== null &&
       <Typography variant={ 'h5' } className={ classes.typography }>
         { sectionName }
         <Typography
@@ -59,6 +67,17 @@ const StaticTable = ({ loadStaticTable, staticTable, loading, currentWeek }) => 
           &nbsp;-&nbsp;{ formation }
         </Typography>
       </Typography>
+      }
+      { teacher != null && <Typography variant={ 'h5' } className={ classes.typography }>{ teacher }</Typography> }
+      { subjectId != null && <Typography variant={ 'h5' } className={ classes.typography }>
+        { subjectName }
+        <Typography
+          component={ 'span' }
+          variant={ 'h5' }
+          color={ 'textSecondary' }>
+          &nbsp;({ subjectId })
+        </Typography>
+      </Typography> }
       <Box className={ classes.topBox }>
         <Box className={ classes.switchBox }>
           <Switch
@@ -88,6 +107,8 @@ const StaticTable = ({ loadStaticTable, staticTable, loading, currentWeek }) => 
         referenceColumnStart={ moment.duration('8:00:00') }
         referenceColumnInterval={ moment.duration(60, 'minute') }
         onClickEntry={ openInfoModal }
+        displayFormation={ displayFormation }
+        displayTeacher={ displayTeacher }
       />
     </Paper>
 

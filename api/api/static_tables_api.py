@@ -3,8 +3,9 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 from api.models import StaticTable
-from api.serializers.static_tables_serializers import StaticTableSerializer, StaticTableHierarchySerializer
-from api.services.static_table_service import get_static_tables_hierarchy
+from api.serializers.static_tables_serializers import StaticTableSerializer, StaticTableHierarchySerializer, \
+    SubjectPageSerializer, TeacherPageSerializer
+from api.services.static_table_service import get_static_tables_hierarchy, search_subjects_paged, search_teachers_paged
 
 
 class StaticTableAPI(generics.RetrieveAPIView):
@@ -19,7 +20,7 @@ class StaticTableAPI(generics.RetrieveAPIView):
         return Response([])
 
 
-class StaticTableHierarchyAPI(generics.RetrieveAPIView):
+class FormationsStaticTableHierarchyAPI(generics.RetrieveAPIView):
     renderer_classes = [JSONRenderer, ]
 
     def get(self, request, *args, **kwargs):
@@ -28,3 +29,31 @@ class StaticTableHierarchyAPI(generics.RetrieveAPIView):
             serializer = StaticTableHierarchySerializer(hierarchy)
             return Response(serializer.data)
         return Response(status=400)
+
+
+class SubjectStaticTableAPI(generics.RetrieveAPIView):
+    renderer_classes = [JSONRenderer, ]
+
+    def get(self, request, *args, **kwargs):
+        if 'search_string' in request.GET:
+            page_index = request.GET.get('page', 1)
+            search_result = search_subjects_paged(request.GET['search_string'], page_index)
+        else:
+            search_result = search_subjects_paged('', 1)
+
+        serializer = SubjectPageSerializer(search_result)
+        return Response(serializer.data)
+
+
+class TeacherStaticTableAPI(generics.RetrieveAPIView):
+    renderer_classes = [JSONRenderer, ]
+
+    def get(self, request, *args, **kwargs):
+        if 'search_string' in request.GET:
+            page_index = request.GET.get('page', 1)
+            search_result = search_teachers_paged(request.GET['search_string'], page_index)
+        else:
+            search_result = search_teachers_paged('', 1)
+
+        serializer = TeacherPageSerializer(search_result)
+        return Response(serializer.data)

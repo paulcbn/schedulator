@@ -10,10 +10,9 @@ from rest_framework.views import APIView
 from api.exceptions import NoSemester
 from api.models import Semester
 from api.serializers.current_status_serializers import TimetableEntrySerializer
-from api.serializers.enrollment_state_serializers import CreateAttendanceSerializer, CreateEnrollmentSerializer
-from api.services.enrollment_state_service import add_entries_for_user, remove_attendance_from_user, \
-    remove_enrollment_from_user, add_enrollments_for_user
-from api.services.security_service import user_owns_entries, user_is_enrolled_to_subjects
+from api.serializers.enrollment_state_serializers import CreateAttendanceSerializer
+from api.services.enrollment_state_service import add_entries_for_user, remove_attendance_from_user
+from api.services.security_service import user_owns_entries
 from api.services.semester_calculation_service import get_school_week
 from crawler.models import TimetableEntry
 
@@ -54,36 +53,6 @@ class OwnAttendancesListAPI(APIView):
 
         return Response()
 
-
-class OwnEnrollmentsListAPI(APIView):
-    renderer_classes = [JSONRenderer, ]
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [IsAuthenticated, ]
-
-    def delete(self, request):
-        user = request.user
-
-        if 'subject_id' not in request.GET:
-            return HttpResponseBadRequest("Subject id not supplied.")
-
-        subject_id = request.GET['subject_id']
-        remove_enrollment_from_user(user, subject_id)
-
-        return Response()
-
-    def post(self, request):
-        user = request.user
-
-        serializer = CreateEnrollmentSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        subject_id = serializer.validated_data['subject_id']
-
-        if user_is_enrolled_to_subjects(user, [subject_id]):
-            return HttpResponseBadRequest("User already is enrolled.")
-
-        add_enrollments_for_user(user, [subject_id])
-        return Response()
 
 
 class CurrentWeekAPI(generics.RetrieveAPIView):

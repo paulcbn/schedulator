@@ -90,7 +90,7 @@ export const clearComponentState = () => ({ type: 'SUBJECT_COMPONENT_STATE_CLEAR
 export const loadSubjectSearchResult = (searchString, pageIndex = 1) => {
   return (dispatch, getState) => {
     dispatch({ type: 'SUBJECT_SEARCH_RESULT_LOADING', data: searchString });
-    API.get(`/api/subjects/?search_string=${ searchString }&page=${ +pageIndex }`)
+    API.get(`/api/not-owned-subjects/?search_string=${ searchString }&page=${ +pageIndex }`)
       .then(({ status, data }) => {
         if (status === 200)
           dispatch({ type: 'SUBJECT_SEARCH_RESULT_LOADED', data: keysToCamel(data) });

@@ -53,10 +53,18 @@ class Vacation(models.Model):
 
 
 class StaticTable(models.Model):
-    section = models.ForeignKey(to=Section, on_delete=models.CASCADE)
-    formations = models.ManyToManyField(to=Formation)
     attendances = models.ManyToManyField(to=TimetableEntry)
     search_id = models.CharField(max_length=30, unique=True, null=False)
+
+    # Fields for formation type static table
+    section = models.ForeignKey(to=Section, on_delete=models.CASCADE, null=True)
+    formations = models.ManyToManyField(to=Formation)
+
+    # Fields for teacher static table
+    teacher = models.CharField(max_length=200, null=True)
+
+    # Fields for subject static table
+    subject = models.ForeignKey(to=Subject, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.search_id
