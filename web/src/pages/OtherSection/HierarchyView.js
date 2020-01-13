@@ -45,6 +45,7 @@ const HierarchyView = ({ staticTableHierarchy, showTitle, onClick } = { showTitl
 
         if (searchId !== '')
           return <Button
+            key={ formationName }
             variant='outlined' color='primary'
             onClick={ () => onClick(searchId) }
             className={ classes.marginRight }>

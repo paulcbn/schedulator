@@ -1,39 +1,42 @@
-import { CircularProgress, Paper, Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import Switch from '@material-ui/core/Switch';
+import DateIcon from '@material-ui/icons/DateRange';
 import moment from 'moment';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import EntryInfoModal from '../../components/EntryInfoModal/EntryInfoModal';
 import Layout from '../../components/Layout/Layout';
+import { OverlayCircularProgress } from '../../components/OverlayCircularProgress';
 import Timetable from '../../components/Timetable/Timetable';
-import { auth } from '../../lib/actions';
-import DateIcon from '@material-ui/icons/DateRange';
+import { deepGet } from '../../lib';
+import { currentWeek } from '../../lib/actions';
 import { useModal } from '../../lib/hooks';
 import useStyles from './styles';
 
-const Dashboard = ({ entries, currentWeek, loading }) => {
+const Dashboard = ({ entries, currentWeekStatus, loading, loadCurrentWeek }) => {
   const [ nextWeek, setNextWeek ] = useState(false);
 
   const handleNextWeekChange = event => setNextWeek(!!event.target.checked);
+  useEffect(() => loadCurrentWeek(), [ loadCurrentWeek ]);
+
+  const { week, nextWeekDelta } = useMemo(() => ({
+    week: deepGet(currentWeekStatus, 'week', 1),
+    nextWeekDelta: deepGet(currentWeekStatus, 'nextWeekDelta', 1),
+    isVacation: deepGet(currentWeekStatus, 'isVacation', false),
+  }), [ currentWeekStatus ]);
 
   const currentDate = useMemo(() => moment().startOf('day'), []);
-  const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(1, 'week') : moment(currentDate), [ currentDate, nextWeek ]);
-  const currentParity = useMemo(() => (+currentWeek + (nextWeek ? 1 : 0)) % 2 === 0 ? 'evn' : 'odd', [ currentWeek, nextWeek ]);
+  const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(nextWeekDelta, 'week') : moment(currentDate), [ currentDate, nextWeek, nextWeekDelta ]);
+  const currentParity = useMemo(() => (+week + (nextWeek ? 1 : 0)) % 2 === 0 ? 'evn' : 'odd', [ week, nextWeek ]);
   const { isOpen: isInfoModalOpen, open: openInfoModal, close: closeInfoModal, data: infoModalData } = useModal();
 
   const classes = useStyles();
 
-  if (loading === true)
-    return <Layout>
-      <CircularProgress/>
-    </Layout>;
-
-
   return <Layout>
     <Paper className={ classes.paper }>
-
+      <OverlayCircularProgress show={ loading }/>
       <Box className={ classes.topBox }>
         <Box className={ classes.switchBox }>
           <Switch
@@ -48,7 +51,7 @@ const Dashboard = ({ entries, currentWeek, loading }) => {
         </Box>
         <Chip
           icon={ <DateIcon/> }
-          label={ `Saptamana ${ +currentWeek + (nextWeek ? 1 : 0) }` }
+          label={ `Saptamana ${ +week + (nextWeek ? 1 : 0) }` }
           variant="outlined"
           color="secondary"
         />
@@ -72,14 +75,14 @@ const Dashboard = ({ entries, currentWeek, loading }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch(auth.logout()),
+    loadCurrentWeek: () => dispatch(currentWeek.loadCurrentWeek()),
   };
 };
 
 const mapStateToProps = state => {
   return {
     entries: state.currentStatus.ownTimetableEntries,
-    currentWeek: state.currentStatus.currentWeek,
+    currentWeekStatus: state.currentWeek.currentWeekStatus,
     loading: state.currentStatus.ownTimetableLoading,
   };
 };

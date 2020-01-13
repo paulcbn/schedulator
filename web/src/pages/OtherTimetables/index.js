@@ -1,1 +1,1 @@
-export {default as OtherSections} from './OtherTimetables'
+export {default as OtherTimetables} from './OtherTimetables'

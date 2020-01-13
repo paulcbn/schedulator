@@ -1,4 +1,4 @@
-import { CircularProgress, Paper, Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import Switch from '@material-ui/core/Switch';
@@ -9,20 +9,33 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import EntryInfoModal from '../../components/EntryInfoModal/EntryInfoModal';
 import Layout from '../../components/Layout/Layout';
+import { OverlayCircularProgress } from '../../components/OverlayCircularProgress';
 import Timetable from '../../components/Timetable/Timetable';
-import { deepGet, useModal } from '../../lib';
+import { currentWeek, deepGet, useModal } from '../../lib';
 import { staticTables } from '../../lib/actions';
 import useStyles from './styles';
 
-const StaticTable = ({ loadStaticTable, staticTable, loading, currentWeek }) => {
+const StaticTable = ({ loadStaticTable, staticTable, loading, currentWeekStatus, loadCurrentWeek }) => {
   const { searchId } = useParams();
   const classes = useStyles();
   const [ nextWeek, setNextWeek ] = useState(false);
+
   const { isOpen: isInfoModalOpen, open: openInfoModal, close: closeInfoModal, data: infoModalData } = useModal();
-  const currentDate = useMemo(() => moment().startOf('day'), []);
+
+  useEffect(() => loadCurrentWeek(), [ loadCurrentWeek ]);
+
+  const { week, nextWeekDelta } = useMemo(() => ({
+    week: deepGet(currentWeekStatus, 'week', 1),
+    nextWeekDelta: deepGet(currentWeekStatus, 'nextWeekDelta', 1),
+    isVacation: deepGet(currentWeekStatus, 'isVacation', false),
+  }), [ currentWeekStatus ]);
+
   const handleNextWeekChange = event => setNextWeek(!!event.target.checked);
-  const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(1, 'week') : moment(currentDate), [ currentDate, nextWeek ]);
-  const currentParity = useMemo(() => (+currentWeek + (nextWeek ? 1 : 0)) % 2 === 0 ? 'evn' : 'odd', [ currentWeek, nextWeek ]);
+
+  const currentDate = useMemo(() => moment().startOf('day'), []);
+  const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(nextWeekDelta, 'week') : moment(currentDate), [ currentDate, nextWeek, nextWeekDelta ]);
+  const currentParity = useMemo(() => (+week + (nextWeek ? 1 : 0)) % 2 === 0 ? 'evn' : 'odd', [ week, nextWeek ]);
+
   useEffect(() => {
     if (searchId !== undefined)
       loadStaticTable(searchId);
@@ -42,15 +55,11 @@ const StaticTable = ({ loadStaticTable, staticTable, loading, currentWeek }) => 
   const tabName = useMemo(() => formation || subjectId || teacher || 'Unknown', [ formation, subjectId, teacher ]);
   const displayFormation = useMemo(() => !!(teacher || subjectId), [ teacher, subjectId ]);
   const displayTeacher = useMemo(() => !!subjectId, [ subjectId ]);
-  
-  if (loading === true)
-    return <Layout>
-      <CircularProgress/>
-    </Layout>;
 
 
   return <Layout otherLabel={ tabName }>
     <Paper className={ classes.paper }>
+      <OverlayCircularProgress show={loading}/>
       { sectionName !== null &&
       <Typography variant={ 'h5' } className={ classes.typography }>
         { sectionName }
@@ -92,7 +101,7 @@ const StaticTable = ({ loadStaticTable, staticTable, loading, currentWeek }) => 
         </Box>
         <Chip
           icon={ <DateIcon/> }
-          label={ `Saptamana ${ +currentWeek + (nextWeek ? 1 : 0) }` }
+          label={ `Saptamana ${ +week + (nextWeek ? 1 : 0) }` }
           variant="outlined"
           color="secondary"
         />
@@ -120,12 +129,13 @@ const mapStateToProps = state => {
   return {
     staticTable: state.staticTables.staticTable,
     loading: state.staticTables.staticTableLoading,
-    currentWeek: state.currentStatus.currentWeek,
+    currentWeekStatus: state.currentWeek.currentWeekStatus,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    loadCurrentWeek: () => dispatch(currentWeek.loadCurrentWeek()),
     loadStaticTable: (searchId) => {
       return dispatch(staticTables.loadStaticTable(searchId));
     },

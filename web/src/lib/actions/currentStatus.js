@@ -12,13 +12,5 @@ export const loadOwnData = () => {
           dispatch({ type: 'OWN_TIMETABLE_ERROR', data: keysToCamel(data) });
         }
       });
-    API.get('/api/current-week/')
-      .then(({ status, data }) => {
-        if (status === 200)
-          dispatch({ type: 'SET_CURRENT_WEEK', data: keysToCamel(data) });
-        else {
-          dispatch({ type: 'SET_CURRENT_WEEK', data: null });
-        }
-      });
   };
 };

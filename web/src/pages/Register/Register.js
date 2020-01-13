@@ -8,6 +8,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { connect } from 'react-redux';
 
 import { Redirect, useHistory } from 'react-router-dom';
+import Layout from '../../components/Layout/Layout';
 import useStyles from './styles';
 
 import { auth } from '../../lib/actions';
@@ -44,7 +45,7 @@ const Register = ({ errors, isAuthenticated, register, loading }) => {
   }
 
 
-  return <>
+  return <Layout otherLabel={ 'register' }>
     <Container maxWidth="sm" className={ classes.loginContainer }>
       <form onSubmit={ handleSubmit }>
         <Paper className={ classes.loginPaper }>
@@ -116,7 +117,7 @@ const Register = ({ errors, isAuthenticated, register, loading }) => {
         </Paper>
       </form>
     </Container>
-  </>;
+  </Layout>;
 };
 
 const mapStateToProps = state => {

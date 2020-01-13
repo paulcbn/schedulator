@@ -5,7 +5,7 @@ from django.test import TestCase
 
 
 from api.models import Semester, Vacation
-from api.services.semester_calculation_service import is_vacation_week, get_school_week
+from api.services.current_week_service import is_vacation_week, get_school_week
 
 
 class SemesterDateTests(TestCase):
