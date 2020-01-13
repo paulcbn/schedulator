@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { connect } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
+import Layout from '../../components/Layout/Layout';
 import { auth } from '../../lib/actions';
 
 import useStyles from './styles';
@@ -37,7 +38,7 @@ const Login = ({ errors, loading, isAuthenticated, login }) => {
   if (isAuthenticated)
     return <Redirect to="/"/>;
 
-  return <>
+  return <Layout>
     <Container maxWidth="sm" className={ classes.loginContainer }>
       <form onSubmit={ handleSubmit }>
         <Paper className={ classes.loginPaper }>
@@ -83,7 +84,7 @@ const Login = ({ errors, loading, isAuthenticated, login }) => {
         </Paper>
       </form>
     </Container>
-  </>;
+  </Layout>;
 
 };
 

@@ -124,7 +124,7 @@ class SearchSubjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subject
-        fields = ['name', 'section_set', 'search_id']
+        fields = ['sid', 'name', 'section_set', 'search_id']
 
     def get_search_id(self, subject):
         return get_search_id_for_subject(subject)

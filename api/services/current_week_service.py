@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from api.exceptions import NoSemester
 from api.models import Vacation, Semester
 
@@ -26,7 +28,7 @@ def is_vacation_week(week):
 
 def get_vacation(current_week):
     for vacation in Vacation.objects.all():
-        if vacation.start_week <= current_week < vacation.end_week:
+        if vacation.start_week <= current_week <= vacation.end_week:
             return vacation
     return None
 
@@ -51,3 +53,28 @@ def get_school_week(current_week):
         return current_week
     except AttributeError:
         raise NoSemester('No semester found')
+
+
+def get_next_week_delta(actual_week):
+    next_actual_week = actual_week + 1
+    next_week_vacation = get_vacation(next_actual_week)
+    if next_week_vacation is None:
+        return next_actual_week - actual_week
+
+    return next_week_vacation.end_week + 1 - actual_week
+
+
+def get_current_week():
+    last_semester = Semester.objects.order_by('-start_date').first()
+    actual_week = last_semester.weeks_past(timezone.now())
+    semester_week = get_school_week(actual_week)
+    vacation = get_vacation(actual_week)
+    next_week_delta = get_next_week_delta(actual_week)
+
+    result = {
+        'week': semester_week,
+        'is_vacation': vacation is not None,
+        'next_week_delta': next_week_delta
+    }
+
+    return result

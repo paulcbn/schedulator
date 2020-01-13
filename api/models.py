@@ -37,8 +37,7 @@ class Semester(models.Model):
         return f"Semester {self.name}"
 
     def weeks_past(self, date):
-        calculated_start_date = self.start_date - datetime.timedelta(self.start_date.weekday())
-        delta = date - calculated_start_date
+        delta = date - self.start_date
         return delta.days // 7 + 1
 
 

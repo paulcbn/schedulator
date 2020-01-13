@@ -61,7 +61,7 @@ const TeacherSearchView = ({ loadTeacherSearchResult, teacherSearchResult, teach
           value={ searchString }
           onChange={ handleChange }
           variant={ 'outlined' }
-          label="Numele materiei"
+          label="Numele profesorului"
         />
         <IconButton
           color="primary"
@@ -73,7 +73,7 @@ const TeacherSearchView = ({ loadTeacherSearchResult, teacherSearchResult, teach
       </form>
     </Box>
     <Box className={ classes.content }>
-      { teachers.map(teacher => <TeacherRow key={ teacher.sid } onClick={ handleNavigate } teacher={ teacher }/>) }
+      { teachers.map(teacher => <TeacherRow key={ teacher.name } onClick={ handleNavigate } teacher={ teacher }/>) }
       <OverlayCircularProgress show={ teacherSearchResultLoading }/>
     </Box>
     <Box className={ classes.buttons }>

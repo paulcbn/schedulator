@@ -1,71 +1,55 @@
-import { AppBar, Avatar, Box, Container, IconButton, Tab, Tabs, Typography } from '@material-ui/core';
-import LogoutIcon from '@material-ui/icons/ExitToApp';
-import SettingsIcon from '@material-ui/icons/Settings';
-import React, { useMemo } from 'react';
+import { Box, Container } from '@material-ui/core';
+
+import React, { useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { deepGet } from '../../lib';
 import { auth } from '../../lib/actions';
+import { offlineLayoutConfig, onlineLayoutConfig } from './config';
+import LayoutHeader from './LayoutHeader';
+import LayoutNavigation from './LayoutNavigation';
 import useStyles from './styles';
 
 
-const locations = [ '/', '/other-timetables' ];
-
-const Layout = ({ children, user, logout, otherLabel }) => {
+const Layout = ({ children, user, logout, otherLabel, isAuthenticated }) => {
   const classes = useStyles();
   const { pathname } = useLocation();
   const history = useHistory();
 
-  const initials = useMemo(() => {
-    return `${ deepGet(user, 'firstName.0', '') }${ deepGet(user, 'lastName.0', '') }`;
-  }, [ user ]);
-
-  const handleChange = (event, newValue) => {
-    if (newValue < locations.length) {
-      history.push(locations[newValue]);
-    }
-  };
-  const navigatePreferences = () => {
-    history.push('/preferences');
-  };
-
-
+  const layoutConfig = useMemo(() => isAuthenticated ? onlineLayoutConfig : offlineLayoutConfig, [ isAuthenticated ]);
+  const initials = useMemo(() => `${ deepGet(user, 'firstName.0', '') }${ deepGet(user, 'lastName.0', '') }`, [ user ]);
   const currentTabIndex = useMemo(() => {
-    const locationIndex = locations.indexOf(pathname);
+    const locationIndex = layoutConfig.locations.findIndex((location) => location.route === pathname);
     if (locationIndex !== -1)
       return locationIndex;
 
     if (otherLabel !== undefined)
-      return locations.length;
+      return layoutConfig.locations.length;
 
     return 0;
-  }, [ pathname, otherLabel ]);
+  }, [ pathname, otherLabel, layoutConfig.locations ]);
+
+  const handleChangeTabIndex = useCallback((event, newValue) => {
+    if (newValue < layoutConfig.locations.length) {
+      history.push(layoutConfig.locations[newValue].route);
+    }
+  }, [ history, layoutConfig.locations ]);
+  const navigatePreferences = useCallback(() => history.push(layoutConfig.preferencesRoute), [ layoutConfig, history ]);
 
   return <Box className={ classes.root }>
-    <AppBar position="static" className={ classes.appBar }>
-      <Typography variant="h5" className={ classes.title }>
-        <span className={ classes.sLetter }>S</span>chedulator
-      </Typography>
-      { initials.length > 0 && <Avatar className={ classes.avatar }>{ initials }</Avatar> }
-      <IconButton color="default" className={ classes.logoutButton } onClick={ navigatePreferences }>
-        <SettingsIcon/>
-      </IconButton>
-      <IconButton color="default" className={ classes.logoutButton } onClick={ logout }>
-        <LogoutIcon/>
-      </IconButton>
-    </AppBar>
-    <AppBar position="static" color="default">
-      <Tabs value={ currentTabIndex } onChange={ handleChange }
-            variant="fullWidth"
-            indicatorColor="primary"
-            textColor="primary"
-      >
-        <Tab label="Orele mele"/>
-        <Tab label="Alte grupe"/>
-        { otherLabel && <Tab label={ otherLabel }/> }
-      </Tabs>
-    </AppBar>
+    <LayoutHeader
+      isAuthenticated={ isAuthenticated }
+      initials={ initials }
+      onLogout={ logout }
+      onNavigateToPreferences={ navigatePreferences }
+    />
+    <LayoutNavigation
+      locations={ layoutConfig.locations }
+      currentTabIndex={ currentTabIndex }
+      handleChangeTabIndex={ handleChangeTabIndex }
+      otherLabel={ otherLabel }
+    />
     <Container maxWidth={ 'lg' } className={ classes.container }>
       { children }
     </Container>
@@ -80,6 +64,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
+    isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.currentUser,
   };
 };

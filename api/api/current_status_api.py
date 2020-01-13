@@ -13,7 +13,7 @@ from api.serializers.current_status_serializers import TimetableEntrySerializer
 from api.serializers.enrollment_state_serializers import CreateAttendanceSerializer
 from api.services.enrollment_state_service import add_entries_for_user, remove_attendance_from_user
 from api.services.security_service import user_owns_entries
-from api.services.semester_calculation_service import get_school_week
+from api.services.current_week_service import get_school_week
 from crawler.models import TimetableEntry
 
 
@@ -53,16 +53,3 @@ class OwnAttendancesListAPI(APIView):
 
         return Response()
 
-
-
-class CurrentWeekAPI(generics.RetrieveAPIView):
-    renderer_classes = [JSONRenderer, ]
-
-    def get(self, request, *args, **kwargs):
-        try:
-            last_semester = Semester.objects.order_by('-start_date').first()
-            week = last_semester.weeks_past(timezone.now())
-            week = get_school_week(week)
-            return Response(week)
-        except (ValueError, AttributeError, NoSemester):
-            return Response(status=400)

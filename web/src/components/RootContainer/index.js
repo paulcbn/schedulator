@@ -8,7 +8,7 @@ import {
   Login,
   NotFound,
   OtherSection,
-  OtherSections,
+  OtherTimetables,
   Preferences,
   Register,
   StaticTable,
@@ -31,14 +31,24 @@ class RootContainerComponent extends Component {
                         authState={ this.props.auth }/>
           <PrivateRoute exact path="/preferences/attendances" component={ Attendances } authState={ this.props.auth }/>
           <PrivateRoute exact path="/preferences" component={ Preferences } authState={ this.props.auth }/>
-          <PrivateRoute exact path="/other-timetables" component={ OtherSections } authState={ this.props.auth }/>
-          <PrivateRoute exact path="/sections/:sectionId" component={ OtherSection }
-                        authState={ this.props.auth }/>
-          <PrivateRoute exact path="/static-tables/:searchId" component={ StaticTable }
-                        authState={ this.props.auth }/>
-          <Route exact path="/login" component={ Login }/>
-          <Route exact path="/register" component={ Register }/>
-          <Route component={ NotFound }/>
+          <Route exact path="/other-timetables">
+            <OtherTimetables authState={ this.props.auth }/>
+          </Route>
+          <Route exact path="/sections/:sectionId">
+            <OtherSection authState={ this.props.auth }/>
+          </Route>
+          <Route exact path="/static-tables/:searchId">
+            <StaticTable authState={ this.props.auth }/>
+          </Route>
+          <Route exact path="/login">
+            <Login/>
+          </Route>
+          <Route exact path="/register">
+            <Register/>
+          </Route>
+          <Route>
+            <NotFound/>
+          </Route>
         </Switch>
       </BrowserRouter>
     );

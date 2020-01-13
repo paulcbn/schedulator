@@ -1,9 +1,11 @@
 from django.urls import path, include
 
 from api.api.auth_api import RegistrationAPI, LoginAPI, UserAPI
-from api.api.current_status_api import OwnAttendancesListAPI, CurrentWeekAPI
+from api.api.current_status_api import OwnAttendancesListAPI
+from api.api.current_week_api import CurrentWeekAPI
 from api.api.enrollment_state_api import OwnEnrollmentStateAPI, SubjectComponentStateAPI, OwnEnrollmentAPI, \
     NotOwnedSubjectAPI
+from api.api.export_timetable_api import ExportTimetableApi
 from api.api.initial_setup_api import SubjectAPI, DefaultSubjectsAPI, SectionAPI, FormationAPI, InitiateUserAPI
 from api.api.static_tables_api import StaticTableAPI, FormationsStaticTableHierarchyAPI, SubjectStaticTableAPI, \
     TeacherStaticTableAPI
@@ -25,6 +27,8 @@ urlpatterns = [
 
     # current status
     path("attendances/", OwnAttendancesListAPI.as_view()),
+
+    # current week
     path("current-week/", CurrentWeekAPI.as_view()),
 
     # static tables
@@ -39,4 +43,6 @@ urlpatterns = [
     path("not-owned-subjects/", NotOwnedSubjectAPI.as_view()),
     path("subject-components/<int:subject_component_id>/attendances/", SubjectComponentStateAPI.as_view()),
 
+    # export timetable
+    path("export-own-timetable/", ExportTimetableApi.as_view()),
 ]
