@@ -64,6 +64,12 @@ def get_next_week_delta(actual_week):
     return next_week_vacation.end_week + 1 - actual_week
 
 
+def get_week_for_date(date):
+    last_semester = Semester.objects.order_by('-start_date').first()
+    actual_week = last_semester.weeks_past(date)
+    return get_school_week(actual_week)
+
+
 def get_current_week():
     last_semester = Semester.objects.order_by('-start_date').first()
     actual_week = last_semester.weeks_past(timezone.now())
