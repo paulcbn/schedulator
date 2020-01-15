@@ -5,7 +5,7 @@ import moment from 'moment';
 import React, { useMemo, useRef, useState } from 'react';
 import ReactResizeDetector from 'react-resize-detector';
 
-import { deepGet, groupBy, weekDayCodes } from '../../lib';
+import { deepGet, deepSet, groupBy, weekDayCodes } from '../../lib';
 import { useReferenceEntryStyle, useTimetableStyle } from './styles';
 import TimetableColumn from './TimetableColumn';
 
@@ -42,11 +42,25 @@ const getWeekdayIndex = (date, daysCount) => {
   return dif;
 };
 
+const mapCustomEntryToRegularEntry = (customEntry) => {
+  let resultEntry = { ...customEntry };
+  resultEntry.id = `CustomId(${ customEntry.id })`;
+
+  deepSet(resultEntry, 'id', `CustomEntry(${ deepGet(customEntry, 'id') })`);
+  deepSet(resultEntry, 'subjectComponent.subject.name', deepGet(customEntry, 'subjectName'));
+  deepSet(resultEntry, 'subjectComponent.name', deepGet(customEntry, 'subjectComponentName'));
+  deepSet(resultEntry, 'room.name', deepGet(customEntry, 'roomName'));
+  deepSet(resultEntry, 'fomration.name', deepGet(customEntry, 'formationName'));
+
+  return resultEntry;
+};
+
 const Timetable = (
   {
     referenceStart,
     referenceEnd,
     rawEntries,
+    rawCustomEntries,
     currentDate,
     currentParity,
     daysCount,
@@ -61,10 +75,14 @@ const Timetable = (
 
   const mondayDate = useMemo(() => moment(currentDate).startOf('isoWeek'), [ currentDate ]);
   const currentWeekdayIndex = useMemo(() => getWeekdayIndex(currentDate, daysCount), [ currentDate, daysCount ]);
-  const truncatedEntries = useMemo(() => rawEntries
+
+  const allRawEntries = useMemo(() => (rawEntries || []).concat((rawCustomEntries || []).map(mapCustomEntryToRegularEntry)),
+    [ rawEntries, rawCustomEntries ]);
+  const truncatedEntries = useMemo(() => allRawEntries
       .filter(entry => isOutOfBounds(entry, referenceStart, referenceEnd))
       .map(entry => truncateEntry(entry, referenceStart, referenceEnd)),
-    [ rawEntries, referenceStart, referenceEnd ]);
+    [ allRawEntries, referenceStart, referenceEnd ]);
+
   const groupedEntries = useMemo(() => groupBy(truncatedEntries, entry => entry.weekDay),
     [ truncatedEntries ]);
   const referenceTimes = useMemo(() => {

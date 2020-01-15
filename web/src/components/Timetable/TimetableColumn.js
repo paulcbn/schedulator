@@ -114,6 +114,7 @@ const TimetableColumn = ({ referenceStart, referenceEnd, rawEntries, currentPari
     const parityFilteredEntries = rawEntries.filter(entry => entry.frequency === 'all' || currentParity === 'all' || currentParity === entry.frequency);
     return entryListToPositioningList(parityFilteredEntries);
   }, [ rawEntries, currentParity ]);
+  console.log(positionedEntries);
 
   return <Box className={ classes.mainBox }>
     { positionedEntries.map(entry => <TimetableEntry

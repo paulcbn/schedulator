@@ -1,0 +1,84 @@
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import moment from 'moment';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { ConfirmationModal, Layout, OverlayCircularProgress } from '../../components';
+import { deepGet } from '../../lib';
+import { addCustomEntry, loadCustomData, removeCustomEntry } from '../../lib/actions/currentStatus';
+import { useModal } from '../../lib/hooks';
+import AddCustomEntryModal from './AddCustomEntryModal';
+import EntryItem from './EntryItem';
+import useStyles from './styles';
+
+const CustomEntries = ({ entries, entriesLoading, removeEntriesLoading, loadCustomData, removeCustomEntry, addCustomEntry, addCustomEntryError, addEntryError, addEntryLoading }) => {
+  const classes = useStyles();
+  const { close: closeConfirmModal, open: openConfirmModal, isOpen: isConfirmModalOpen, data: confirmModalData } = useModal();
+  const { close: closeAddCustomEntryModal, open: openAddCustomEntryModal, isOpen: isAddCustomEntryModalOpen } = useModal();
+  useEffect(() => {
+    loadCustomData();
+  }, [ loadCustomData ]);
+
+  const handleDelete = (entryId) => {
+    removeCustomEntry(entryId);
+  };
+  const handleAdd = (entry) => {
+    const formattedStartTime = moment(deepGet(entry, 'startTime')).format('HH:mm');
+    const formattedEndTime = moment(deepGet(entry, 'endTime')).format('HH:mm');
+    addCustomEntry({ ...entry, startTime: formattedStartTime, endTime: formattedEndTime });
+  };
+
+  return <Layout otherLabel={ 'Ore auxiliare' }>
+    <Box className={ classes.root }>
+      { (entries || []).map(entry => <EntryItem key={ entry.id } entry={ entry }
+                                                onDelete={ () => openConfirmModal(entry.id) }/>) }
+      <OverlayCircularProgress show={ entriesLoading }/>
+    </Box>
+    <Button onClick={ () => openAddCustomEntryModal() } color={ 'primary' } variant={ 'contained' } className={classes.addButton}>
+      Adauga intrare
+    </Button>
+    <ConfirmationModal
+      isOpen={ isConfirmModalOpen }
+      onClose={ closeConfirmModal }
+      onConfirm={ handleDelete }
+      data={ confirmModalData }
+      title={ 'Esti sigur ca vrei sa renunti la intrare?' }
+      text={ 'Aceasta va fi stearsa permanent din orar.' }
+    />
+    <AddCustomEntryModal
+      isOpen={ isAddCustomEntryModalOpen }
+      onClose={ closeAddCustomEntryModal }
+      onAddEntry={ handleAdd }
+      error={ addEntryError }
+      loading={ addEntryLoading }
+      title={ 'Esti sigur ca vrei sa renunti la intrare?' }
+      text={ 'Aceasta va fi stearsa permanent din orar.' }
+    />
+  </Layout>;
+};
+const mapStateToProps = state => {
+  return {
+    entries: state.currentStatus.personalTimetableEntries,
+    entriesLoading: state.currentStatus.personalTimetableEntriesLoading,
+    removeEntriesLoading: state.currentStatus.removePersonalTimetableEntryLoading,
+    addEntriesLoading: state.currentStatus.addPersonalTimetableEntryLoading,
+    addEntryError: state.currentStatus.addPersonalTimetableEntryError,
+
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    loadCustomData: () => {
+      return dispatch(loadCustomData());
+    },
+    removeCustomEntry: (entryId) => {
+      return dispatch(removeCustomEntry(entryId));
+    },
+    addCustomEntry: (entry) => {
+      return dispatch(addCustomEntry(entry));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomEntries);

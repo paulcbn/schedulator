@@ -15,7 +15,7 @@ import { currentWeek } from '../../lib/actions';
 import { useModal } from '../../lib/hooks';
 import useStyles from './styles';
 
-const Dashboard = ({ entries, currentWeekStatus, loading, loadCurrentWeek }) => {
+const Dashboard = ({ entries, currentWeekStatus, loading, loadCurrentWeek, customEntries }) => {
   const [ nextWeek, setNextWeek ] = useState(false);
 
   const handleNextWeekChange = event => setNextWeek(!!event.target.checked);
@@ -60,6 +60,7 @@ const Dashboard = ({ entries, currentWeekStatus, loading, loadCurrentWeek }) => 
         referenceStart={ moment.duration('7:45:00') }
         referenceEnd={ moment.duration('20:15:00') }
         rawEntries={ entries }
+        rawCustomEntries={ customEntries }
         currentDate={ displayDate }
         daysCount={ 5 }
         currentParity={ currentParity }
@@ -82,6 +83,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     entries: state.currentStatus.ownTimetableEntries,
+    customEntries: state.currentStatus.personalTimetableEntries,
     currentWeekStatus: state.currentWeek.currentWeekStatus,
     loading: state.currentStatus.ownTimetableLoading,
   };

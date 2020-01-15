@@ -14,6 +14,7 @@ import {
   StaticTable,
   Attendances,
 } from '../../pages';
+import { CustomEntries} from '../../pages';
 import PrivateRoute from '../PrivateRoute';
 
 class RootContainerComponent extends Component {
@@ -31,6 +32,7 @@ class RootContainerComponent extends Component {
                         authState={ this.props.auth }/>
           <PrivateRoute exact path="/preferences/attendances" component={ Attendances } authState={ this.props.auth }/>
           <PrivateRoute exact path="/preferences" component={ Preferences } authState={ this.props.auth }/>
+          <PrivateRoute exact path="/custom-entries" component={ CustomEntries } authState={ this.props.auth }/>
           <Route exact path="/other-timetables">
             <OtherTimetables authState={ this.props.auth }/>
           </Route>

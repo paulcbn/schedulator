@@ -8,3 +8,4 @@ export * from './OtherSection';
 export * from './OtherTimetables';
 export * from './StaticTable';
 export * from './Attendances';
+export * from './CustomEntries';
