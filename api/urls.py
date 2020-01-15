@@ -3,6 +3,7 @@ from django.urls import path, include
 from api.api.auth_api import RegistrationAPI, LoginAPI, UserAPI
 from api.api.current_status_api import OwnAttendancesListAPI
 from api.api.current_week_api import CurrentWeekAPI
+from api.api.custom_entries_api import PersonalTableEntryListCreateAPI, PersonalTableEntryDestroyAPI
 from api.api.enrollment_state_api import OwnEnrollmentStateAPI, SubjectComponentStateAPI, OwnEnrollmentAPI, \
     NotOwnedSubjectAPI
 from api.api.export_timetable_api import ExportTimetableApi
@@ -45,4 +46,8 @@ urlpatterns = [
 
     # export timetable
     path("export-own-timetable/", ExportTimetableApi.as_view()),
+
+    # personal timetable entries
+    path("personal-timetable-entries/", PersonalTableEntryListCreateAPI.as_view()),
+    path("personal-timetable-entries/<int:pk>/", PersonalTableEntryDestroyAPI.as_view()),
 ]

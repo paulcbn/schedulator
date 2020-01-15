@@ -15,6 +15,7 @@ const Preferences = () => {
 
   const handleNavigateToInitialSetup = () => history.push('/preferences/initial-setup');
   const handleNavigateToAttendances = () => history.push('/preferences/attendances');
+  const handleNavigateToCustomEntries = () => history.push('/custom-entries');
 
   const handleDownloadExport = async () => { // this is hacky, i know.
     setExportState(oldState => ({ ...oldState, loading: true }));
@@ -56,6 +57,17 @@ const Preferences = () => {
         Modifica formatiile cu care ai decis sa participi la ore.
       </> }
       actionText={ 'Materiile mele' }
+    />
+
+    <MenuItem
+      onClick={ handleNavigateToCustomEntries }
+      title={ 'Administrare intrari auxiliare' }
+      description={ <>
+        Adauga/sterge intrari in orar care nu fac parte din orarul facultatii de mate-info.
+        <br/>
+        Poti creea sau sterge intrari care respecta sablonul intrarilor din orarul facultatii.
+      </> }
+      actionText={ 'Auxiliare' }
     />
 
     <MenuItem
