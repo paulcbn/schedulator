@@ -8,6 +8,7 @@ from django.db import reset_queries, connection
 from api.serializers.enrollment_state_serializers import EnrolledSubjectSerializer
 from api.services.enrollment_state_service import get_enrolled_for_user, get_entries_for_subject_component, \
     search_not_owned_subjects_paged
+from api.services.export_timetable_service import generate_export
 
 
 def debugger_queries(func):
@@ -38,5 +39,5 @@ class Command(BaseCommand):
 
     @debugger_queries
     def handle(self, *args, **options):
-        result = search_not_owned_subjects_paged('a  ', 2)
-        print(result)
+        admin_usr = User.objects.get(username='admin')
+        print(generate_export(admin_usr))
