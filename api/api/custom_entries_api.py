@@ -13,6 +13,8 @@ class PersonalTableEntryListCreateAPI(generics.ListCreateAPIView):
     serializer_class = CreatePersonalTableEntrySerializer
 
     def perform_create(self, serializer):
+        if self.request.user.user_profile.personaltableentry_set.count() >= 15:
+            raise Exception('Already achieved limit.')
         serializer.save(user_profile=self.request.user.user_profile)
 
     def get_queryset(self):

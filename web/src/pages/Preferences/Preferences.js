@@ -74,8 +74,8 @@ const Preferences = () => {
       onClick={ handleDownloadExport }
       title={ 'Export orar' }
       description={ <>
-        Export orarul personal in format ics.
-        <br/>
+        Export orarul personal in format ics.<br/>
+        (Fara materiile personalizate, doar cele din orarul facultatii).<br/>
         (Format compatibil cu Google Calendar, MS Outlook, etc.)
       </> }
       actionText={ 'Exporta' }

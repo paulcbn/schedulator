@@ -1,7 +1,8 @@
+import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { ConfirmationModal, Layout, OverlayCircularProgress } from '../../components';
 import { deepGet } from '../../lib';
@@ -27,16 +28,22 @@ const CustomEntries = ({ entries, entriesLoading, removeEntriesLoading, loadCust
     const formattedEndTime = moment(deepGet(entry, 'endTime')).format('HH:mm');
     addCustomEntry({ ...entry, startTime: formattedStartTime, endTime: formattedEndTime });
   };
+  const limitAchieved = useMemo(() => (entries || []).length >= 15, [ entries ]);
 
   return <Layout otherLabel={ 'Ore auxiliare' }>
     <Box className={ classes.root }>
-      { (entries || []).map(entry => <EntryItem key={ entry.id } entry={ entry }
-                                                onDelete={ () => openConfirmModal(entry.id) }/>) }
+      { (entries || []).map(entry => <EntryItem
+        key={ entry.id } entry={ entry }
+        onDelete={ () => openConfirmModal(entry.id) }/>) }
       <OverlayCircularProgress show={ entriesLoading }/>
     </Box>
-    <Button onClick={ () => openAddCustomEntryModal() } color={ 'primary' } variant={ 'contained' } className={classes.addButton}>
+    <Button onClick={ () => openAddCustomEntryModal() } color={ 'primary' } variant={ 'contained' }
+            className={ classes.addButton } disabled={ limitAchieved }>
       Adauga intrare
     </Button>
+    { limitAchieved && <Typography variant={ 'h5' }>
+      Ai atins limita de 15 intrari personalizate!
+    </Typography> }
     <ConfirmationModal
       isOpen={ isConfirmModalOpen }
       onClose={ closeConfirmModal }
@@ -63,7 +70,6 @@ const mapStateToProps = state => {
     removeEntriesLoading: state.currentStatus.removePersonalTimetableEntryLoading,
     addEntriesLoading: state.currentStatus.addPersonalTimetableEntryLoading,
     addEntryError: state.currentStatus.addPersonalTimetableEntryError,
-
   };
 };
 
