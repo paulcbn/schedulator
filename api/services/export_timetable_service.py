@@ -3,7 +3,7 @@ import datetime
 import pytz
 from django.utils import timezone
 from ics import Calendar, Event
-from ics.parse import ContentLine, Container
+from ics.parse import ContentLine
 
 from api.models import Semester, Vacation
 from api.services.current_week_service import get_week_for_date
@@ -35,6 +35,20 @@ def localized(date):
 
 def add_time(date, time):
     return date + datetime.timedelta(hours=time.hour, minutes=time.minute)
+
+
+def should_create_event(timetable_entry, interval):
+    start_date, end_date = interval
+    count = (end_date - start_date).days // 7
+    if count >= 2:
+        return True
+
+    week_parity = get_week_for_date(start_date) % 2
+    if timetable_entry.frequency == TimetableEntry.ODD_WEEKS and week_parity == 0:
+        return False
+    if timetable_entry.frequency == TimetableEntry.EVEN_WEEKS and week_parity == 1:
+        return False
+    return True
 
 
 def apply_frequency(day, freq, interval):
@@ -89,12 +103,12 @@ def generate_semester_intervals():
 
     total_vacation_length = 0
     for vacation in vacations:
-        total_vacation_length += vacation.end_week - vacation.start_week + 1
-        end_date = semester_start + datetime.timedelta(weeks=vacation.start_week)
+        total_vacation_length += len(vacation)
+        end_date = semester_start + datetime.timedelta(weeks=vacation.start_week - 1)
         result.append((start_date, end_date))
         start_date = semester_start + datetime.timedelta(weeks=vacation.end_week)
 
-    end_date = semester_start + datetime.timedelta(weeks=semester.weeks + total_vacation_length - 1)
+    end_date = semester_start + datetime.timedelta(weeks=semester.weeks + total_vacation_length)
     result.append((start_date, end_date))
 
     return result
@@ -106,6 +120,7 @@ def generate_export(user):
     semester_intervals = generate_semester_intervals()
     for timetable_entry in user.user_profile.attendance_choices.all():
         for interval in semester_intervals:
-            e = create_event(timetable_entry, interval)
-            c.events.add(e)
+            if should_create_event(timetable_entry, interval):
+                e = create_event(timetable_entry, interval)
+                c.events.add(e)
     return str(c)
