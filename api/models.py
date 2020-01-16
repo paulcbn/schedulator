@@ -48,7 +48,7 @@ class Vacation(models.Model):
     semester = models.ForeignKey(to=Semester, on_delete=models.CASCADE)
 
     def __len__(self):
-        return self.end_week - self.start_week
+        return self.end_week - self.start_week + 1
 
 
 class StaticTable(models.Model):

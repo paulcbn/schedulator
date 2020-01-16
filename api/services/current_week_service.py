@@ -5,29 +5,12 @@ from api.models import Vacation, Semester
 
 
 def is_vacation_week(week):
-    """
-    :param week: small integer
-    :return: True if the week is valid and vacation week else False
-    """
-    try:
-        semester = Semester.objects.order_by('-start_date').first()
-        if week < 1:
-            return False
-
-        if week > semester.weeks:
-            return False
-    except AttributeError:
-        raise NoSemester("The semester doesn't start yet")
-    vacations = Vacation.objects.all()
-    result = False
-    for vacation in vacations:
-        if vacation.start_week <= week < vacation.end_week:
-            result = True
-    return result
+    return get_vacation(week) is not None
 
 
 def get_vacation(current_week):
-    for vacation in Vacation.objects.all():
+    current_semester = Semester.objects.order_by('-start_date').first()
+    for vacation in current_semester.vacation_set.all():
         if vacation.start_week <= current_week <= vacation.end_week:
             return vacation
     return None
