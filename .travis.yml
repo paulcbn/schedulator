@@ -3,5 +3,8 @@ python:
   - "3.7"
 install:
   - pip install -r requirements.txt
+env:
+  - DEBUG=on
+  - SECRET_KEY=your-secret-key
 script:
   - python manage.py test
