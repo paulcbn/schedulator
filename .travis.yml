@@ -7,7 +7,8 @@ install:
   - cp .env.example .env
   - python manage.py makemigrations
   - python manage.py makemigrations crawler
-  - python manage.py makemigrations api
+  - python manage.py makemigrations api_core
+  - python manage.py makemigrations scs_auth # this has no models right now, just in case
   - python manage.py migrate
 script:
   - python manage.py test
