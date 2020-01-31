@@ -6,7 +6,7 @@ from ics import Calendar, Event
 from ics.parse import ContentLine
 
 from api_core.models import Semester, Vacation
-from api_core.services.current_week_service import get_week_for_date
+from api_current_semester_status.service import get_week_for_date
 from crawler.models import TimetableEntry
 
 days_mapper = {

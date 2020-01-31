@@ -1,6 +1,5 @@
 from django.urls import path, include
 
-from api_core.api.current_week_api import CurrentWeekAPI
 from api_core.api.custom_entries_api import PersonalTableEntryListCreateAPI, PersonalTableEntryDestroyAPI
 from api_core.api.enrollment_state_api import OwnEnrollmentStateAPI, SubjectComponentStateAPI, OwnEnrollmentAPI, \
     NotOwnedSubjectAPI, OwnAttendancesCreateDestroyAPI
@@ -13,9 +12,7 @@ urlpatterns = [
     path("auth/", include('scs_auth.urls')),
     path("reset-timetable/", include('api_reset_timetable.urls')),
     path("current-timetable/", include('api_current_timetable.urls')),
-
-
-    path("current-week/", CurrentWeekAPI.as_view()),
+    path("current-semester-status/", include('api_current_semester_status.urls')),
 
     # static tables
     path("static-tables/", StaticTableAPI.as_view()),

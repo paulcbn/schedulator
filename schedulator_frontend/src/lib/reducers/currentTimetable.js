@@ -18,9 +18,6 @@ const initialState = {
 
 export default function currentTimetable(state = initialState, action) {
   switch (action.type) {
-    case 'SET_CURRENT_WEEK':
-      return { ...state, currentWeek: action.data };
-
     case 'OWN_TIMETABLE_LOADING':
       return { ...state, ownTimetableLoading: true, ownTimetableErrors: {}, ownTimetableEntries: [] };
     case 'OWN_TIMETABLE_LOADED':
@@ -29,7 +26,7 @@ export default function currentTimetable(state = initialState, action) {
       return { ...state, ownTimetableLoading: false, ownTimetableErrors: action.data, ownTimetableEntries: [] };
 
     case 'CLEAR_CURRENT_STATUS':
-      return { ownTimetableEntries: [], currentWeek: null, ownTimetableLoading: false, ownTimetableErrors: {} };
+      return { ownTimetableEntries: [], ownTimetableLoading: false, ownTimetableErrors: {} };
 
     case 'PERSONAL_TIMETABLE_ENTRIES_LOADING':
       return { ...state, personalTimetableLoading: true, personalTimetableErrors: {}, personalTimetableEntries: [] };

@@ -11,21 +11,21 @@ import Layout from '../../components/Layout/Layout';
 import { OverlayCircularProgress } from '../../components/OverlayCircularProgress';
 import Timetable from '../../components/Timetable/Timetable';
 import { deepGet } from '../../lib';
-import { currentWeek } from '../../lib/actions';
+import { currentSemesterStatus } from '../../lib/actions';
 import { useModal } from '../../lib/hooks';
 import useStyles from './styles';
 
-const Dashboard = ({ entries, currentWeekStatus, loading, loadCurrentWeek, customEntries }) => {
+const Dashboard = ({ entries, semesterStatus, loading, loadCurrentSemesterStatus, customEntries }) => {
   const [ nextWeek, setNextWeek ] = useState(false);
 
   const handleNextWeekChange = event => setNextWeek(!!event.target.checked);
-  useEffect(() => loadCurrentWeek(), [ loadCurrentWeek ]);
+  useEffect(() => loadCurrentSemesterStatus(), [ loadCurrentSemesterStatus ]);
 
   const { week, nextWeekDelta } = useMemo(() => ({
-    week: deepGet(currentWeekStatus, 'week', 1),
-    nextWeekDelta: deepGet(currentWeekStatus, 'nextWeekDelta', 1),
-    isVacation: deepGet(currentWeekStatus, 'isVacation', false),
-  }), [ currentWeekStatus ]);
+    week: deepGet(semesterStatus, 'week', 1),
+    nextWeekDelta: deepGet(semesterStatus, 'nextWeekDelta', 1),
+    isVacation: deepGet(semesterStatus, 'isVacation', false),
+  }), [ semesterStatus ]);
 
   const currentDate = useMemo(() => moment().startOf('day'), []);
   const displayDate = useMemo(() => nextWeek ? moment(currentDate).add(nextWeekDelta, 'week') : moment(currentDate), [ currentDate, nextWeek, nextWeekDelta ]);
@@ -76,7 +76,7 @@ const Dashboard = ({ entries, currentWeekStatus, loading, loadCurrentWeek, custo
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadCurrentWeek: () => dispatch(currentWeek.loadCurrentWeek()),
+    loadCurrentSemesterStatus: () => dispatch(currentSemesterStatus.loadCurrentSemesterStatus()),
   };
 };
 
@@ -84,7 +84,7 @@ const mapStateToProps = state => {
   return {
     entries: state.currentTimetable.ownTimetableEntries,
     customEntries: state.currentTimetable.personalTimetableEntries,
-    currentWeekStatus: state.currentWeek.currentWeekStatus,
+    semesterStatus: state.currentSemesterStatus.currentSemesterStatus,
     loading: state.currentTimetable.ownTimetableLoading,
   };
 };
