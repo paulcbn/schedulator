@@ -72,7 +72,7 @@ def search_not_owned_subjects_paged(user, search_string, page_index):
     query = Q()
     query = reduce(operator.and_, map(lambda field: Q(name__icontains=field), fields), query)
     query = reduce(operator.or_, map(lambda field: Q(alias__iexact=field), fields), query)
-    query_set = Subject.objects.filter(query).difference(owned).prefetch_related('section_set').order_by('name')
+    query_set = Subject.objects.filter(query).prefetch_related('section_set').difference(owned).order_by('name')
     paginator = Paginator(query_set, 5)
 
     return {'current_page': page_index, 'page_count': paginator.num_pages,

@@ -1,2 +1,0 @@
-class CrawlerException(Exception):
-    pass

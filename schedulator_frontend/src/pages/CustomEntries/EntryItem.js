@@ -39,7 +39,6 @@ const EntryField = ({ title, value, hide }) => {
 
 const EntryItem = ({ entry, onDelete }) => {
   const classes = useEntryItemStyles();
-  console.log(entry);
   const { startTime, endTime, weekDay, frequency, roomName, formationName, teacher, subjectComponentName, subjectName } = useMemo(() => {
     return {
       startTime: covertSecondsToMoment(deepGet(entry, 'startTime', 0)).format('HH:mm'),

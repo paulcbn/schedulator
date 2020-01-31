@@ -1,7 +1,8 @@
 language: python
 python:
-  - "3.7"
+  - "3.7.6"
 install:
+  - cd schedulator_backend
   - pip install -r requirements.txt
   - cp .env.example .env
   - python manage.py makemigrations
