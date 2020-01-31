@@ -4,8 +4,16 @@ from rest_framework.response import Response
 
 from api_core.models import StaticTable
 from api_core.serializers.static_tables_serializers import StaticTableSerializer, StaticTableHierarchySerializer, \
-    SubjectPageSerializer, TeacherPageSerializer
-from api_core.services.static_table_service import get_static_tables_hierarchy, search_subjects_paged, search_teachers_paged
+    SubjectPageSerializer, TeacherPageSerializer, BasicSectionSerializer
+from api_core.services.static_table_service import get_static_tables_hierarchy, search_subjects_paged, \
+    search_teachers_paged
+from crawler.models import Section
+
+
+class SectionAPI(generics.ListAPIView):
+    renderer_classes = [JSONRenderer, ]
+    serializer_class = BasicSectionSerializer
+    queryset = Section.objects.all()
 
 
 class StaticTableAPI(generics.RetrieveAPIView):

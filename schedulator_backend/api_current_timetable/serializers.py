@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from crawler.models import Subject, Section, Formation, TimetableEntry, Room, SubjectComponent
+from crawler.models import Subject, Formation, TimetableEntry, Room, SubjectComponent
 
 
 class SubjectSerializer(serializers.ModelSerializer):

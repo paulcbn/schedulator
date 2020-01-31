@@ -1,6 +1,6 @@
 import { keysToCamel, keysToUnderscore } from '../api';
 import { API, deepGet } from '../index';
-import { loadOwnData } from './currentStatus';
+import { loadOwnData } from './currentTimetable';
 
 export const loadEnrollmentState = () => {
   return (dispatch, getState) => {
@@ -34,7 +34,7 @@ export const addEntriesToSelf = (entryIds) => {
   return (dispatch, getState) => {
     dispatch({ type: 'ADD_ENTRIES_LOADING' });
     const componentId = deepGet(getState(), 'enrollmentStatus.subjectComponentState.subjectComponent.id');
-    API.post('/api/attendances/', { entry_ids: entryIds })
+    API.post('/api/enrollment-state/attendances/', { entry_ids: entryIds })
       .then(({ status, data }) => {
         if (status === 200)
           dispatch({ type: 'ADD_ENTRIES_LOADED' });
@@ -53,7 +53,7 @@ export const removeEntryForSelf = (entryId) => {
   return (dispatch, getState) => {
     dispatch({ type: 'REMOVE_ENTRY_LOADING' });
     const componentId = deepGet(getState(), 'enrollmentStatus.subjectComponentState.subjectComponent.id');
-    API.delete('/api/attendances/', { params: { entry_id: entryId } })
+    API.delete('/api/enrollment-state/attendances/', { params: { entry_id: entryId } })
       .then(({ status, data }) => {
         if (status === 200)
           dispatch({ type: 'REMOVE_ENTRY_LOADED' });

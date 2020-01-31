@@ -6,6 +6,12 @@ from api_core.services.static_table_service import get_most_relevant_formation, 
 from crawler.models import Section, Formation, TimetableEntry, Room, SubjectComponent, Subject
 
 
+class BasicSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Section
+        fields = ['id', 'name', 'year', 'type']
+
+
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject

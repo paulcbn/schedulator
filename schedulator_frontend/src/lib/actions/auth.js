@@ -1,6 +1,6 @@
 import { keysToCamel } from '../api';
 import { API } from '../index';
-import { loadOwnData } from './currentStatus';
+import { loadOwnData } from './currentTimetable';
 
 export const loadUser = () => {
   return (dispatch, getState) => {

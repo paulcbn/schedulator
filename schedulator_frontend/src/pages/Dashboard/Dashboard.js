@@ -82,10 +82,10 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    entries: state.currentStatus.ownTimetableEntries,
-    customEntries: state.currentStatus.personalTimetableEntries,
+    entries: state.currentTimetable.ownTimetableEntries,
+    customEntries: state.currentTimetable.personalTimetableEntries,
     currentWeekStatus: state.currentWeek.currentWeekStatus,
-    loading: state.currentStatus.ownTimetableLoading,
+    loading: state.currentTimetable.ownTimetableLoading,
   };
 };
 

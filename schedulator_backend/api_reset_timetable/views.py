@@ -37,8 +37,6 @@ class DefaultSubjectsAPI(APIView):
 
 class SectionAPI(generics.ListAPIView):
     renderer_classes = [JSONRenderer, ]
-    # authentication_classes = [TokenAuthentication, ]
-    # permission_classes = [IsAuthenticated, ]
     serializer_class = BasicSectionSerializer
     queryset = Section.objects.all()
 

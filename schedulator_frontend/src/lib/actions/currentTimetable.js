@@ -4,7 +4,7 @@ import { API } from '../index';
 export const loadOwnData = () => {
   return (dispatch, getState) => {
     dispatch({ type: 'OWN_TIMETABLE_LOADING' });
-    API.get('/api/attendances/')
+    API.get('/api/current-timetable/attendances/')
       .then(({ status, data }) => {
         if (status === 200)
           dispatch({ type: 'OWN_TIMETABLE_LOADED', data: keysToCamel(data) });

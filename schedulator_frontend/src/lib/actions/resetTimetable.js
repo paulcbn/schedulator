@@ -1,6 +1,6 @@
 import { keysToCamel, keysToUnderscore } from '../api';
 import { API } from '../index';
-import { loadOwnData } from './currentStatus';
+import { loadOwnData } from './currentTimetable';
 
 export const loadSections = () => {
   return (dispatch, getState) => {

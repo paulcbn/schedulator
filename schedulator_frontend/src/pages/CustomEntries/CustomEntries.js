@@ -6,7 +6,7 @@ import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { ConfirmationModal, Layout, OverlayCircularProgress } from '../../components';
 import { deepGet } from '../../lib';
-import { addCustomEntry, loadCustomData, removeCustomEntry } from '../../lib/actions/currentStatus';
+import { addCustomEntry, loadCustomData, removeCustomEntry } from '../../lib/actions/currentTimetable';
 import { useModal } from '../../lib/hooks';
 import AddCustomEntryModal from './AddCustomEntryModal';
 import EntryItem from './EntryItem';
@@ -65,11 +65,11 @@ const CustomEntries = ({ entries, entriesLoading, removeEntriesLoading, loadCust
 };
 const mapStateToProps = state => {
   return {
-    entries: state.currentStatus.personalTimetableEntries,
-    entriesLoading: state.currentStatus.personalTimetableEntriesLoading,
-    removeEntriesLoading: state.currentStatus.removePersonalTimetableEntryLoading,
-    addEntriesLoading: state.currentStatus.addPersonalTimetableEntryLoading,
-    addEntryError: state.currentStatus.addPersonalTimetableEntryError,
+    entries: state.currentTimetable.personalTimetableEntries,
+    entriesLoading: state.currentTimetable.personalTimetableEntriesLoading,
+    removeEntriesLoading: state.currentTimetable.removePersonalTimetableEntryLoading,
+    addEntriesLoading: state.currentTimetable.addPersonalTimetableEntryLoading,
+    addEntryError: state.currentTimetable.addPersonalTimetableEntryError,
   };
 };
 

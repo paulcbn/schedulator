@@ -6,11 +6,13 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api_core.serializers.enrollment_state_serializers import EnrolledSubjectSerializer, SubjectComponentStateSerializer, \
-    CreateEnrollmentSerializer, SubjectPageSerializer
+from api_core.serializers.enrollment_state_serializers import EnrolledSubjectSerializer, \
+    SubjectComponentStateSerializer, \
+    CreateEnrollmentSerializer, SubjectPageSerializer, CreateAttendanceSerializer
 from api_core.services.enrollment_state_service import get_enrolled_for_user, get_entries_for_subject_component, \
-    remove_enrollment_from_user, add_enrollments_for_user, search_not_owned_subjects_paged
-from api_core.services.security_service import user_is_enrolled_to_subjects
+    remove_enrollment_from_user, add_enrollments_for_user, search_not_owned_subjects_paged, add_entries_for_user, \
+    remove_attendance_from_user
+from api_core.services.security_service import user_is_enrolled_to_subjects, user_owns_entries
 
 
 class OwnEnrollmentStateAPI(generics.RetrieveAPIView):
@@ -23,6 +25,36 @@ class OwnEnrollmentStateAPI(generics.RetrieveAPIView):
         result = get_enrolled_for_user(user)
         serializer = EnrolledSubjectSerializer(result, many=True, read_only=True)
         return Response(serializer.data)
+
+
+class OwnAttendancesCreateDestroyAPI(APIView):
+    renderer_classes = [JSONRenderer, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request):
+        user = request.user
+
+        serializer = CreateAttendanceSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        entry_ids = serializer.validated_data['entry_ids']
+
+        if user_owns_entries(user, entry_ids):
+            return HttpResponseBadRequest("User already has that entry.")
+
+        add_entries_for_user(user, entry_ids)
+        return Response()
+
+    def delete(self, request):
+        user = request.user
+
+        if 'entry_id' not in request.GET:
+            return HttpResponseBadRequest("Entry id not supplied.")
+
+        entry_id = request.GET['entry_id']
+        remove_attendance_from_user(user, entry_id)
+
+        return Response()
 
 
 class OwnEnrollmentAPI(APIView):

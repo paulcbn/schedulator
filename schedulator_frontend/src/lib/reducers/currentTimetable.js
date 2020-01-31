@@ -16,7 +16,7 @@ const initialState = {
 };
 
 
-export default function currentStatus(state = initialState, action) {
+export default function currentTimetable(state = initialState, action) {
   switch (action.type) {
     case 'SET_CURRENT_WEEK':
       return { ...state, currentWeek: action.data };
