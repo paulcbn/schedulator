@@ -15,7 +15,7 @@ import useStyles from './styles';
 
 const Login = ({ errors, loading, isAuthenticated, login }) => {
   let history = useHistory();
-  const [ email, setEmail ] = useState('');
+  const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ captcha, setCaptcha ] = useState('');
   const classes = useStyles({ captchaError: errors.captcha });
@@ -28,7 +28,7 @@ const Login = ({ errors, loading, isAuthenticated, login }) => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    login(email, password, captcha);
+    login(username, password, captcha);
   }
 
   function navigateToRegister() {
@@ -45,11 +45,11 @@ const Login = ({ errors, loading, isAuthenticated, login }) => {
           <Typography variant="h2">
             Schedulator
           </Typography>
-          <TextField variant="outlined" label="Email"
-                     error={ !!errors.email }
-                     helperText={ errors.email }
-                     onChange={ event => setEmail(event.target.value) }
-                     value={ email }
+          <TextField variant="outlined" label="Username"
+                     error={ !!errors.username }
+                     helperText={ errors.username }
+                     onChange={ event => setUsername(event.target.value) }
+                     value={ username }
                      className={ classes.loginInput }
           />
           <TextField variant="outlined" label="Password"
@@ -101,8 +101,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: (email, password, captcha) => {
-      return dispatch(auth.login(email, password, captcha));
+    login: (username, password, captcha) => {
+      return dispatch(auth.login(username, password, captcha));
     },
   };
 };

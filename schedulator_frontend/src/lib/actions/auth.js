@@ -1,4 +1,4 @@
-import { keysToCamel, keysToUnderscore } from '../api';
+import { keysToCamel } from '../api';
 import { API } from '../index';
 import { loadOwnData } from './currentStatus';
 
@@ -18,42 +18,20 @@ export const loadUser = () => {
   };
 };
 
-export const login = (email, password, captcha) => {
+export const login = (username, password, captcha) => {
   return (dispatch, getState) => {
     dispatch({ type: 'LOGIN_LOADING' });
-    return API.post('/api/auth/login/', { email, password, captcha })
+    return API.post('/api/auth/login/', { username, password, captcha })
       .then(({ data, status }) => {
         if (status === 200) {
           dispatch({ type: 'LOGIN_LOADED', data: keysToCamel(data) });
           dispatch({ type: 'CLEAR_AUTH_ERRORS' });
+          dispatch(loadUser());
           dispatch(loadOwnData());
         } else {
           dispatch({ type: 'LOGIN_ERROR', data: keysToCamel(data) });
         }
       }).catch(reason => dispatch({ type: 'LOGIN_ERROR', data: { exception: reason } }));
-  };
-};
-
-export const register = (email, password, confirmPassword, firstName, lastName, captcha) => {
-  return (dispatch, getState) => {
-    dispatch({ type: 'REGISTER_LOADING' });
-    API.post('/api/auth/register/', keysToUnderscore({
-      email,
-      password,
-      confirmPassword,
-      firstName,
-      lastName,
-      captcha,
-    }))
-      .then(({ status, data }) => {
-        if (status === 200) {
-          dispatch({ type: 'REGISTER_LOADED', data: keysToCamel(data) });
-          dispatch({ type: 'CLEAR_AUTH_ERRORS' });
-          dispatch(loadOwnData());
-        } else {
-          dispatch({ type: 'REGISTER_ERROR', data: keysToCamel(data) });
-        }
-      }).catch(reason => dispatch({ type: 'REGISTER_ERROR', data: { exception: reason } }));
   };
 };
 

@@ -15,11 +15,33 @@ from datetime import timedelta
 
 import environ
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+"""
+Settings relevant for scs auth:
+-------------------------------
+(0. Make sure 'rest_framework', 'knox' and 'scs_auth' are added to installed apps)
+1. Adding the custom django auth backend
+2. Knox settings (Optional)
+3. Make DRF use the knox authentication
+"""
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+# 1. Django auth backend
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'scs_auth.backends.ScsBackend'
+]
+
+# 2. Knox config
+REST_KNOX = {
+    'TOKEN_TTL': timedelta(days=30),
+    'AUTO_REFRESH': True,
+}
+
+# 3. DRF config
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -29,10 +51,7 @@ environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 DEBUG = env('DEBUG')
 SECRET_KEY = env('SECRET_KEY')
-REST_KNOX = {
-    'TOKEN_TTL': timedelta(days=30),
-    'AUTO_REFRESH': True,
-}
+
 GOOGLE_RECAPTCHA_SECRET_KEY = env('GOOGLE_RECAPTCHA_SECRET_KEY')
 
 ALLOWED_HOSTS = ['localhost', 'schedulator.xyz', 'www.schedulator.xyz']
@@ -53,6 +72,7 @@ INSTALLED_APPS = [
     'knox',
     'crawler',
     'api_core',
+    'scs_auth'
 ]
 
 MIDDLEWARE = [
@@ -67,10 +87,6 @@ MIDDLEWARE = [
 
 if DEBUG:
     MIDDLEWARE.append('api_core.middleware.dev_cors_middleware')
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
-}
 
 ROOT_URLCONF = 'schedulator_backend.urls'
 
@@ -92,14 +108,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'schedulator_backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
     'default': env.db(),
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -119,7 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -132,7 +145,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

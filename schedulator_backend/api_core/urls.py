@@ -1,6 +1,5 @@
 from django.urls import path, include
 
-from api_core.api.auth_api import RegistrationAPI, LoginAPI, UserAPI
 from api_core.api.current_status_api import OwnAttendancesListAPI
 from api_core.api.current_week_api import CurrentWeekAPI
 from api_core.api.custom_entries_api import PersonalTableEntryListCreateAPI, PersonalTableEntryDestroyAPI
@@ -13,10 +12,7 @@ from api_core.api.static_tables_api import StaticTableAPI, FormationsStaticTable
 
 urlpatterns = [
     # auth:
-    path("auth/register/", RegistrationAPI.as_view()),
-    path("auth/login/", LoginAPI.as_view()),
-    path("auth/user/", UserAPI.as_view()),
-    path("auth/", include('knox.urls')),
+    path("auth/", include('scs_auth.urls')),
 
     # initial setup:
     path("subjects/", SubjectAPI.as_view()),

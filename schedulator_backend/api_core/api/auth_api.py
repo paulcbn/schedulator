@@ -5,8 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
-from api_core.serializers.auth_serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer, \
-    GetUserSerializer
+from api_core.serializers.auth_serializers import RegisterFormSerializer, CreateUserSerializer, LoginUserSerializer
 from api_core.services.recaptcha_service import validate_recaptcha
 
 
@@ -50,10 +49,3 @@ class LoginAPI(generics.GenericAPIView):
         })
 
 
-class UserAPI(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated, ]
-    serializer_class = GetUserSerializer
-    authentication_classes = [TokenAuthentication, ]
-
-    def get_object(self):
-        return self.request.user

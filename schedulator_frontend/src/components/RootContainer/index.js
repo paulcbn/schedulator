@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { auth } from '../../lib/actions';
 import {
+  Attendances,
+  CustomEntries,
   Dashboard,
   InitialSetup,
   Login,
@@ -10,11 +12,8 @@ import {
   OtherSection,
   OtherTimetables,
   Preferences,
-  Register,
   StaticTable,
-  Attendances,
 } from '../../pages';
-import { CustomEntries} from '../../pages';
 import PrivateRoute from '../PrivateRoute';
 
 class RootContainerComponent extends Component {
@@ -44,11 +43,7 @@ class RootContainerComponent extends Component {
           </Route>
           <Route exact path="/login">
             <Login/>
-          </Route>
-          <Route exact path="/register">
-            <Register/>
-          </Route>
-          <Route>
+
             <NotFound/>
           </Route>
         </Switch>
