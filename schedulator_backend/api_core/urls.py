@@ -6,7 +6,6 @@ from api_core.api.custom_entries_api import PersonalTableEntryListCreateAPI, Per
 from api_core.api.enrollment_state_api import OwnEnrollmentStateAPI, SubjectComponentStateAPI, OwnEnrollmentAPI, \
     NotOwnedSubjectAPI
 from api_core.api.export_timetable_api import ExportTimetableApi
-from api_core.api.initial_setup_api import SubjectAPI, DefaultSubjectsAPI, SectionAPI, FormationAPI, InitiateUserAPI
 from api_core.api.static_tables_api import StaticTableAPI, FormationsStaticTableHierarchyAPI, SubjectStaticTableAPI, \
     TeacherStaticTableAPI
 
@@ -15,12 +14,8 @@ urlpatterns = [
     path("auth/", include('scs_auth.urls')),
 
     # initial setup:
-    path("subjects/", SubjectAPI.as_view()),
+    path("reset-timetable/", include('api_reset_timetable.urls')),
 
-    path("sections/<int:pk>/default-subjects/", DefaultSubjectsAPI.as_view()),
-    path("sections/", SectionAPI.as_view()),
-    path("formations/", FormationAPI.as_view()),
-    path("initiate-user/", InitiateUserAPI.as_view()),
 
     # current status
     path("attendances/", OwnAttendancesListAPI.as_view()),

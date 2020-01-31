@@ -14,7 +14,7 @@ const initialState = {
 };
 
 
-export default function initialSetup(state = initialState, action) {
+export default function resetTimetable(state = initialState, action) {
   switch (action.type) {
     case 'SECTIONS_LOADING':
       return { ...state, sectionsLoading: true, sectionsErrors: {}, sections: [] };

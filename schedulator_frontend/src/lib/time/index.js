@@ -1,7 +1,3 @@
-import moment from 'moment';
-
-export const timeStringToSeconds = timeString => moment.duration(timeString).asSeconds();
-
 const entriesOverlap = (entry1, entry2) => (entry1.startTime >= entry2.startTime && entry1.startTime < entry2.endTime)
   || (entry1.endTime > entry2.startTime && entry1.endTime <= entry2.endTime)
   || (entry1.startTime <= entry2.startTime && entry1.endTime >= entry2.endTime);

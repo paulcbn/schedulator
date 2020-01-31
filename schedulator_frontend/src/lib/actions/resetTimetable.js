@@ -5,7 +5,7 @@ import { loadOwnData } from './currentStatus';
 export const loadSections = () => {
   return (dispatch, getState) => {
     dispatch({ type: 'SECTIONS_LOADING' });
-    API.get('/api/sections/')
+    API.get('/api/reset-timetable/sections/')
       .then(({ status, data }) => {
         if (status === 200)
           dispatch({ type: 'SECTIONS_LOADED', data: keysToCamel(data) });
@@ -19,7 +19,7 @@ export const loadSections = () => {
 export const loadSubjects = (sectionId) => {
   return (dispatch, getState) => {
     dispatch({ type: 'SUBJECTS_LOADING' });
-    API.get(`/api/sections/${ sectionId }/default-subjects/`)
+    API.get(`/api/reset-timetable/sections/${sectionId}/default-subjects/`)
       .then(({ data, status }) => {
         if (status === 200) {
           dispatch({ type: 'SUBJECTS_LOADED', data: keysToCamel(data) });
@@ -33,7 +33,7 @@ export const loadSubjects = (sectionId) => {
 export const loadFormations = (sectionId) => {
   return (dispatch, getState) => {
     dispatch({ type: 'FORMATIONS_LOADING' });
-    API.get(`/api/formations/`, { params: keysToUnderscore({ sectionId }) })
+    API.get(`/api/reset-timetable/formations/`, { params: keysToUnderscore({ sectionId }) })
       .then(({ data, status }) => {
         if (status === 200) {
           dispatch({ type: 'FORMATIONS_LOADED', data: keysToCamel(data) });
@@ -64,12 +64,15 @@ export const selectSubjects = (subjects) => {
 
 export const confirmSelection = () => {
   return (dispatch, getState) => {
-    const { initialSetup: { selectedFormations, selectedSubjects } } = getState();
+    const { resetTimetable: { selectedFormations, selectedSubjects } } = getState();
 
     const subjectIds = selectedSubjects.map(s => s.sid);
     const formationNames = selectedFormations.map(f => f.name);
 
-    API.post('/api/initiate-user/', keysToUnderscore({ subjectIds, formationNames })).then(({ data, status }) => {
+    API.post('/api/reset-timetable/initiate-user/', keysToUnderscore({
+      subjectIds,
+      formationNames,
+    })).then(({ data, status }) => {
       dispatch(loadOwnData());
     });
   };

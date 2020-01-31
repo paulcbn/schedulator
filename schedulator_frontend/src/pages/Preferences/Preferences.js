@@ -13,7 +13,7 @@ const Preferences = () => {
   const classes = useStyles();
   const [ exportState, setExportState ] = useState({ loading: false, error: false });
 
-  const handleNavigateToInitialSetup = () => history.push('/preferences/initial-setup');
+  const handleNavigateToResetTimetable = () => history.push('/preferences/reset-timetable');
   const handleNavigateToAttendances = () => history.push('/preferences/attendances');
   const handleNavigateToCustomEntries = () => history.push('/custom-entries');
 
@@ -38,7 +38,7 @@ const Preferences = () => {
     <Typography variant={ 'h4' } className={ classes.title }>Preferinte</Typography>
     <Divider/>
     <MenuItem
-      onClick={ handleNavigateToInitialSetup }
+      onClick={ handleNavigateToResetTimetable }
       title={ 'Reseteaza orarul' }
       description={ <>
         Foloseste aceasta optiune pentru a-ti seta (sau reseta) orarul.

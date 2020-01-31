@@ -35,4 +35,4 @@ class AuthTokenSerializer(serializers.Serializer):
 class GetUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'first_name', 'last_name',)
+        fields = ('id', 'username', 'first_name', 'last_name',)

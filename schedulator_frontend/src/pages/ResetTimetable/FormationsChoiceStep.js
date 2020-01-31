@@ -109,7 +109,7 @@ const FormationsChoiceStep = ({ state: { formations, formationsErrors, formation
 
 const mapStateToProps = state => {
   return {
-    state: { ...state.initialSetup },
+    state: { ...state.resetTimetable },
   };
 };
 

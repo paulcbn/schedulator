@@ -7,10 +7,10 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api_core.serializers.initial_setup_serializers import DefaultSubjectsSerializer, FormationSerializer, \
-    InitiateUserSerializer, BasicSectionSerializer, SubjectSerializer
-from api_core.services.initial_setup_service import InitialSetupService
 from crawler.models import Subject, Section, Formation
+from .serializers import DefaultSubjectsSerializer, FormationSerializer, InitiateUserSerializer, \
+    BasicSectionSerializer, SubjectSerializer
+from .service import InitialSetupService
 
 
 class SubjectAPI(APIView):

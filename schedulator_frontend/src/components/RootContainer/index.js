@@ -6,7 +6,7 @@ import {
   Attendances,
   CustomEntries,
   Dashboard,
-  InitialSetup,
+  ResetTimetable,
   Login,
   NotFound,
   OtherSection,
@@ -27,7 +27,7 @@ class RootContainerComponent extends Component {
       <BrowserRouter>
         <Switch>
           <PrivateRoute exact path="/" component={ Dashboard } authState={ this.props.auth }/>
-          <PrivateRoute exact path="/preferences/initial-setup" component={ InitialSetup }
+          <PrivateRoute exact path="/preferences/reset-timetable" component={ ResetTimetable }
                         authState={ this.props.auth }/>
           <PrivateRoute exact path="/preferences/attendances" component={ Attendances } authState={ this.props.auth }/>
           <PrivateRoute exact path="/preferences" component={ Preferences } authState={ this.props.auth }/>

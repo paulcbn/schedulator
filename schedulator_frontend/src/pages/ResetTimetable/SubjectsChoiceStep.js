@@ -75,7 +75,7 @@ const SubjectsChoiceStep = ({ state: { subjects, subjectsErrors, subjectsLoading
 
 const mapStateToProps = state => {
   return {
-    state: { ...state.initialSetup },
+    state: { ...state.resetTimetable },
   };
 };
 

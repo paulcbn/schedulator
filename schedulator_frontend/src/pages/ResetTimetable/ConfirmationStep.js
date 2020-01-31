@@ -86,7 +86,7 @@ const ConfirmationStep = ({ state: { selectedSection, selectedFormations, select
 
 const mapStateToProps = state => {
   return {
-    state: { ...state.initialSetup },
+    state: { ...state.resetTimetable },
   };
 };
 

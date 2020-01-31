@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
-import { initialSetup } from '../../lib/actions';
+import { resetTimetable } from '../../lib/actions';
 import ConfirmationStep from './ConfirmationStep';
 import FormationsChoiceStep from './FormationsChoiceStep';
 import SectionChoiceStep from './SectionChoiceStep';
@@ -13,7 +13,7 @@ import SubjectsChoiceStep from './SubjectsChoiceStep';
 
 const steps = [ 'Alege anul si sectia', 'Alege formatia', 'Alege materiile' ];
 
-const InitialSetup = ({ selectSection, selectFormations, selectSubjects, confirmSelection }) => {
+const ResetTimetable = ({ selectSection, selectFormations, selectSubjects, confirmSelection }) => {
   const classes = useStyles();
   const history = useHistory();
   const [ activeStep, setActiveStep ] = useState(0);
@@ -77,25 +77,25 @@ const InitialSetup = ({ selectSection, selectFormations, selectSubjects, confirm
 
 const mapStateToProps = state => {
   return {
-    state: { ...state.initialSetup },
+    state: { ...state.resetTimetable },
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     selectSection: (section) => {
-      return dispatch(initialSetup.selectSection(section));
+      return dispatch(resetTimetable.selectSection(section));
     },
     selectFormations: (formations) => {
-      return dispatch(initialSetup.selectFormations(formations));
+      return dispatch(resetTimetable.selectFormations(formations));
     },
     selectSubjects: (subjects) => {
-      return dispatch(initialSetup.selectSubjects(subjects));
+      return dispatch(resetTimetable.selectSubjects(subjects));
     },
     confirmSelection: () => {
-      return dispatch(initialSetup.confirmSelection());
+      return dispatch(resetTimetable.confirmSelection());
     },
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(InitialSetup);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetTimetable);
