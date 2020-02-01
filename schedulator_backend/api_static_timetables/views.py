@@ -2,12 +2,11 @@ from rest_framework import generics
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
-from api_core.models import StaticTable
-from api_core.serializers.static_tables_serializers import StaticTableSerializer, StaticTableHierarchySerializer, \
-    SubjectPageSerializer, TeacherPageSerializer, BasicSectionSerializer
-from api_core.services.static_table_service import get_static_tables_hierarchy, search_subjects_paged, \
-    search_teachers_paged
+from .models import StaticTable
 from crawler.models import Section
+from .serializers import BasicSectionSerializer, StaticTableSerializer, StaticTableHierarchySerializer, \
+    SubjectPageSerializer, TeacherPageSerializer
+from .service import get_static_tables_hierarchy, search_subjects_paged, search_teachers_paged
 
 
 class SectionAPI(generics.ListAPIView):

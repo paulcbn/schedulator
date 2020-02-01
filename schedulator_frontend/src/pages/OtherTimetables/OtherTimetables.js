@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { deepGet } from '../../lib';
-import { staticTables } from '../../lib/actions';
+import { staticTimetables } from '../../lib/actions';
 import SectionTable from './SectionTable';
 import useStyles from './styles';
 import SubjectSearchView from './SubjectSearchView';
@@ -60,16 +60,16 @@ const OtherTimetables = ({ loadSections, sections, sectionsLoading }) => {
 
 const mapStateToProps = state => {
   return {
-    sections: state.staticTables.sections,
-    sectionsLoading: state.staticTables.sectionsLoading,
-    sectionsErrors: state.staticTables.sectionsErrors,
+    sections: state.staticTimetables.sections,
+    sectionsLoading: state.staticTimetables.sectionsLoading,
+    sectionsErrors: state.staticTimetables.sectionsErrors,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     loadSections: () => {
-      return dispatch(staticTables.loadSections());
+      return dispatch(staticTimetables.loadSections());
     },
   };
 };

@@ -7,20 +7,20 @@ import {
   useParams,
   useHistory,
 } from 'react-router-dom';
-import { staticTables } from '../../lib/actions';
+import { staticTimetables } from '../../lib/actions';
 import HierarchyView from './HierarchyView';
 import { useOtherSectionStyles } from './styles';
 
-const OtherSection = ({ loadStaticTableHierarchy, hierarchy, loading }) => {
+const OtherSection = ({ loadStaticTimetableHierarchy, hierarchy, loading }) => {
   const { sectionId } = useParams();
   const history = useHistory();
   const classes = useOtherSectionStyles();
   useEffect(() => {
-    loadStaticTableHierarchy(+sectionId);
-  }, [ loadStaticTableHierarchy, sectionId ]);
+    loadStaticTimetableHierarchy(+sectionId);
+  }, [ loadStaticTimetableHierarchy, sectionId ]);
 
   const handleClick = (searchId) => {
-    history.push(`/static-tables/${ searchId }`);
+    history.push(`/static-timetables/${ searchId }`);
   };
 
   if (loading)
@@ -28,22 +28,22 @@ const OtherSection = ({ loadStaticTableHierarchy, hierarchy, loading }) => {
 
   return <Layout otherLabel={ 'Alege formatia' }>
     <Box className={ classes.paddingTopBox }>
-      <HierarchyView staticTableHierarchy={ hierarchy } showTitle={ true } onClick={ handleClick }/>
+      <HierarchyView staticTimetableHierarchy={ hierarchy } showTitle={ true } onClick={ handleClick }/>
     </Box>
   </Layout>;
 };
 
 const mapStateToProps = state => {
   return {
-    hierarchy: state.staticTables.staticTableHierarchy,
-    loading: state.staticTables.staticTableHierarchyLoading,
+    hierarchy: state.staticTimetables.staticTimetableHierarchy,
+    loading: state.staticTimetables.staticTimetableHierarchyLoading,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadStaticTableHierarchy: (sectionId) => {
-      return dispatch(staticTables.loadStaticTableHierarchy(sectionId));
+    loadStaticTimetableHierarchy: (sectionId) => {
+      return dispatch(staticTimetables.loadStaticTimetableHierarchy(sectionId));
     },
   };
 };

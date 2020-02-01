@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import OverlayCircularProgress from '../../components/OverlayCircularProgress/OverlayCircularProgress';
 import { deepGet } from '../../lib';
-import { staticTables } from '../../lib/actions';
+import { staticTimetables } from '../../lib/actions';
 import { useSearchTeacherRowStyles, useTeacherSearchStyles } from './styles';
 
 const TeacherSearchView = ({ loadTeacherSearchResult, teacherSearchResult, teacherSearchResultLoading, addEnrollmentToSelf }) => {
@@ -35,7 +35,7 @@ const TeacherSearchView = ({ loadTeacherSearchResult, teacherSearchResult, teach
   const handleNavigate = (teacher) => {
     const searchId = deepGet(teacher, 'searchId');
     if (searchId !== undefined)
-      history.push(`/static-tables/${ searchId }`);
+      history.push(`/static-timetables/${ searchId }`);
   };
 
   const handleFormSubmit = (e) => {
@@ -109,18 +109,18 @@ const TeacherRow = ({ teacher, onClick }) => {
 
 const mapStateToProps = state => {
   return {
-    teacherSearchResult: state.staticTables.teacherSearchResult,
-    teacherSearchResultLoading: state.staticTables.teacherSearchResultLoading,
+    teacherSearchResult: state.staticTimetables.teacherSearchResult,
+    teacherSearchResultLoading: state.staticTimetables.teacherSearchResultLoading,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     clearTeacherSearchResult: () => {
-      return dispatch(staticTables.clearTeacherSearchResult());
+      return dispatch(staticTimetables.clearTeacherSearchResult());
     },
     loadTeacherSearchResult: (searchId, index) => {
-      return dispatch(staticTables.loadTeacherSearchResult(searchId, index));
+      return dispatch(staticTimetables.loadTeacherSearchResult(searchId, index));
     },
   };
 };

@@ -5,6 +5,6 @@ export * from './ResetTimetable';
 export * from './Preferences';
 export * from './OtherSection';
 export * from './OtherTimetables';
-export * from './StaticTable';
+export * from './StaticTimetable';
 export * from './Attendances';
 export * from './CustomEntries';

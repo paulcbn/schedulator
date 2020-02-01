@@ -5,7 +5,7 @@ from functools import reduce
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from api_core.models import StaticTable
+from .models import StaticTable
 from crawler.models import Formation, Subject, TimetableEntry
 
 

@@ -12,10 +12,10 @@ import Layout from '../../components/Layout/Layout';
 import { OverlayCircularProgress } from '../../components/OverlayCircularProgress';
 import Timetable from '../../components/Timetable/Timetable';
 import { currentSemesterStatus, deepGet, useModal } from '../../lib';
-import { staticTables } from '../../lib/actions';
+import { staticTimetables } from '../../lib/actions';
 import useStyles from './styles';
 
-const StaticTable = ({ loadStaticTable, staticTable, loading, currentSemesterStatus, loadCurrentSemesterStatus }) => {
+const StaticTimetable = ({ loadStaticTimetable, staticTimetable, loading, currentSemesterStatus, loadCurrentSemesterStatus }) => {
   const { searchId } = useParams();
   const classes = useStyles();
   const [ nextWeek, setNextWeek ] = useState(false);
@@ -38,19 +38,19 @@ const StaticTable = ({ loadStaticTable, staticTable, loading, currentSemesterSta
 
   useEffect(() => {
     if (searchId !== undefined)
-      loadStaticTable(searchId);
-  }, [ loadStaticTable, searchId ]);
+      loadStaticTimetable(searchId);
+  }, [ loadStaticTimetable, searchId ]);
 
 
   const { rawEntries, sectionName, sectionYear, formation, subjectName, subjectId, teacher } = useMemo(() => ({
-    rawEntries: deepGet(staticTable, 'attendances', []),
-    sectionName: deepGet(staticTable, 'section.name', null),
-    sectionYear: deepGet(staticTable, 'section.year', ''),
-    formation: deepGet(staticTable, 'mostRelevantFormation.name', null),
-    subjectId: deepGet(staticTable, 'subject.sid', null),
-    subjectName: deepGet(staticTable, 'subject.name', null),
-    teacher: deepGet(staticTable, 'teacher', null),
-  }), [ staticTable ]);
+    rawEntries: deepGet(staticTimetable, 'attendances', []),
+    sectionName: deepGet(staticTimetable, 'section.name', null),
+    sectionYear: deepGet(staticTimetable, 'section.year', ''),
+    formation: deepGet(staticTimetable, 'mostRelevantFormation.name', null),
+    subjectId: deepGet(staticTimetable, 'subject.sid', null),
+    subjectName: deepGet(staticTimetable, 'subject.name', null),
+    teacher: deepGet(staticTimetable, 'teacher', null),
+  }), [ staticTimetable ]);
 
   const tabName = useMemo(() => formation || subjectId || teacher || 'Unknown', [ formation, subjectId, teacher ]);
   const displayFormation = useMemo(() => !!(teacher || subjectId), [ teacher, subjectId ]);
@@ -127,8 +127,8 @@ const StaticTable = ({ loadStaticTable, staticTable, loading, currentSemesterSta
 
 const mapStateToProps = state => {
   return {
-    staticTable: state.staticTables.staticTable,
-    loading: state.staticTables.staticTableLoading,
+    staticTimetable: state.staticTimetables.staticTimetable,
+    loading: state.staticTimetables.staticTimetableLoading,
     currentSemesterStatus: state.currentSemesterStatus.currentSemesterStatus,
   };
 };
@@ -136,10 +136,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadCurrentSemesterStatus: () => dispatch(currentSemesterStatus.loadCurrentSemesterStatus()),
-    loadStaticTable: (searchId) => {
-      return dispatch(staticTables.loadStaticTable(searchId));
+    loadStaticTimetable: (searchId) => {
+      return dispatch(staticTimetables.loadStaticTimetable(searchId));
     },
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StaticTable);
+export default connect(mapStateToProps, mapDispatchToProps)(StaticTimetable);

@@ -1,8 +1,8 @@
 from django.core.management import BaseCommand
 
-from api_core.models import StaticTable
-from api_core.services.static_table_service import get_search_id_for_formations, get_search_id_for_teacher, \
-    get_search_id_for_subject
+from api_static_timetables.models import StaticTable
+from api_static_timetables.service import get_search_id_for_formations, get_search_id_for_subject, \
+    get_search_id_for_teacher
 from crawler.models import Section, Formation, TimetableEntry, Subject
 
 

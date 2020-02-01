@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from api_core.models import StaticTable
-from api_core.services.static_table_service import get_most_relevant_formation, get_search_id_for_subject, \
+from .models import StaticTable
+from .service import get_most_relevant_formation, get_search_id_for_subject, \
     get_search_id_for_teacher
 from crawler.models import Section, Formation, TimetableEntry, Room, SubjectComponent, Subject
 

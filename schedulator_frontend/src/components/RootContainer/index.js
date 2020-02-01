@@ -12,7 +12,7 @@ import {
   OtherSection,
   OtherTimetables,
   Preferences,
-  StaticTable,
+  StaticTimetable,
 } from '../../pages';
 import PrivateRoute from '../PrivateRoute';
 
@@ -38,8 +38,8 @@ class RootContainerComponent extends Component {
           <Route exact path="/sections/:sectionId">
             <OtherSection authState={ this.props.auth }/>
           </Route>
-          <Route exact path="/static-tables/:searchId">
-            <StaticTable authState={ this.props.auth }/>
+          <Route exact path="/static-timetables/:searchId">
+            <StaticTimetable authState={ this.props.auth }/>
           </Route>
           <Route exact path="/login">
             <Login/>

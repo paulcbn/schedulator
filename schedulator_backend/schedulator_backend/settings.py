@@ -71,8 +71,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'crawler',
+    'scs_auth',
     'api_core',
-    'scs_auth'
+    'api_reset_timetable',
+    'api_current_timetable',
+    'api_current_semester_status',
+    'api_static_timetables',
 ]
 
 MIDDLEWARE = [

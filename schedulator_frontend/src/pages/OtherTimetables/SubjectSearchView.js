@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import OverlayCircularProgress from '../../components/OverlayCircularProgress/OverlayCircularProgress';
 import { deepGet } from '../../lib';
-import { staticTables } from '../../lib/actions';
+import { staticTimetables } from '../../lib/actions';
 import { useSearchSubjectRowStyles, useSubjectSearchStyles } from './styles';
 
 const SubjectSearchView = ({ loadSubjectSearchResult, subjectSearchResult, subjectSearchResultLoading, addEnrollmentToSelf }) => {
@@ -40,7 +40,7 @@ const SubjectSearchView = ({ loadSubjectSearchResult, subjectSearchResult, subje
   const handleNavigate = (subject) => {
     const searchId = deepGet(subject, 'searchId');
     if (searchId !== undefined)
-      history.push(`/static-tables/${ searchId }`);
+      history.push(`/static-timetables/${ searchId }`);
   };
 
   const handleNext = () => {
@@ -114,18 +114,18 @@ const SubjectRow = ({ subject, onClick }) => {
 
 const mapStateToProps = state => {
   return {
-    subjectSearchResult: state.staticTables.subjectSearchResult,
-    subjectSearchResultLoading: state.staticTables.subjectSearchResultLoading,
+    subjectSearchResult: state.staticTimetables.subjectSearchResult,
+    subjectSearchResultLoading: state.staticTimetables.subjectSearchResultLoading,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     clearSubjectSearchResult: () => {
-      return dispatch(staticTables.clearSubjectSearchResult());
+      return dispatch(staticTimetables.clearSubjectSearchResult());
     },
     loadSubjectSearchResult: (searchId, index) => {
-      return dispatch(staticTables.loadSubjectSearchResult(searchId, index));
+      return dispatch(staticTimetables.loadSubjectSearchResult(searchId, index));
     },
   };
 };

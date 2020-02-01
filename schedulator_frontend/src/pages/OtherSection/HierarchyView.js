@@ -9,7 +9,7 @@ import React, { useMemo, useState } from 'react';
 import { deepGet } from '../../lib';
 import { useHierarchyViewStyles } from './styles';
 
-const HierarchyView = ({ staticTableHierarchy, showTitle, onClick } = { showTitle: false }) => {
+const HierarchyView = ({ staticTimetableHierarchy, showTitle, onClick } = { showTitle: false }) => {
   const classes = useHierarchyViewStyles();
 
   const [ expandedId, setExpandedId ] = useState(false);
@@ -18,10 +18,10 @@ const HierarchyView = ({ staticTableHierarchy, showTitle, onClick } = { showTitl
   };
 
   const { formationName, searchId, children } = useMemo(() => ({
-    formationName: deepGet(staticTableHierarchy, 'formation.name', '-'),
-    searchId: deepGet(staticTableHierarchy, 'searchId', ''),
-    children: deepGet(staticTableHierarchy, 'children', []),
-  }), [ staticTableHierarchy ]);
+    formationName: deepGet(staticTimetableHierarchy, 'formation.name', '-'),
+    searchId: deepGet(staticTimetableHierarchy, 'searchId', ''),
+    children: deepGet(staticTimetableHierarchy, 'children', []),
+  }), [ staticTimetableHierarchy ]);
 
 
   return <Box className={ classes.rootBox }>
@@ -61,7 +61,7 @@ const HierarchyView = ({ staticTableHierarchy, showTitle, onClick } = { showTitl
             <Typography>{ formationName }</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={ classes.expansionBody }>
-            <HierarchyView key={ formationName } staticTableHierarchy={ h } onClick={ onClick }/>
+            <HierarchyView key={ formationName } staticTimetableHierarchy={ h } onClick={ onClick }/>
           </ExpansionPanelDetails>
         </ExpansionPanel>;
       }) }
