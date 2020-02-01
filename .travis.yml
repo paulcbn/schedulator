@@ -9,7 +9,7 @@ install:
   - python manage.py makemigrations scs_auth # this has no models right now, just in case
   - python manage.py makemigrations crawler
   - python manage.py makemigrations api_core
-  - python manage.py makemigrations api_static_tables
+  - python manage.py makemigrations api_static_timetables
   - python manage.py migrate
 script:
   - python manage.py test
