@@ -6,16 +6,15 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api_core.serializers.enrollment_state_serializers import EnrolledSubjectSerializer, \
-    SubjectComponentStateSerializer, \
+from api_core.services.security_service import user_is_enrolled_to_subjects, user_owns_entries
+from .serializers import EnrolledSubjectSerializer, SubjectComponentStateSerializer, \
     CreateEnrollmentSerializer, SubjectPageSerializer, CreateAttendanceSerializer
-from api_core.services.enrollment_state_service import get_enrolled_for_user, get_entries_for_subject_component, \
+from .service import get_enrolled_for_user, get_entries_for_subject_component, \
     remove_enrollment_from_user, add_enrollments_for_user, search_not_owned_subjects_paged, add_entries_for_user, \
     remove_attendance_from_user
-from api_core.services.security_service import user_is_enrolled_to_subjects, user_owns_entries
 
 
-class OwnEnrollmentStateAPI(generics.RetrieveAPIView):
+class OwnEnrollmentStateRetrieveAPI(generics.RetrieveAPIView):
     renderer_classes = [JSONRenderer, ]
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
@@ -57,7 +56,7 @@ class OwnAttendancesCreateDestroyAPI(APIView):
         return Response()
 
 
-class OwnEnrollmentAPI(APIView):
+class OwnEnrollmentCreateDestroyAPI(APIView):
     renderer_classes = [JSONRenderer, ]
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
@@ -88,7 +87,7 @@ class OwnEnrollmentAPI(APIView):
         return Response()
 
 
-class NotOwnedSubjectAPI(APIView):
+class NotOwnedSubjectRetrieveAPI(APIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
 
@@ -103,7 +102,7 @@ class NotOwnedSubjectAPI(APIView):
         return Response(serializer.data)
 
 
-class SubjectComponentStateAPI(generics.GenericAPIView):
+class SubjectComponentStateRetrieveAPI(generics.GenericAPIView):
     renderer_classes = [JSONRenderer, ]
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]

@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import auth from './auth';
 import currentTimetable from './currentTimetable';
-import enrollmentStatus from './enrollmentStatus';
+import enrollmentManager from './enrollmentManager';
 import resetTimetable from './resetTimetable';
 import staticTimetables from './staticTimetables';
 import currentSemesterStatus from './currentSemesterStatus';
 
 const rootReducer = combineReducers({
-  auth, resetTimetable, currentTimetable, staticTimetables, enrollmentStatus, currentSemesterStatus,
+  auth, resetTimetable, currentTimetable, staticTimetables, enrollmentManager, currentSemesterStatus,
 });
 
 export default rootReducer;

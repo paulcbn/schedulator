@@ -1,13 +1,13 @@
 import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { AddEnrollmentModal, ConfirmationModal, OverlayCircularProgress } from '../../components';
 import Layout from '../../components/Layout/Layout';
 import { deepGet } from '../../lib';
-import { enrollmentStatus } from '../../lib/actions';
+import { enrollmentManager } from '../../lib/actions';
 import { useModal } from '../../lib/hooks';
 import AddEntryModal from './AddEntryModal';
 import { useAttendancesStyles } from './styles';
@@ -36,7 +36,7 @@ const Attendances = ({
     notOwned: deepGet(subjectComponentState, 'notOwned', []),
     componentType: deepGet(subjectComponentState, 'subjectComponent.name', ''),
     subjectName: deepGet(subjectComponentState, 'subjectComponent.subject.name', ''),
-  }), [subjectComponentState]);
+  }), [ subjectComponentState ]);
 
 
   const handleDeleteSubject = (subject) => {
@@ -66,88 +66,88 @@ const Attendances = ({
 
   useEffect(() => {
     loadEnrollmentState();
-  }, [loadEnrollmentState]);
+  }, [ loadEnrollmentState ]);
 
 
   return <Layout otherLabel="Materiile mele">
-    <Box className={ classes.subjectsBox }>
+    <Box className={classes.subjectsBox}>
       <Typography variant="h4">Materiile la care esti inscris</Typography>
       <Divider/>
-      <Box className={ classes.subjectComponentBox }>
-        <OverlayCircularProgress show={ currentEnrollmentStateLoading } color={ "secondary" } circularSize={ "6rem" }/>
-        { (currentEnrollmentState || []).map(value => <SubjectCard
-            key={ value.sid }
-            enrollmentData={ value }
-            onDeleteSubject={ openConfirmModal }
-            onEditComponent={ handleEditComponent }
+      <Box className={classes.subjectComponentBox}>
+        <OverlayCircularProgress show={currentEnrollmentStateLoading} color={'secondary'} circularSize={'6rem'}/>
+        {(currentEnrollmentState || []).map(value => <SubjectCard
+            key={value.sid}
+            enrollmentData={value}
+            onDeleteSubject={openConfirmModal}
+            onEditComponent={handleEditComponent}
           />,
-        ) }
+        )}
       </Box>
-      <Button onClick={ openAddEnrollmentModal } variant={ "contained" } color={ "primary" }>Adauga materii</Button>
+      <Button onClick={openAddEnrollmentModal} variant={'contained'} color={'primary'}>Adauga materii</Button>
     </Box>
     <SubjectComponentModal
-      isOpen={ isSubjectComponentModalOpen }
-      onClose={ closeSubjectComponentModal }
-      onAddEntry={ openAddEntryModal }
-      onDeleteEntry={ handleDeleteEntry }
-      subjectComponentStateLoading={ subjectComponentStateLoading }
-      subjectComponentState={ subjectComponentState }
+      isOpen={isSubjectComponentModalOpen}
+      onClose={closeSubjectComponentModal}
+      onAddEntry={openAddEntryModal}
+      onDeleteEntry={handleDeleteEntry}
+      subjectComponentStateLoading={subjectComponentStateLoading}
+      subjectComponentState={subjectComponentState}
     />
     <AddEntryModal
-      isOpen={ isAddEntryModalOpen }
-      onClose={ closeAddEntryModal }
-      onAddEntry={ handleAddEntry }
-      subjectComponentStateLoading={ subjectComponentStateLoading }
-      notOwned={ notOwned }
-      componentType={ componentType }
-      subjectName={ subjectName }
+      isOpen={isAddEntryModalOpen}
+      onClose={closeAddEntryModal}
+      onAddEntry={handleAddEntry}
+      subjectComponentStateLoading={subjectComponentStateLoading}
+      notOwned={notOwned}
+      componentType={componentType}
+      subjectName={subjectName}
     />
     <ConfirmationModal
-      isOpen={ isConfirmModalOpen }
-      onClose={ closeConfirmModal }
-      onConfirm={ handleDeleteSubject }
-      data={ confirmModalData }
-      title={ "Esti sigur ca vrei sa renunti la materie?" }
-      text={ "Toate participarile la aceasta materie vor fi sterse din orarul tau." }
+      isOpen={isConfirmModalOpen}
+      onClose={closeConfirmModal}
+      onConfirm={handleDeleteSubject}
+      data={confirmModalData}
+      title={'Esti sigur ca vrei sa renunti la materie?'}
+      text={'Toate participarile la aceasta materie vor fi sterse din orarul tau.'}
     />
     <AddEnrollmentModal
-      isOpen={ isAddEnrollmentModalOpen }
-      onClose={ closeAddEnrollmentModal }
+      isOpen={isAddEnrollmentModalOpen}
+      onClose={closeAddEnrollmentModal}
     />
   </Layout>;
 };
 
 const mapStateToProps = state => {
   return {
-    currentEnrollmentState: state.enrollmentStatus.currentEnrollmentState,
-    currentEnrollmentStateLoading: state.enrollmentStatus.currentEnrollmentStateLoading,
-    currentEnrollmentStateErrors: state.enrollmentStatus.currentEnrollmentStateErrors,
+    currentEnrollmentState: state.enrollmentManager.currentEnrollmentState,
+    currentEnrollmentStateLoading: state.enrollmentManager.currentEnrollmentStateLoading,
+    currentEnrollmentStateErrors: state.enrollmentManager.currentEnrollmentStateErrors,
 
-    subjectComponentState: state.enrollmentStatus.subjectComponentState,
-    subjectComponentStateLoading: state.enrollmentStatus.subjectComponentStateLoading,
-    subjectComponentStateErrors: state.enrollmentStatus.subjectComponentStateErrors,
+    subjectComponentState: state.enrollmentManager.subjectComponentState,
+    subjectComponentStateLoading: state.enrollmentManager.subjectComponentStateLoading,
+    subjectComponentStateErrors: state.enrollmentManager.subjectComponentStateErrors,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     loadEnrollmentState: () => {
-      return dispatch(enrollmentStatus.loadEnrollmentState());
+      return dispatch(enrollmentManager.loadEnrollmentState());
     },
     loadSubjectComponentState: (subjectComponentId) => {
-      return dispatch(enrollmentStatus.loadSubjectComponentState(subjectComponentId));
+      return dispatch(enrollmentManager.loadSubjectComponentState(subjectComponentId));
     },
     addEntriesToSelf: (entryIds) => {
-      return dispatch(enrollmentStatus.addEntriesToSelf(entryIds));
+      return dispatch(enrollmentManager.addEntriesToSelf(entryIds));
     },
     clearComponentState: () => {
-      return dispatch(enrollmentStatus.clearComponentState());
+      return dispatch(enrollmentManager.clearComponentState());
     },
     removeEntryForSelf: (entryId) => {
-      return dispatch(enrollmentStatus.removeEntryForSelf(entryId));
+      return dispatch(enrollmentManager.removeEntryForSelf(entryId));
     },
     removeEnrollmentForSelf: (subjectId) => {
-      return dispatch(enrollmentStatus.removeEnrollmentForSelf(subjectId));
+      return dispatch(enrollmentManager.removeEnrollmentForSelf(subjectId));
     },
   };
 };

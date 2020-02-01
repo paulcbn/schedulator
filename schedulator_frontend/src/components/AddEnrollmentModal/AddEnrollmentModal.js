@@ -9,7 +9,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import React, { useMemo, useState } from 'react';
 import { connect } from "react-redux";
 import { deepGet } from "../../lib";
-import { enrollmentStatus } from "../../lib/actions";
+import { enrollmentManager } from "../../lib/actions";
 import { OverlayCircularProgress } from "../OverlayCircularProgress";
 import useStyles, { useSubjectRowStyles } from './styles';
 
@@ -120,21 +120,21 @@ const SubjectRow = ({ subject, onAdd }) => {
 
 const mapStateToProps = state => {
   return {
-    subjectSearchResult: state.enrollmentStatus.subjectSearchResult,
-    subjectSearchResultLoading: state.enrollmentStatus.subjectSearchResultLoading,
+    subjectSearchResult: state.enrollmentManager.subjectSearchResult,
+    subjectSearchResultLoading: state.enrollmentManager.subjectSearchResultLoading,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     clearSubjectSearchResult: () => {
-      return dispatch(enrollmentStatus.clearSubjectSearchResult());
+      return dispatch(enrollmentManager.clearSubjectSearchResult());
     },
     loadSubjectSearchResult: (searchId, index) => {
-      return dispatch(enrollmentStatus.loadSubjectSearchResult(searchId, index));
+      return dispatch(enrollmentManager.loadSubjectSearchResult(searchId, index));
     },
     addEnrollmentToSelf: (subjectId) => {
-      return dispatch(enrollmentStatus.addEnrollmentToSelf(subjectId));
+      return dispatch(enrollmentManager.addEnrollmentToSelf(subjectId));
     },
   };
 };

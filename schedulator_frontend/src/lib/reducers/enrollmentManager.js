@@ -25,7 +25,7 @@ const initialState = {
   addEnrollmentError: null,
 };
 
-export default function staticTimetables(state = initialState, action) {
+export default function enrollmentManager(state = initialState, action) {
   switch (action.type) {
     case 'CURRENT_ENROLLMENT_STATE_LOADING':
       return {

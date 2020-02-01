@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     'api_current_timetable',
     'api_current_semester_status',
     'api_static_timetables',
+    'api_enrollment_manager',
 ]
 
 MIDDLEWARE = [
