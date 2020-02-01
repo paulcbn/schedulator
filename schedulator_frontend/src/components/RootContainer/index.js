@@ -43,7 +43,8 @@ class RootContainerComponent extends Component {
           </Route>
           <Route exact path="/login">
             <Login/>
-
+          </Route>
+          <Route>
             <NotFound/>
           </Route>
         </Switch>

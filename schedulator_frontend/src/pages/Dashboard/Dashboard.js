@@ -36,7 +36,7 @@ const Dashboard = ({ entries, semesterStatus, loading, loadCurrentSemesterStatus
 
   return <Layout>
     <Paper className={ classes.paper }>
-      <OverlayCircularProgress show={ loading }/>
+
       <Box className={ classes.topBox }>
         <Box className={ classes.switchBox }>
           <Switch
@@ -68,6 +68,7 @@ const Dashboard = ({ entries, semesterStatus, loading, loadCurrentSemesterStatus
         referenceColumnInterval={ moment.duration(60, 'minute') }
         onClickEntry={ openInfoModal }
       />
+      <OverlayCircularProgress show={ loading }/>
     </Paper>
 
     <EntryInfoModal isOpen={ isInfoModalOpen } onClose={ closeInfoModal } entry={ infoModalData }/>
