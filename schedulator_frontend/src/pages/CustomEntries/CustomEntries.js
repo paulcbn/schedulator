@@ -6,7 +6,7 @@ import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { ConfirmationModal, Layout, OverlayCircularProgress } from '../../components';
 import { deepGet } from '../../lib';
-import { addCustomEntry, loadCustomData, removeCustomEntry } from '../../lib/actions/currentTimetable';
+import { customTimetableEntries } from '../../lib/actions';
 import { useModal } from '../../lib/hooks';
 import AddCustomEntryModal from './AddCustomEntryModal';
 import EntryItem from './EntryItem';
@@ -58,31 +58,29 @@ const CustomEntries = ({ entries, entriesLoading, removeEntriesLoading, loadCust
       onAddEntry={ handleAdd }
       error={ addEntryError }
       loading={ addEntryLoading }
-      title={ 'Esti sigur ca vrei sa renunti la intrare?' }
-      text={ 'Aceasta va fi stearsa permanent din orar.' }
     />
   </Layout>;
 };
 const mapStateToProps = state => {
   return {
-    entries: state.currentTimetable.personalTimetableEntries,
-    entriesLoading: state.currentTimetable.personalTimetableEntriesLoading,
-    removeEntriesLoading: state.currentTimetable.removePersonalTimetableEntryLoading,
-    addEntriesLoading: state.currentTimetable.addPersonalTimetableEntryLoading,
-    addEntryError: state.currentTimetable.addPersonalTimetableEntryError,
+    entries: state.customTimetableEntries.customTimetableEntries,
+    entriesLoading: state.customTimetableEntries.customTimetableEntriesLoading,
+    removeEntriesLoading: state.customTimetableEntries.removeCustomTimetableEntryLoading,
+    addEntriesLoading: state.customTimetableEntries.addCustomTimetableEntryLoading,
+    addEntryError: state.customTimetableEntries.addCustomTimetableEntryError,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     loadCustomData: () => {
-      return dispatch(loadCustomData());
+      return dispatch(customTimetableEntries.loadCustomData());
     },
     removeCustomEntry: (entryId) => {
-      return dispatch(removeCustomEntry(entryId));
+      return dispatch(customTimetableEntries.removeCustomEntry(entryId));
     },
     addCustomEntry: (entry) => {
-      return dispatch(addCustomEntry(entry));
+      return dispatch(customTimetableEntries.addCustomEntry(entry));
     },
   };
 };

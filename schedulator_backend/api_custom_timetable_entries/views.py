@@ -3,37 +3,36 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from api_core.serializers.custom_entries_serializers import CreatePersonalTableEntrySerializer, \
-    ListPersonalTableEntrySerializer
+from .serializers import CreateCustomTimetableEntrySerializer, ListCustomTimetableEntrySerializer
 
 
-class PersonalTableEntryListCreateAPI(generics.ListCreateAPIView):
+class CustomTimetableEntryListCreateAPI(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
-    serializer_class = CreatePersonalTableEntrySerializer
+    serializer_class = CreateCustomTimetableEntrySerializer
 
     def perform_create(self, serializer):
-        if self.request.user.user_profile.personaltableentry_set.count() >= 15:
+        if self.request.user.user_profile.customtimetableentry_set.count() >= 15:
             raise Exception('Already achieved limit.')
         serializer.save(user_profile=self.request.user.user_profile)
 
     def get_queryset(self):
         user_profile = self.request.user.user_profile
-        return user_profile.personaltableentry_set.all()
+        return user_profile.customtimetableentry_set.all()
 
     def get(self, request, *args, **kwargs):
         user_profile = self.request.user.user_profile
-        query_set = user_profile.personaltableentry_set.all()
-        serializer = ListPersonalTableEntrySerializer(query_set, many=True)
+        query_set = user_profile.customtimetableentry_set.all()
+        serializer = ListCustomTimetableEntrySerializer(query_set, many=True)
 
         return Response(serializer.data)
 
 
-class PersonalTableEntryDestroyAPI(generics.DestroyAPIView):
+class CustomTimetableEntryDestroyAPI(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
-    serializer_class = CreatePersonalTableEntrySerializer
+    serializer_class = CreateCustomTimetableEntrySerializer
 
     def get_queryset(self):
         user_profile = self.request.user.user_profile
-        return user_profile.personaltableentry_set.all()
+        return user_profile.customtimetableentry_set.all()

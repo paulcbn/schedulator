@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from api_core.models import PersonalTableEntry
+from api_core.models import CustomTimetableEntry
 
 
-class CreatePersonalTableEntrySerializer(serializers.ModelSerializer):
+class CreateCustomTimetableEntrySerializer(serializers.ModelSerializer):
     class Meta:
-        model = PersonalTableEntry
+        model = CustomTimetableEntry
         fields = '__all__'
         read_only_fields = ['id', 'user_profile']
 
@@ -15,12 +15,12 @@ class CreatePersonalTableEntrySerializer(serializers.ModelSerializer):
         return value
 
 
-class ListPersonalTableEntrySerializer(serializers.ModelSerializer):
+class ListCustomTimetableEntrySerializer(serializers.ModelSerializer):
     start_time = serializers.SerializerMethodField()
     end_time = serializers.SerializerMethodField()
 
     class Meta:
-        model = PersonalTableEntry
+        model = CustomTimetableEntry
         fields = '__all__'
 
     def get_start_time(self, obj):

@@ -51,7 +51,7 @@ class Vacation(models.Model):
         return self.end_week - self.start_week + 1
 
 
-class PersonalTableEntry(models.Model):
+class CustomTimetableEntry(models.Model):
     MONDAY = 'Mo'
     TUESDAY = 'Tu'
     WEDNESDAY = 'We'

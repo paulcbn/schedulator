@@ -50,7 +50,7 @@ const mapCustomEntryToRegularEntry = (customEntry) => {
   deepSet(resultEntry, 'subjectComponent.subject.name', deepGet(customEntry, 'subjectName'));
   deepSet(resultEntry, 'subjectComponent.name', deepGet(customEntry, 'subjectComponentName'));
   deepSet(resultEntry, 'room.name', deepGet(customEntry, 'roomName'));
-  deepSet(resultEntry, 'fomration.name', deepGet(customEntry, 'formationName'));
+  deepSet(resultEntry, 'formation.name', deepGet(customEntry, 'formationName'));
 
   return resultEntry;
 };
@@ -82,7 +82,6 @@ const Timetable = (
       .filter(entry => isOutOfBounds(entry, referenceStart, referenceEnd))
       .map(entry => truncateEntry(entry, referenceStart, referenceEnd)),
     [ allRawEntries, referenceStart, referenceEnd ]);
-
   const groupedEntries = useMemo(() => groupBy(truncatedEntries, entry => entry.weekDay),
     [ truncatedEntries ]);
   const referenceTimes = useMemo(() => {
@@ -97,7 +96,6 @@ const Timetable = (
   }, [ referenceColumnStart, referenceColumnInterval, referenceStart, referenceEnd ]);
 
   const gridScrollBoxRef = useRef(null);
-
 
   const handleHeightResize = () => {
     const element = deepGet(gridScrollBoxRef, 'current', null);

@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db import connection, reset_queries
 
-from api_core.services.export_timetable_service import generate_export
-
 
 def debugger_queries(func):
     """Basic function to debug queries."""
@@ -37,4 +35,3 @@ class Command(BaseCommand):
     @debugger_queries
     def handle(self, *args, **options):
         admin_usr = User.objects.get(username='admin')
-        print(generate_export(admin_usr))

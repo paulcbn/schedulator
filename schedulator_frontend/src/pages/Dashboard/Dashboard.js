@@ -83,9 +83,9 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     entries: state.currentTimetable.ownTimetableEntries,
-    customEntries: state.currentTimetable.personalTimetableEntries,
+    customEntries: state.customTimetableEntries.customTimetableEntries,
     semesterStatus: state.currentSemesterStatus.currentSemesterStatus,
-    loading: state.currentTimetable.ownTimetableLoading,
+    loading: state.currentTimetable.ownTimetableLoading || state.customTimetableEntries.customTimetableEntriesLoading,
   };
 };
 

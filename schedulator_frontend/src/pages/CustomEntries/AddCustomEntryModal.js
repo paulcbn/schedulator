@@ -90,7 +90,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         value={ entry.subjectName }
         setValue={ (value) => setEntry((old) => ({ ...old, subjectName: value })) }
         label={ 'Nume materie' }
-        error={ error.subjectName !== undefined }
+        error={ deepGet(error, 'subjectName') !== undefined }
         helperText={ deepGet(error, 'subjectName.0') }
       />
 
@@ -99,7 +99,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         setValue={ (value) => setEntry((old) => ({ ...old, subjectComponentName: value })) }
         label={ 'Tip' }
         menuItems={ subjectComponentMenuItems }
-        error={ error.subjectComponentName !== undefined }
+        error={ deepGet(error, 'subjectComponentName') !== undefined }
         helperText={ deepGet(error, 'subjectComponentName.0') }
       />
       <SelectEntryField
@@ -107,7 +107,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         setValue={ (value) => setEntry((old) => ({ ...old, weekDay: value })) }
         label={ 'Ziua' }
         menuItems={ weekDaysMenuItems }
-        error={ error.weekDay !== undefined }
+        error={ deepGet(error, 'weekDay') !== undefined }
         helperText={ deepGet(error, 'weekDay.0') }
       />
       <SelectEntryField
@@ -115,7 +115,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         setValue={ (value) => setEntry((old) => ({ ...old, frequency: value })) }
         label={ 'Frecventa' }
         menuItems={ frequencyMenuItems }
-        error={ error.frequency !== undefined }
+        error={ deepGet(error, 'frequency') !== undefined }
         helperText={ deepGet(error, 'frequency.0') }
       />
 
@@ -125,7 +125,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         value={ entry.startTime }
         onChange={ (value) => setEntry((old) => ({ ...old, startTime: value })) }
         label={ 'Ora inceput' }
-        // error={ error.startTime !== undefined }
+        // error={ deepGet(error,'startTime') !== undefined }
         // helperText={ deepGet(error, 'startTime.0') }
       />
 
@@ -135,7 +135,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         value={ entry.endTime }
         onChange={ (value) => setEntry((old) => ({ ...old, endTime: value })) }
         label={ 'Ora final' }
-        // error={ error.endTime !== undefined }
+        // error={ deepGet(error,'endTime') !== undefined }
         // helperText={ deepGet(error, 'endTime.0') }
       />
 
@@ -143,7 +143,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         value={ entry.teacher }
         setValue={ (value) => setEntry((old) => ({ ...old, teacher: value })) }
         label={ 'Cadru didactic' }
-        error={ error.teacher !== undefined }
+        error={ deepGet(error, 'teacher') !== undefined }
         helperText={ deepGet(error, 'teacher.0') }
       />
 
@@ -151,7 +151,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         value={ entry.formationName }
         setValue={ (value) => setEntry((old) => ({ ...old, formationName: value })) }
         label={ 'Numele formatiei' }
-        error={ error.formationName !== undefined }
+        error={ deepGet(error, 'formationName') !== undefined }
         helperText={ deepGet(error, 'formationName.0') }
       />
 
@@ -159,7 +159,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         value={ entry.roomName }
         setValue={ (value) => setEntry((old) => ({ ...old, roomName: value })) }
         label={ 'Locatie' }
-        error={ error.roomName !== undefined }
+        error={ deepGet(error, 'roomName') !== undefined }
         helperText={ deepGet(error, 'roomName.0') }
       />
 
