@@ -20,7 +20,7 @@ const Preferences = () => {
   const handleDownloadExport = async () => { // this is hacky, i know.
     setExportState(oldState => ({ ...oldState, loading: true }));
     try {
-      const { data } = await API.get('/api/export-own-timetable');
+      const { data } = await API.get('/api/export-timetable/export-own-timetable');
       const url = window.URL.createObjectURL(new Blob([ data ]));
       const link = document.createElement('a');
       link.href = url;
@@ -35,51 +35,51 @@ const Preferences = () => {
   };
 
   return <Layout otherLabel='Preferinte'>
-    <Typography variant={ 'h4' } className={ classes.title }>Preferinte</Typography>
+    <Typography variant={'h4'} className={classes.title}>Preferinte</Typography>
     <Divider/>
     <MenuItem
-      onClick={ handleNavigateToResetTimetable }
-      title={ 'Reseteaza orarul' }
-      description={ <>
+      onClick={handleNavigateToResetTimetable}
+      title={'Reseteaza orarul'}
+      description={<>
         Foloseste aceasta optiune pentru a-ti seta (sau reseta) orarul.
         <br/>
         Toate materiile la care esti inscris si participarile la acestea vor disparea.
-      </> }
-      actionText={ 'Resteaza' }
+      </>}
+      actionText={'Resteaza'}
     />
 
     <MenuItem
-      onClick={ handleNavigateToAttendances }
-      title={ 'Administrare materii' }
-      description={ <>
+      onClick={handleNavigateToAttendances}
+      title={'Administrare materii'}
+      description={<>
         Adauga/sterge materii.
         <br/>
         Modifica formatiile cu care ai decis sa participi la ore.
-      </> }
-      actionText={ 'Materiile mele' }
+      </>}
+      actionText={'Materiile mele'}
     />
 
     <MenuItem
-      onClick={ handleNavigateToCustomEntries }
-      title={ 'Administrare intrari auxiliare' }
-      description={ <>
+      onClick={handleNavigateToCustomEntries}
+      title={'Administrare intrari auxiliare'}
+      description={<>
         Adauga/sterge intrari in orar care nu fac parte din orarul facultatii de mate-info.
         <br/>
         Poti creea sau sterge intrari care respecta sablonul intrarilor din orarul facultatii.
-      </> }
-      actionText={ 'Auxiliare' }
+      </>}
+      actionText={'Auxiliare'}
     />
 
     <MenuItem
-      onClick={ handleDownloadExport }
-      title={ 'Export orar' }
-      description={ <>
+      onClick={handleDownloadExport}
+      title={'Export orar'}
+      description={<>
         Export orarul personal in format ics.<br/>
         (Fara materiile personalizate, doar cele din orarul facultatii).<br/>
         (Format compatibil cu Google Calendar, MS Outlook, etc.)
-      </> }
-      actionText={ 'Exporta' }
-      loading={ exportState.loading }
+      </>}
+      actionText={'Exporta'}
+      loading={exportState.loading}
     />
 
   </Layout>;

@@ -2,7 +2,6 @@ from django.urls import path, include
 
 from api_core.api.custom_entries_api import PersonalTableEntryListCreateAPI, PersonalTableEntryDestroyAPI
 
-from api_core.api.export_timetable_api import ExportTimetableApi
 
 urlpatterns = [
 
@@ -12,9 +11,7 @@ urlpatterns = [
     path("current-semester-status/", include('api_current_semester_status.urls')),
     path("static-timetables/", include('api_static_timetables.urls')),
     path("enrollment-manager/", include('api_enrollment_manager.urls')),
-
-    # export timetable
-    path("export-own-timetable/", ExportTimetableApi.as_view()),
+    path("export-timetable/", include('api_export_timetable.urls')),
 
     # personal timetable entries
     path("personal-timetable-entries/", PersonalTableEntryListCreateAPI.as_view()),
