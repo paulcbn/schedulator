@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     'api_static_timetables',
     'api_enrollment_manager',
     'api_export_timetable',
+    'api_custom_timetable_entries',
 ]
 
 MIDDLEWARE = [

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api_core.models import CustomTimetableEntry
+from .models import CustomTimetableEntry
 
 
 class CreateCustomTimetableEntrySerializer(serializers.ModelSerializer):
