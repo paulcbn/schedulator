@@ -15,6 +15,7 @@ install:
   - python manage.py makemigrations api_static_timetables
   - python manage.py makemigrations api_enrollment_manager
   - python manage.py makemigrations api_export_timetable
+  - python manage.py makemigrations api_custom_timetable_entries
   - python manage.py migrate
 script:
   - python manage.py test
