@@ -1,12 +1,21 @@
 language: python
 python:
-  - "3.7"
+  - "3.7.6"
 install:
+  - cd schedulator_backend
   - pip install -r requirements.txt
   - cp .env.example .env
   - python manage.py makemigrations
+  - python manage.py makemigrations scs_auth
   - python manage.py makemigrations crawler
-  - python manage.py makemigrations api
+  - python manage.py makemigrations api_core
+  - python manage.py makemigrations api_reset_timetable
+  - python manage.py makemigrations api_current_timetable
+  - python manage.py makemigrations api_current_semester_status
+  - python manage.py makemigrations api_static_timetables
+  - python manage.py makemigrations api_enrollment_manager
+  - python manage.py makemigrations api_export_timetable
+  - python manage.py makemigrations api_custom_timetable_entries
   - python manage.py migrate
 script:
   - python manage.py test
