@@ -43,6 +43,7 @@ REST_FRAMEWORK = {
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 env = environ.Env(
     DEBUG=(bool, False),
     GOOGLE_RECAPTCHA_SECRET_KEY=(str, '')
