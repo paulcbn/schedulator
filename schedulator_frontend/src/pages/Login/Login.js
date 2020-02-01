@@ -45,7 +45,7 @@ const Login = ({ errors, loading, isAuthenticated, login }) => {
           <Typography variant="h2">
             Schedulator
           </Typography>
-          <TextField variant="outlined" label="Username"
+          <TextField variant="outlined" label="Username (de scs)"
                      error={ !!errors.username }
                      helperText={ errors.username }
                      onChange={ event => setUsername(event.target.value) }
