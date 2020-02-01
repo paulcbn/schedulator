@@ -4,14 +4,22 @@ from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
+from .service import validate_recaptcha
 
-class AuthTokenSerializer(serializers.Serializer):
+
+class LoginUserSerializer(serializers.Serializer):
     username = serializers.CharField(label=_("Username"))
     password = serializers.CharField(
         label=_("Password"),
         style={'input_type': 'password'},
         trim_whitespace=False
     )
+    captcha = serializers.CharField(default='', allow_blank=True)
+
+    def validate_captcha(self, value):
+        if not validate_recaptcha(value):
+            raise serializers.ValidationError('Invalid captcha.')
+        return value
 
     def validate(self, attrs):
         username = attrs.get('username')

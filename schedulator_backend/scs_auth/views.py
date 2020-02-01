@@ -3,17 +3,17 @@ from knox.views import LoginView as KnoxLoginView
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from .serializers import AuthTokenSerializer, GetUserSerializer
+from .serializers import LoginUserSerializer, GetUserSerializer
 
 
 class LoginAPI(KnoxLoginView):
     permission_classes = (AllowAny,)
 
     def post(self, request, format=None):
-        serializer = AuthTokenSerializer(data=request.data)
+        serializer = LoginUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        login(request, user)
+        request.user = user
         return super(LoginAPI, self).post(request, format=None)
 
 

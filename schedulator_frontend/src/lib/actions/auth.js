@@ -36,9 +36,9 @@ export const login = (username, password, captcha) => {
 };
 
 export const logout = () => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    await API.post('/api/auth/logout/');
     dispatch({ type: 'LOGOUT_LOADED' });
     dispatch({ type: 'CLEAR_AUTH_ERRORS' });
-    API.post('/api/auth/logout/');
   };
 };
