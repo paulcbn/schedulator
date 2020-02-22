@@ -96,7 +96,7 @@ def create_event(timetable_entry, interval):
 
 def generate_semester_intervals():
     semester = Semester.objects.order_by('-start_date').first()
-    vacations = Vacation.objects.all()
+    vacations = Vacation.objects.filter(semester=semester)
     semester_start = localized(semester.start_date)
     start_date = localized(semester.start_date)
     result = []
