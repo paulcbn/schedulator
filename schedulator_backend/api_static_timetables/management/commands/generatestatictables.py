@@ -42,14 +42,19 @@ def get_tuples_for_formations():
 def generate_static_tables_for_formations():
     for section, *formations_list in get_tuples_for_formations():
         for formations in formations_list:
-            static_table = StaticTable.objects.create(
-                search_id=get_search_id_for_formations(formations),
-                section=section,
-                teacher=None,
-                subject=None,
-            )
-            static_table.formations.set(formations)
-            static_table.attendances.set(TimetableEntry.objects.filter(formation__in=formations))
+            search_id = get_search_id_for_formations(formations)
+
+            if StaticTable.objects.filter(search_id=search_id).count() == 0 and search_id.strip() != '':
+                static_table = StaticTable.objects.create(
+                    search_id=search_id,
+                    section=section,
+                    teacher=None,
+                    subject=None,
+                )
+                static_table.formations.set(formations)
+                static_table.attendances.set(TimetableEntry.objects.filter(formation__in=formations))
+            else:
+                print(f'WARNING: invalid search string for section \'{section}\': \'{search_id}\'')
 
 
 def generate_static_tables_for_teachers():

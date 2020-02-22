@@ -82,10 +82,7 @@ def parse_timetable_row(row):
 
 
 class SectionCrawler:
-    def __init__(self,
-                 subjects_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar/index.html',
-                 sections_base_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar'):
-        self.subjects_url = subjects_url
+    def __init__(self, sections_base_url='http://www.cs.ubbcluj.ro/files/orar/2019-1/tabelar'):
         self.base_url = sections_base_url
 
     def get_sections(self):
@@ -93,7 +90,7 @@ class SectionCrawler:
         Crawls the subject_urls page and saves all the Section objects and
         all the SectionSubject objects to the db.
         """
-        soup = get_soup_from_url(self.subjects_url)
+        soup = get_soup_from_url(self.base_url)
         table_bachelor_degree, table_master_degree = parse_degree_tables(soup)
 
         bachelor_sections = parse_section_table(table_bachelor_degree)
