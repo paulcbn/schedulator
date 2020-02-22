@@ -1,9 +1,10 @@
-import { Box, Button, Hidden, Typography } from '@material-ui/core';
+import { Box, Button, Hidden, Typography, useMediaQuery } from '@material-ui/core';
 import PrevIcon from '@material-ui/icons/NavigateBefore';
 import NextIcon from '@material-ui/icons/NavigateNext';
 import moment from 'moment';
 import React, { useMemo, useRef, useState } from 'react';
 import ReactResizeDetector from 'react-resize-detector';
+import SwipeableViews from 'react-swipeable-views';
 
 import { deepGet, deepSet, groupBy, weekDayCodes } from '../../lib';
 import { useReferenceEntryStyle, useTimetableStyle } from './styles';
@@ -72,9 +73,12 @@ const Timetable = (
   }) => {
   const [ weekdayOffset, setWeekdayOffset ] = useState(0);
   const [ scrollbarWidth, setScrollbarWidth ] = useState(0);
+  const isSmallScreen = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
 
   const mondayDate = useMemo(() => moment(currentDate).startOf('isoWeek'), [ currentDate ]);
   const currentWeekdayIndex = useMemo(() => getWeekdayIndex(currentDate, daysCount), [ currentDate, daysCount ]);
+  const [ displayedWeekdayIndex, setDisplayedWeekdayIndex ] = useState(currentWeekdayIndex);
 
   const allRawEntries = useMemo(() => (rawEntries || []).concat((rawCustomEntries || []).map(mapCustomEntryToRegularEntry)),
     [ rawEntries, rawCustomEntries ]);
@@ -113,29 +117,58 @@ const Timetable = (
       referenceEnd={ referenceEnd }
       currentTime={ entry }/>,
   );
-
-  const renderGrid = () => days.map(({ code }, index) => {
+//<Hidden smDown={ code !== deepGet(days[currentWeekdayIndex + weekdayOffset], 'code', undefined) }>
+  const renderRawColumns = () => days.map(({ code }, index) => {
       if (index >= daysCount)
         return null;
-      return <Hidden key={ code }
-                     smDown={ code !== deepGet(days[currentWeekdayIndex + weekdayOffset], 'code', undefined) }>
-        <TimetableColumn
-          referenceStart={ referenceStart }
-          referenceEnd={ referenceEnd }
-          currentParity={ currentParity }
-          rawEntries={ (groupedEntries[code] || []) }
-          onClickEntry={ onClickEntry }
-          displayFormation={ displayFormation }
-          displayTeacher={ displayTeacher }/>
-      </Hidden>;
+      return <TimetableColumn
+        key={ code }
+        referenceStart={ referenceStart }
+        referenceEnd={ referenceEnd }
+        currentParity={ currentParity }
+        rawEntries={ (groupedEntries[code] || []) }
+        onClickEntry={ onClickEntry }
+        displayFormation={ displayFormation }
+        displayTeacher={ displayTeacher }/>;
     },
-  );
-  const renderHeader = () => days.map(({ code, name }, index) => {
-      if (index >= daysCount)
-        return null;
-      return (
-        <Hidden smDown={ code !== deepGet(days[currentWeekdayIndex + weekdayOffset], 'code', undefined) } key={ code }>
-          <Box className={ classes.header }>
+  ).filter(col => col !== null);
+
+  const renderColumns = () => {
+    if (isSmallScreen)
+      return <SwipeableViews
+        style={ { flexGrow: 1 } }
+        containerStyle={ { height: '100%' } }
+        slideStyle={ { width: '100%', height: '100%', display: 'flex' } }
+        enableMouseEvents={ true }
+        hysteresis={ 0.6 }
+        index={ currentWeekdayIndex }
+        onChangeIndex={ (index) => setDisplayedWeekdayIndex(index) }
+        threshold={30}
+        resistance={true}
+      >
+        { renderRawColumns() }
+      </SwipeableViews>;
+    return renderRawColumns();
+  };
+
+  const renderHeader = () => {
+    if (isSmallScreen) {
+      const weekdayName = deepGet(days[displayedWeekdayIndex], 'name', undefined);
+      return <Box className={ classes.header }>
+        <Typography variant='h5' className={ classes.weekDay }>
+          { weekdayName }
+        </Typography>
+        <Typography variant='body1' className={ classes.weekDay }>
+          { moment(mondayDate).add(displayedWeekdayIndex, 'days').format('Do MMMM') }
+        </Typography>
+      </Box>;
+    }
+
+    return days.map(({ name }, index) => {
+        if (index >= daysCount)
+          return null;
+        return (
+          <Box className={ classes.header } key={ index }>
             <Typography variant='h5' className={ classes.weekDay }>
               { name }
             </Typography>
@@ -143,9 +176,10 @@ const Timetable = (
               { moment(mondayDate).add(index, 'days').format('Do MMMM') }
             </Typography>
           </Box>
-        </Hidden>);
-    },
-  );
+        );
+      },
+    );
+  };
 
   return <Box className={ classes.mainBox }>
     <Box className={ classes.headerBox }>
@@ -158,33 +192,9 @@ const Timetable = (
       <Box className={ classes.gridScrollBox }>
         <Box className={ classes.referenceColumnSpacer }/>
         { renderReferenceTimes() }
-        { renderGrid() }
+        { renderColumns() }
       </Box>
     </Box>
-    <Hidden mdUp>
-      <Box className={ classes.navigationBox }>
-        <Button
-          className={ classes.navButton }
-          variant="outlined"
-          startIcon={ <PrevIcon/> }
-          color="secondary"
-          onClick={ () => setWeekdayOffset(old => currentWeekdayIndex + old > 0 ? old - 1 : old) }
-          disabled={ currentWeekdayIndex + weekdayOffset === 0 }>
-          Ziua prec.
-        </Button>
-        <Box className={ classes.flexExpander }/>
-        <Button
-          className={ classes.navButton }
-          variant="outlined"
-          startIcon={ <NextIcon/> }
-          color="secondary"
-          onClick={ () => setWeekdayOffset(old => currentWeekdayIndex + old < daysCount - 1 ? old + 1 : old) }
-          disabled={ currentWeekdayIndex + weekdayOffset === daysCount - 1 }>
-          Ziua urm.
-        </Button>
-      </Box>
-    </Hidden>
-
   </Box>;
 };
 

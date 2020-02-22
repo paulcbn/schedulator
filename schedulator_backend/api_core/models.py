@@ -47,3 +47,4 @@ class Vacation(models.Model):
 
     def __len__(self):
         return self.end_week - self.start_week + 1
+c

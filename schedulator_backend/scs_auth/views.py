@@ -1,4 +1,3 @@
-from django.contrib.auth import login
 from knox.views import LoginView as KnoxLoginView
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated

@@ -16,6 +16,13 @@ export const useTimetableStyle = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  swipeableViewsBox: {
+    flex: '1',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   gridBox: {
     flex: '1 1 auto',
     background: '#f9f9f9',
@@ -24,7 +31,6 @@ export const useTimetableStyle = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     overflowY: 'auto',
-
   },
   headerBox: {
     height: 60,
