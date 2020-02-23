@@ -14,7 +14,6 @@ import useStyles from './styles';
 
 
 const Login = ({ errors, loading, isAuthenticated, login }) => {
-  let history = useHistory();
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ captcha, setCaptcha ] = useState('');
@@ -29,10 +28,6 @@ const Login = ({ errors, loading, isAuthenticated, login }) => {
   function handleSubmit(event) {
     event.preventDefault();
     login(username, password, captcha);
-  }
-
-  function navigateToRegister() {
-    history.push('/register');
   }
 
   if (isAuthenticated)
@@ -78,8 +73,9 @@ const Login = ({ errors, loading, isAuthenticated, login }) => {
           </Box>
           <Box className={ classes.buttonBox }>
             <Button variant="contained" size="large" color="primary" type="submit">Login</Button>
-            <Button variant="contained" size="large" color="default" type="button"
-                    onClick={ navigateToRegister }>Register</Button>
+            <Typography color={ 'textSecondary' }>
+              Pentru sugestii: <Typography className={ classes.email }>schedulator.suggestions@gmail.com</Typography>
+            </Typography>
           </Box>
         </Paper>
       </form>

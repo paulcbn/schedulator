@@ -7,6 +7,9 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  email: {
+    fontWeight: 'bold',
+  },
   loginInput: {
     margin: theme.spacing(1, 0),
   },
@@ -18,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
   buttonBox: {
     display: 'flex',
-      marginTop: theme.spacing(1),
+    marginTop: theme.spacing(1),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

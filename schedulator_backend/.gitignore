@@ -6,3 +6,4 @@ migrations/
 *.log
 .env
 static-admin/
+db.sqlite3-journal

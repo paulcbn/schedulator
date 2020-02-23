@@ -4,6 +4,13 @@ const useStyles = makeStyles(theme => ({
   title: {
     margin: theme.spacing(1),
   },
+  suggestionsPaper: {
+    padding: theme.spacing(2),
+    margin: theme.spacing(1),
+  },
+  email: {
+    fontWeight: 'bold',
+  },
 }));
 
 export const useMenuItemStyles = makeStyles(theme => ({
@@ -25,8 +32,8 @@ export const useMenuItemStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(0, 1),
   },
-}));
 
+}));
 
 
 export default useStyles;
