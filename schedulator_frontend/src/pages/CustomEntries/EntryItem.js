@@ -60,7 +60,7 @@ const EntryItem = ({ entry, onDelete }) => {
 
     <EntryField title={ 'Ziua' } value={ deepGet(weekDayCodes[weekDay], 'name', '-') }/>
 
-    <EntryField title={ 'Frecventa' } value={ frequency === 'odd' ? 'Sapt. 1' : 'Sapt2' }
+    <EntryField title={ 'Frecventa' } value={ frequency === 'odd' ? 'Sapt. 1' : 'Sapt. 2' }
                 hide={ frequency !== 'odd' && frequency !== 'evn' }/>
     <EntryField title={ 'Ora' } value={ `${ startTime } -> ${ endTime }` }/>
     <EntryField title={ 'Sala' } value={ roomName }/>

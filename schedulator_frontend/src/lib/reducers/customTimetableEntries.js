@@ -15,7 +15,7 @@ export default function customTimetableEntries(state = initialState, action) {
   switch (action.type) {
 
     case 'CUSTOM_TIMETABLE_ENTRIES_LOADING':
-      return { ...state, customTimetableLoading: true, customTimetableErrors: {}, customTimetableEntries: [] };
+      return { ...state, customTimetableLoading: true, customTimetableErrors: {} };
     case 'CUSTOM_TIMETABLE_ENTRIES_LOADED':
       return {
         ...state,
@@ -28,7 +28,6 @@ export default function customTimetableEntries(state = initialState, action) {
         ...state,
         customTimetableLoading: false,
         customTimetableErrors: action.data,
-        customTimetableEntries: [],
       };
 
     case 'CUSTOM_TIMETABLE_ENTRIES_ADD_LOADING':

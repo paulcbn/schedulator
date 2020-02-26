@@ -11,6 +11,7 @@ import { KeyboardTimePicker } from '@material-ui/pickers';
 import moment from 'moment';
 
 import React, { useState } from 'react';
+import { OverlayCircularProgress } from '../../components/OverlayCircularProgress';
 import { deepGet, weekDayCodes } from '../../lib';
 import { useAddCustomEntryModalStyles, useTextEntryFieldStyles } from './styles';
 
@@ -55,8 +56,8 @@ const subjectComponentMenuItems = [
 ];
 const frequencyMenuItems = [
   { value: 'all', label: 'Toate' },
-  { value: 'evn', label: 'Sapt. 1' },
-  { value: 'odd', label: 'Sapt. 2' },
+  { value: 'odd', label: 'Sapt. 1' },
+  { value: 'evn', label: 'Sapt. 2' },
 ];
 const weekDaysMenuItems = Object.entries(weekDayCodes)
   .map(([ key, { name } ]) => ({ value: key, label: name }));
@@ -79,7 +80,8 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
     fullWidth={ true }
     maxWidth='lg'
     open={ isOpen }
-    onClose={ onClose }>
+    onClose={ onClose }
+    className={ classes.dialog }>
     <Box className={ classes.dialogTitle }>
       <Typography variant="h5" component="span" className={ classes.titleTypography }>
         Adauga o intrare personalizata
@@ -169,6 +171,7 @@ const AddCustomEntryModal = ({ isOpen, onClose, onAddEntry, loading, error }) =>
         Adauga
       </Button>
     </DialogActions>
+    <OverlayCircularProgress show={ loading }/>
   </Dialog>;
 };
 
