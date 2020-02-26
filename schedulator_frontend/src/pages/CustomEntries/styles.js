@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   addButton: {
-    margin: theme.spacing(1,3),
+    margin: theme.spacing(1, 3),
   },
 }));
 export const useEntryItemStyles = makeStyles(theme => ({
@@ -26,6 +26,9 @@ export const useEntryFieldStyles = makeStyles(theme => ({
   },
 }));
 export const useAddCustomEntryModalStyles = makeStyles(theme => ({
+  dialog: {
+    position: 'relative',
+  },
   field: {
     display: 'flex',
     justifyContent: 'space-between',

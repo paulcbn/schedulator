@@ -35,7 +35,7 @@ const CustomEntries = ({ entries, entriesLoading, removeEntriesLoading, loadCust
       { (entries || []).map(entry => <EntryItem
         key={ entry.id } entry={ entry }
         onDelete={ () => openConfirmModal(entry.id) }/>) }
-      <OverlayCircularProgress show={ entriesLoading }/>
+      <OverlayCircularProgress show={ entriesLoading || addEntryLoading || removeEntriesLoading }/>
     </Box>
     <Button onClick={ () => openAddCustomEntryModal() } color={ 'primary' } variant={ 'contained' }
             className={ classes.addButton } disabled={ limitAchieved }>
