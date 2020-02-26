@@ -10,7 +10,7 @@ import EntryInfoModal from '../../components/EntryInfoModal/EntryInfoModal';
 import Layout from '../../components/Layout/Layout';
 import { OverlayCircularProgress } from '../../components/OverlayCircularProgress';
 import Timetable from '../../components/Timetable/Timetable';
-import { deepGet } from '../../lib';
+import { deepGet } from '../../lib/utils';
 import { currentSemesterStatus } from '../../lib/actions';
 import { useModal } from '../../lib/hooks';
 import useStyles from './styles';

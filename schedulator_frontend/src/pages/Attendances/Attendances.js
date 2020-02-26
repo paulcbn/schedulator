@@ -6,7 +6,7 @@ import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { AddEnrollmentModal, ConfirmationModal, OverlayCircularProgress } from '../../components';
 import Layout from '../../components/Layout/Layout';
-import { deepGet } from '../../lib';
+import { deepGet } from '../../lib/utils';
 import { enrollmentManager } from '../../lib/actions';
 import { useModal } from '../../lib/hooks';
 import AddEntryModal from './AddEntryModal';

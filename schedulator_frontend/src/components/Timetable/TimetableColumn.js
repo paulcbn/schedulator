@@ -4,8 +4,9 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import React, { useMemo } from 'react';
-import { deepGet } from '../../lib';
-import { entryListToPositioningList } from '../../lib/time';
+import { deepGet } from '../../lib/utils';
+
+import { entryListToPositioningList } from './timeUtils';
 import { useTimetableColumnStyles, useTimetableEntryStyle } from './styles';
 
 

@@ -5,7 +5,9 @@ import moment from 'moment';
 import React, { useMemo, useRef, useState } from 'react';
 import ReactResizeDetector from 'react-resize-detector';
 
-import { deepGet, deepSet, groupBy, weekDayCodes } from '../../lib';
+import { weekDayCodes } from '../../lib/config';
+import { deepGet, deepSet, groupBy } from '../../lib/utils';
+
 import { useReferenceEntryStyle, useTimetableStyle } from './styles';
 import TimetableColumn from './TimetableColumn';
 

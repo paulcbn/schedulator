@@ -3,10 +3,11 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
+import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 import React, { useMemo } from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { deepGet, weekDayCodes } from '../../lib';
+import { weekDayCodes } from '../../lib/config';
+import { deepGet } from '../../lib/utils';
 import { useEntryFieldStyles, useEntryItemStyles } from './styles';
 
 const covertSecondsToMoment = (seconds) => {

@@ -4,7 +4,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import * as moment from 'moment';
 import React, { useMemo } from 'react';
-import { deepGet, weekDayCodes } from '../../lib';
+import { weekDayCodes } from '../../lib/config';
+import { deepGet } from '../../lib/utils';
 import { useEntryRowStyles } from './styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import TeacherIcon from '@material-ui/icons/Face';
@@ -49,10 +50,11 @@ const EntryRow = ({ entry, onDelete }) => {
       </Grid>
       <Grid item lg={ 2 } md={ 12 } container className={ classes.gridItem }>
         <WeekDayIcon/>
-        <Typography  component={'span'} variant={ 'h6' } className={ classes.weekDayTypography }>
+        <Typography component={ 'span' } variant={ 'h6' } className={ classes.weekDayTypography }>
           { weekDay }
         </Typography>
-        <Typography component={'span'} variant={ 'body1' } color={ 'textSecondary' } className={ classes.frequencyTypography }>
+        <Typography component={ 'span' } variant={ 'body1' } color={ 'textSecondary' }
+                    className={ classes.frequencyTypography }>
           { frequency }
         </Typography>
       </Grid>

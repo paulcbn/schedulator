@@ -5,7 +5,7 @@ import moment from 'moment';
 import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { ConfirmationModal, Layout, OverlayCircularProgress } from '../../components';
-import { deepGet } from '../../lib';
+import { deepGet } from '../../lib/utils';
 import { customTimetableEntries } from '../../lib/actions';
 import { useModal } from '../../lib/hooks';
 import AddCustomEntryModal from './AddCustomEntryModal';

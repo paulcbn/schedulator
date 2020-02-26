@@ -9,7 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 
 import React, { useMemo } from 'react';
 import { OverlayCircularProgress } from '../../components/OverlayCircularProgress';
-import { deepGet } from '../../lib';
+import { deepGet } from '../../lib/utils';
 import EntryRow from './EntryRow';
 import { compareTimetableEntriesByDay } from './sortUtils';
 import { useSubjectComponentModalStyles } from './styles';
