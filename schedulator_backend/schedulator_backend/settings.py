@@ -45,11 +45,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 env = environ.Env(
     DEBUG=(bool, False),
+    USE_EMAIL_AUTH_SSL=(bool, True),
     GOOGLE_RECAPTCHA_SECRET_KEY=(str, '')
 )
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 DEBUG = env('DEBUG')
+USE_EMAIL_AUTH_SSL = env('USE_EMAIL_AUTH_SSL')
 SECRET_KEY = env('SECRET_KEY')
 UNIVERSITY_TIMETABLE_ROOT_URL = env('UNIVERSITY_TIMETABLE_ROOT_URL')
 
