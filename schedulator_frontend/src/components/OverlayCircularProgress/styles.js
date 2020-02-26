@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(240, 240, 240, 0.6)',
+    backgroundColor: theme.palette.custom.overlayCircularProgress.background,
     display: 'flex',
     flexGrow: 1,
     justifyContent: 'center',

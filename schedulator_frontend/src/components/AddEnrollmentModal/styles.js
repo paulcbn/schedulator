@@ -24,7 +24,7 @@ export const useSubjectRowStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     border: '1px solid',
-    borderColor: 'rgba(0, 0, 0, 0.12)',
+    borderColor: theme.palette.custom.rowBox.graySmallBorder,
     borderRadius: theme.spacing(1),
     flexGrow: 1,
   },

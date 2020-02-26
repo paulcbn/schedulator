@@ -10,7 +10,7 @@ export const useSectionTableStyles = makeStyles(theme => ({
   rootBox: {
     margin: theme.spacing(2),
     borderRadius: theme.spacing(1),
-    background: 'rgb(249,249,249)',
+    background: theme.palette.custom.sectionTable.rootBox,
   },
   titleBox: {
     padding: theme.spacing(1),
@@ -22,12 +22,11 @@ export const useSectionTableStyles = makeStyles(theme => ({
   },
   expansionPanel: {
     borderRadius: theme.spacing(0.5),
-    background: 'rgb(249,249,249)',
-
+    background: theme.palette.custom.sectionTable.expansionPanel,
   },
   heading: {
-    background: 'rgb(240,240,240)',
-    color: 'rgb(69,69,69)',
+    background: theme.palette.custom.sectionTable.heading,
+    color: theme.palette.custom.sectionTable.headingFont,
   },
   expansionBody: {
     padding: theme.spacing(1),
@@ -45,14 +44,13 @@ export const useSubjectSearchStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   searchBox: {
-    flexGrow: 1,
     margin: theme.spacing(1, 1, 1, 0),
+    flexGrow: 1,
   },
   searchButton: {
     margin: theme.spacing(1, 0, 1, 1),
   },
   content: {
-    // minHeight: '100px',
     position: 'relative',
   },
   buttons: {
@@ -69,7 +67,7 @@ export const useSearchSubjectRowStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     border: '1px solid',
-    borderColor: 'rgba(0, 0, 0, 0.12)',
+    borderColor: theme.palette.custom.rowBox.graySmallBorder,
     borderRadius: theme.spacing(1),
     flexGrow: 1,
   },
@@ -113,7 +111,7 @@ export const useSearchTeacherRowStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     border: '1px solid',
-    borderColor: 'rgba(0, 0, 0, 0.12)',
+    borderColor: theme.palette.custom.rowBox.graySmallBorder,
     borderRadius: theme.spacing(1),
     flexGrow: 1,
   },

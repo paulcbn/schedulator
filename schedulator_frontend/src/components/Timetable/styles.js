@@ -18,7 +18,7 @@ export const useTimetableStyle = makeStyles(theme => ({
   },
   gridBox: {
     flex: '1 1 auto',
-    background: '#f9f9f9',
+    background: theme.palette.custom.timetable.background,
     position: 'relative',
     display: 'flex',
     flexDirection: 'row',
@@ -34,9 +34,9 @@ export const useTimetableStyle = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     background: theme.palette.primary.dark,
-    color: '#f0f0f0',
+    color: theme.palette.custom.timetable.headerText,
     borderBottom: '4px solid',
-    borderBottomColor: '#cccccc',
+    borderBottomColor: theme.palette.custom.timetable.border,
   },
   referenceColumnSpacer: {
     position: 'relative',
@@ -50,7 +50,8 @@ export const useTimetableStyle = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    borderLeft: '1px solid #cccccc',
+    borderLeft: '1px solid',
+    borderColor: theme.palette.custom.timetable.border,
   },
   weekDay: {
     fontFamily: 'Montserrat',
@@ -60,7 +61,7 @@ export const useTimetableStyle = makeStyles(theme => ({
     flexShrink: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    background: '#f9f9f9',
+    background: theme.palette.custom.timetable.background,
     padding: theme.spacing(0.3),
   },
   navButton: {
@@ -79,7 +80,8 @@ export const useTimetableColumnStyles = makeStyles(theme => ({
     position: 'relative',
     flexGrow: 1,
     padding: theme.spacing(0, 0.3),
-    borderLeft: '1px solid #cccccc',
+    borderLeft: '1px solid',
+    borderColor: theme.palette.custom.timetable.border,
   },
 }));
 
@@ -97,7 +99,7 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
   },
   entryPaper: {
     flexGrow: 1,
-    background: 'rgba(180,236,127,0.65)',
+    background: theme.palette.custom.timetable.entryBackground,
     overflow: 'hidden',
   },
   buttonBase: {
@@ -107,26 +109,26 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
     width: '100%',
     height: '100%',
   },
-  subject: {
+  entryContentHeader: {
     width: '100%',
-    background: 'rgba(139,195,74,0.77)',
-    color: '#4b4b4b',
+    background: theme.palette.custom.timetable.entryHeaderBackground,
+    color: theme.palette.custom.timetable.entryHeaderFont,
     overflow: 'hidden',
     padding: theme.spacing(0.2, 0.4),
     fontWeight: 'bold',
     fontSize: ({ subjectFontSize }) => subjectFontSize,
     fontFamily: 'Montserrat',
     borderBottom: ({ subjectBorderBottom }) => subjectBorderBottom,
-    borderBottomColor: '#4b4b4b',
+    borderBottomColor: theme.palette.custom.timetable.entryHeaderBorder,
     height: ({ subjectHeight }) => subjectHeight,
   },
-  subjectComponent: {
+  entryContentBox: {
     width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     padding: theme.spacing(0, 0.3),
-    color: '#4b4b4b',
+    color: theme.palette.custom.timetable.entryContentFont,
     overflow: 'hidden',
     fontSize: ({ subjectComponentFontSize }) => subjectComponentFontSize,
     fontFamily: 'Nunito',
@@ -136,7 +138,7 @@ export const useTimetableEntryStyle = makeStyles(theme => ({
   },
   formation: {
     width: '100%',
-    color: '#f0f0f0',
+    color: theme.palette.custom.timetable.formationFont,
     overflow: 'hidden',
     fontSize: ({ subjectFontSize }) => subjectFontSize,
     fontFamily: 'Montserrat',

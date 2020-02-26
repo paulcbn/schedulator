@@ -14,7 +14,7 @@ export const useHierarchyViewStyles = makeStyles(theme => ({
   },
   rootBox: {
     borderRadius: theme.spacing(1),
-    background: 'rgb(249,249,249)',
+    background: theme.palette.custom.hierarchyView.rootBox,
   },
   titleBox: {
     padding: theme.spacing(1),
@@ -25,12 +25,12 @@ export const useHierarchyViewStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
   },
   heading: {
-    background: 'rgb(240,240,240)',
-    color: 'rgb(69,69,69)',
+    background: theme.palette.custom.hierarchyView.heading,
+    color: theme.palette.custom.hierarchyView.headingFont,
   },
   expansionPanel: {
     borderRadius: theme.spacing(0.5),
-    background: 'rgb(249,249,249)',
+    background: theme.palette.custom.hierarchyView.expansionPanel,
   },
   expansionBody: {
     padding: theme.spacing(1),

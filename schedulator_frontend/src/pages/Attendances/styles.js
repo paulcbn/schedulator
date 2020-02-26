@@ -22,13 +22,13 @@ export const useComponentRowStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   errorIcon: {
-    color: theme.palette.enrollmentState.icons.error,
+    color: theme.palette.custom.enrollmentState.icons.error,
   },
   validIcon: {
-    color: theme.palette.enrollmentState.icons.valid,
+    color: theme.palette.custom.enrollmentState.icons.valid,
   },
   warningIcon: {
-    color: theme.palette.enrollmentState.icons.warn,
+    color: theme.palette.custom.enrollmentState.icons.warn,
   },
   title: {
     display: 'flex',
@@ -45,15 +45,15 @@ export const useAddEntryModalRowStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'stretch',
     border: '1px solid',
-    borderColor: 'rgba(0, 0, 0, 0.12)',
+    borderColor: theme.palette.custom.rowBox.graySmallBorder,
     borderRadius: theme.spacing(1),
     flexGrow: 1,
   },
   deleteButton: {
     flexShrink: 0,
-    color: theme.palette.enrollmentState.deleteButton.color,
+    color: theme.palette.custom.enrollmentState.deleteButton.color,
     '&:hover': {
-      backgroundColor: theme.palette.enrollmentState.deleteButton.hoverColor,
+      backgroundColor: theme.palette.custom.enrollmentState.deleteButton.hoverColor,
     },
   },
   timeBox: {
@@ -104,9 +104,9 @@ export const useSubjectCardStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   deleteButton: {
-    color: theme.palette.enrollmentState.deleteButton.color,
+    color: theme.palette.custom.enrollmentState.deleteButton.color,
     '&:hover': {
-      backgroundColor: theme.palette.enrollmentState.deleteButton.hoverColor,
+      backgroundColor: theme.palette.custom.enrollmentState.deleteButton.hoverColor,
     },
   },
 }));
@@ -159,15 +159,15 @@ export const useEntryRowStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'stretch',
     border: '1px solid',
-    borderColor: 'rgba(0, 0, 0, 0.12)',
+    borderColor: theme.palette.custom.rowBox.graySmallBorder,
     borderRadius: theme.spacing(1),
     flexGrow: 1,
   },
   deleteButton: {
     flexShrink: 0,
-    color: theme.palette.enrollmentState.deleteButton.color,
+    color: theme.palette.custom.enrollmentState.deleteButton.color,
     '&:hover': {
-      backgroundColor: theme.palette.enrollmentState.deleteButton.hoverColor,
+      backgroundColor: theme.palette.custom.enrollmentState.deleteButton.hoverColor,
     },
   },
   timeBox: {

@@ -84,11 +84,11 @@ const TimetableEntry = ({ referenceStart, referenceEnd, positionedEntry, onClick
     <Box className={ classes.entryBox }>
       <Paper className={ classes.entryPaper }>
         <ButtonBase component="div" className={ classes.buttonBase } onClick={ () => onClick(positionedEntry) }>
-          <Typography className={ classes.subject } align={ 'left' }>
+          <Typography className={ classes.entryContentHeader } align={ 'left' }>
             { overlapSize === 1 || subjectAlias === '' ? subjectName : subjectAlias }
           </Typography>
           { durationHours >= 2 &&
-          <Box className={ classes.subjectComponent }>
+          <Box className={ classes.entryContentBox }>
             <span className={ classes.subjectComponentColor }>
               { subjectComponentType }&nbsp;
             </span>
