@@ -38,35 +38,6 @@ export const useTimetableStyle = makeStyles(theme => ({
     borderBottom: '4px solid',
     borderBottomColor: theme.palette.custom.timetable.border,
   },
-  referenceColumnSpacer: {
-    position: 'relative',
-    width: 50,
-    flexGrow: 0,
-    margin: theme.spacing(0, 0.3),
-  },
-  header: {
-    display: 'flex',
-    flex: '1 1 0',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    borderLeft: '1px solid',
-    borderColor: theme.palette.custom.timetable.border,
-  },
-  weekDay: {
-    fontFamily: 'Montserrat',
-  },
-  navigationBox: {
-    display: 'flex',
-    flexShrink: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    background: theme.palette.custom.timetable.background,
-    padding: theme.spacing(0.3),
-  },
-  navButton: {
-    flex: '2 1 0',
-  },
   flexExpander: {
     flexGrow: 1,
   },
@@ -168,5 +139,61 @@ export const useReferenceEntryStyle = makeStyles(theme => ({
     fontFamily: 'Nunito',
     left: -47,
     bottom: -9,
+  },
+}));
+
+export const useTimetableHeaderItemStyle = makeStyles(theme => ({
+  header: {
+    display: 'flex',
+    flex: '1 1 0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    borderLeft: '1px solid',
+    borderColor: theme.palette.custom.timetable.border,
+  },
+  font: {
+    fontFamily: 'Montserrat',
+  },
+}));
+
+export const useTimeReferenceColumnClasses = makeStyles(theme => ({
+  referenceColumnSpacer: {
+    position: 'relative',
+    width: 50,
+    flexGrow: 0,
+    margin: theme.spacing(0, 0.3),
+  },
+}));
+
+export const useTimetableHeaderStyle = makeStyles(theme => ({
+  referenceColumnSpacer: {
+    position: 'relative',
+    width: 50,
+    flexGrow: 0,
+    margin: theme.spacing(0, 0.3),
+  },
+}));
+
+export const useSmallScreenNavigationStyle = makeStyles(theme => ({
+  referenceColumnSpacer: {
+    position: 'relative',
+    width: 50,
+    flexGrow: 0,
+    margin: theme.spacing(0, 0.3),
+  },
+  navigationBox: {
+    display: 'flex',
+    flexShrink: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    background: theme.palette.custom.timetable.background,
+    padding: theme.spacing(0.3),
+  },
+  navButton: {
+    flex: '2 1 0',
+  },
+  flexExpander: {
+    flexGrow: 1,
   },
 }));

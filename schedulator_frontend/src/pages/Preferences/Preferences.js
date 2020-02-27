@@ -83,7 +83,7 @@ const Preferences = () => {
       loading={ exportState.loading }
     />
     <Paper className={ classes.suggestionsPaper }>
-      <Typography color={ 'textSecondary' }>
+      <Typography color={ 'textSecondary' }  component='div'>
         Pentru sugestii: <Typography className={ classes.email }>schedulator.suggestions@gmail.com</Typography>
       </Typography>
     </Paper>
