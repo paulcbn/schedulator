@@ -9,7 +9,8 @@ import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import OverlayCircularProgress from '../../components/OverlayCircularProgress/OverlayCircularProgress';
-import { deepGet } from '../../lib';
+import { deepGet } from '../../lib/utils';
+
 import { staticTimetables } from '../../lib/actions';
 import { useSearchSubjectRowStyles, useSubjectSearchStyles } from './styles';
 

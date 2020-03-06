@@ -4,7 +4,8 @@ import LocationIcon from '@material-ui/icons/LocationCity';
 import FormationIcon from '@material-ui/icons/People';
 import React, { useMemo } from 'react';
 
-import { deepGet } from '../../lib';
+import { deepGet } from '../../lib/utils';
+
 import useStyles from './styles';
 
 const EntryInfoModal = ({ isOpen, onClose, entry }) => {

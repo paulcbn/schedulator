@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React, { useMemo, useState } from 'react';
-import { deepGet, groupBy } from '../../lib';
+import { deepGet, groupBy } from '../../lib/utils';
 import { useSectionTableStyles } from './styles';
 
 const SectionTable = ({ title, sections, loading, onClick }) => {

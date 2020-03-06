@@ -1,4 +1,5 @@
-import { deepGet, weekDayCodes } from '../../lib';
+import { weekDayCodes } from '../../lib/config';
+import { deepGet } from '../../lib/utils';
 
 export const compareTimetableEntriesByDay = (entry1, entry2) => {
   const sectionId1 = deepGet(entry1, 'formation.section.id', 0);

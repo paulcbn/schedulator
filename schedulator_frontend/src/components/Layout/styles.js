@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    color: '#F3F3F3',
+    color: theme.palette.custom.layout.title,
     overflow: 'hidden',
   },
   logoutButton: {
@@ -45,14 +45,14 @@ export const useLayoutHeaderStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    color: '#F3F3F3',
+    color: theme.palette.custom.layout.title,
     overflow: 'hidden',
   },
   button: {
     margin: theme.spacing(0.2),
   },
   sLetter: {
-    color: theme.palette.primary.dark,
+    color: theme.palette.custom.layout.sLetter,
   },
   avatar: {
     margin: theme.spacing(0.2),

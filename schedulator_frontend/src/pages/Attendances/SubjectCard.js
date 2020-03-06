@@ -13,7 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import WarningIcon from '@material-ui/icons/HelpOutline';
 import ErrorIcon from '@material-ui/icons/HighlightOff';
 import React, { useMemo } from 'react';
-import { deepGet } from '../../lib';
+import { deepGet } from '../../lib/utils';
 import { useComponentRowStyles, useSubjectCardStyles } from './styles';
 
 

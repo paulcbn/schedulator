@@ -73,7 +73,7 @@ const Login = ({ errors, loading, isAuthenticated, login }) => {
           </Box>
           <Box className={ classes.buttonBox }>
             <Button variant="contained" size="large" color="primary" type="submit">Login</Button>
-            <Typography color={ 'textSecondary' }>
+            <Typography color={ 'textSecondary' } component='div'>
               Pentru sugestii: <Typography className={ classes.email }>schedulator.suggestions@gmail.com</Typography>
             </Typography>
           </Box>

@@ -8,7 +8,7 @@ import AddIcon from "@material-ui/icons/Add";
 import SearchIcon from "@material-ui/icons/Search";
 import React, { useMemo, useState } from 'react';
 import { connect } from "react-redux";
-import { deepGet } from "../../lib";
+import { deepGet } from "../../lib/utils";
 import { enrollmentManager } from "../../lib/actions";
 import { OverlayCircularProgress } from "../OverlayCircularProgress";
 import useStyles, { useSubjectRowStyles } from './styles';

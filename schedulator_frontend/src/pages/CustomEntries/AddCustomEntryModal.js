@@ -12,7 +12,8 @@ import moment from 'moment';
 
 import React, { useState } from 'react';
 import { OverlayCircularProgress } from '../../components/OverlayCircularProgress';
-import { deepGet, weekDayCodes } from '../../lib';
+import { weekDayCodes } from '../../lib/config';
+import { deepGet } from '../../lib/utils';
 import { useAddCustomEntryModalStyles, useTextEntryFieldStyles } from './styles';
 
 const TextEntryField = ({ value, setValue, label, error, helperText }) => {

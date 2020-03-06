@@ -4,7 +4,7 @@ import React, { useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { deepGet } from '../../lib';
+import { deepGet } from '../../lib/utils';
 import { auth } from '../../lib/actions';
 import { offlineLayoutConfig, onlineLayoutConfig } from './config';
 import LayoutHeader from './LayoutHeader';

@@ -51,9 +51,9 @@ def destroy_scs_client(mail_client):
 def check_scs_credentials(username, password):
     try:
         mail_client = create_scs_client()
-        login_to_scs(mail_client, username, password)
+        result = login_to_scs(mail_client, username, password)
         destroy_scs_client(mail_client)
-        return True
+        return result
     except ScsAuthException:
         return False
 

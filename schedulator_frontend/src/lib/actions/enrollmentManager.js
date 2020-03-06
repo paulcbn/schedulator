@@ -1,5 +1,6 @@
 import { keysToCamel, keysToUnderscore } from '../api';
-import { API, deepGet } from '../index';
+import { API } from '../index';
+import { deepGet } from '../utils';
 import { loadOwnData } from './currentTimetable';
 
 export const loadEnrollmentState = () => {
